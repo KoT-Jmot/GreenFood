@@ -2,7 +2,9 @@ version: '3.4'
 
 services:
   greenfood:
-    image: q117/greenfood
+    image: ${DOCKER_REGISTRY-}greenfood
+    restart: always
+
     build:
       context: .
       dockerfile: GreenFood/Dockerfile
