@@ -3,7 +3,11 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-ConfigSettings.ConfigureLog(new ConfigurationBuilder());
+var configuraton = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .Build();
+
+LoggerConfig.ConfigureLog(configuraton);
 builder.Host.UseSerilog();
 
 var app = builder.Build();

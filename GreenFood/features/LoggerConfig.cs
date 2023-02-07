@@ -5,15 +5,12 @@ using System.Reflection;
 
 namespace GreenFood.features
 {
-    public static class ConfigSettings
+    public static class LoggerConfig
     {
-        static public void ConfigureLog(ConfigurationBuilder config)
+        static public void ConfigureLog(IConfigurationRoot configuraton)
         {
             var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
-            IConfigurationRoot configuraton = config
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .Build();
             Log.Logger = new LoggerConfiguration()
                 .Enrich.FromLogContext()
                 .Enrich.WithExceptionDetails()
