@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace GreenFood.features
 {
-    public static class LoggerConfig
+    public static class LoggerConfigurator
     {
         static public void ConfigureLog(IConfigurationRoot configuraton)
         {

@@ -7,7 +7,7 @@ var configuraton = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .Build();
 
-LoggerConfig.ConfigureLog(configuraton);
+LoggerConfigurator.ConfigureLog(configuraton);
 builder.Host.UseSerilog();
 
 var app = builder.Build();
