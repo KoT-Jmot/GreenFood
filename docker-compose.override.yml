@@ -2,9 +2,6 @@ version: '3.4'
 
 services:
   greenfood:
-    build:
-      context: .
-      dockerfile: GreenFood/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
@@ -13,8 +10,6 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-    depends_on:
-      - elasticsearch
     networks:
       - elastic
 
@@ -36,8 +31,6 @@ services:
     container_name: kibana
     ports:
       - 5601:5601
-    depends_on:
-      - elasticsearch
     environment:
       - ELASTICSEARCH_URL =http://localhost:9200
     networks:
