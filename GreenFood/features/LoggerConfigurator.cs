@@ -3,7 +3,7 @@ using Serilog.Exceptions;
 using Serilog.Sinks.Elasticsearch;
 using System.Reflection;
 
-namespace GreenFood.features
+namespace GreenFood.Web.features
 {
     public static class LoggerConfigurator
     {

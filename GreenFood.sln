@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenFood", "GreenFood\GreenFood.csproj", "{950FAA70-5CBB-4E4B-B697-9293F8DBC7C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenFood.Web", "GreenFood\GreenFood.Web.csproj", "{950FAA70-5CBB-4E4B-B697-9293F8DBC7C3}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{CC0AE0B2-8951-4D9C-B9EF-61B5DA24D333}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenFood.Domain", "GreenFood.Domain\GreenFood.Domain.csproj", "{A042D019-E190-4E95-A173-72E1F0300581}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenFood.Infrastructure", "GreenFood.Infrastructure\GreenFood.Infrastructure.csproj", "{BBD9B926-2735-48DF-BF33-B7E8A7A27C6E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{CC0AE0B2-8951-4D9C-B9EF-61B5DA24D333}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC0AE0B2-8951-4D9C-B9EF-61B5DA24D333}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC0AE0B2-8951-4D9C-B9EF-61B5DA24D333}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A042D019-E190-4E95-A173-72E1F0300581}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A042D019-E190-4E95-A173-72E1F0300581}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A042D019-E190-4E95-A173-72E1F0300581}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A042D019-E190-4E95-A173-72E1F0300581}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBD9B926-2735-48DF-BF33-B7E8A7A27C6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBD9B926-2735-48DF-BF33-B7E8A7A27C6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBD9B926-2735-48DF-BF33-B7E8A7A27C6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBD9B926-2735-48DF-BF33-B7E8A7A27C6E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
