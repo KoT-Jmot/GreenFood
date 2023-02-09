@@ -6,10 +6,12 @@ namespace GreenFood.Domain.Models
     public class ApplicationUser : IdentityUser
     {
         [Required]
-        string? FullName { get; set; }
+        public string? FullName { get; set; }
         [Required]
-        DateTime CreateDate { get; set; }
+        public DateTime RegDate { get; set; }
         [Required]
-        DateTime LastLogDate { get; set; }
+        public DateTime LastLogDate { get; set; }
+        public IEnumerable<Product>? Products { get; set; }
+        public IEnumerable<Order>? Orders { get; set; }
     }
 }
