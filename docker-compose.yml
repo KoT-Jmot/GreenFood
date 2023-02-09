@@ -16,3 +16,6 @@ services:
     image: docker.elastic.co/kibana/kibana:7.16.1
     depends_on:
       - elasticsearch
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-latest

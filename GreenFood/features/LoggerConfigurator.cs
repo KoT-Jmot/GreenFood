@@ -16,7 +16,7 @@ namespace GreenFood.Web.features
                 .Enrich.FromLogContext()
                 .Enrich.WithExceptionDetails()
                 .WriteTo.Debug()
-                .WriteTo.Elasticsearch(ConfigureELS(configuraton, env))
+                .WriteTo.Elasticsearch(ConfigureELS(configuraton, env!))
                 .CreateLogger();
         }
 
@@ -24,10 +24,10 @@ namespace GreenFood.Web.features
             IConfigurationRoot configuraton,
             string env)
         {
-            return new ElasticsearchSinkOptions(new Uri(configuraton["ELKConfiguration:Uri"]))
+            return new ElasticsearchSinkOptions(new Uri(configuraton["ELKConfiguration:Uri"]!))
             {
                 AutoRegisterTemplate = true,
-                IndexFormat = $"{Assembly.GetExecutingAssembly().GetName().Name.ToLower()}-{env.ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM}"
+                IndexFormat = $"{Assembly.GetExecutingAssembly().GetName().Name!.ToLower()}-{env.ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM}"
             };
         }
     }

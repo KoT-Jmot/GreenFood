@@ -10,11 +10,11 @@ namespace GreenFood.Infrastructure.Configurations
         {
             builder
                 .HasOne(o => o.User)
-                .WithMany(c => c.Orders);
+                .WithMany(u=>u.Orders).OnDelete(DeleteBehavior.NoAction);
 
             builder
                 .HasOne(o => o.Product)
-                .WithMany(p => p.Orders);
+                .WithMany(p=>p.Orders);
         }
     }
 }

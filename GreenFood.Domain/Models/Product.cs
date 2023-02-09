@@ -9,7 +9,7 @@ namespace GreenFood.Domain.Models
         [Required]
         public Guid Id { get; set; }
         [Required]
-        public Guid User_Id { get; set; }
+        public Guid? User_Id { get; set; }
         [Required]
         public ApplicationUser? User { get; set; }
         [Required]
@@ -20,7 +20,7 @@ namespace GreenFood.Domain.Models
         public int Count { get; set; }
         [Required]
         public Guid Type_Id { get; set; }
-        public TypeOfProduct? Type {get; set;}
-        public virtual IEnumerable<Order>? Orders { get; set; }
+        public TypeOfProduct Type {get; set;}
+        public virtual IEnumerable<Order>? Orders { get; set; } = null!;
     }
 }
