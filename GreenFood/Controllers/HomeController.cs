@@ -1,23 +1,22 @@
 ﻿using GreenFood.Domain.Models;
+using GreenFood.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GreenFood.Web.Controllers
 {
+    [Route("Home")]
     public class HomeController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
-
-        public HomeController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        private readonly ApplicationContext _db;
+        public HomeController(ApplicationContext db)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            _db = db;
         }
-
+        [Route("Index")]
         public string Index()
         {
-            return _userManager.ToString();
+            return "Hello world!";
         }
     }
 }

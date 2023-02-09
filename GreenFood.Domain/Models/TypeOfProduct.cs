@@ -10,6 +10,6 @@ namespace GreenFood.Domain.Models
         public int Type_Id { get; set; }
         [Required]
         public string? Name { get; set; }
-        public IEnumerable<Product>? Products { get; set; }
+        public virtual IEnumerable<Product>? Products { get; set; }
     }
 }

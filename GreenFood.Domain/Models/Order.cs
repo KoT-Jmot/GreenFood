@@ -7,12 +7,15 @@ namespace GreenFood.Domain.Models
     {
         [Key]
         [Required]
-        public int Order_Id { get; set; }
+        public Guid Id { get; set; }
         [Required]
-        [ForeignKey("Product_Id")]
+        public Guid Product_Id { get; set; }
+        [Required]
         public Product? Product { get; set; }
         [Required]
-        public ApplicationUser? Сustomer { get; set; }
+        public Guid User_Id { get; set; }
+        [Required]
+        public ApplicationUser? User { get; set; }
         [Required]
         [Range(0, Int32.MaxValue)]
         public int Count { get; set; }

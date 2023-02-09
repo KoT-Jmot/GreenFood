@@ -7,9 +7,11 @@ namespace GreenFood.Domain.Models
     {
         [Key]
         [Required]
-        public int Product_Id { get; set; }
+        public Guid Id { get; set; }
         [Required]
-        public ApplicationUser? Saller { get; set; }
+        public Guid User_Id { get; set; }
+        [Required]
+        public ApplicationUser? User { get; set; }
         [Required]
         public string? Header { get; set; }
         public string? Description { get; set; }
@@ -17,8 +19,8 @@ namespace GreenFood.Domain.Models
         [Range(0, int.MaxValue)]
         public int Count { get; set; }
         [Required]
-        [ForeignKey("Type_Id")]
+        public Guid Type_Id { get; set; }
         public TypeOfProduct? Type {get; set;}
-        public IEnumerable<Order>? Orders { get; set; }
+        public virtual IEnumerable<Order>? Orders { get; set; }
     }
 }

@@ -1,44 +1,31 @@
-using GreenFood.Domain.Models;
-using GreenFood.Infrastructure;
+using GreenFood.Web.Extensions;
 using GreenFood.Web.features;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var services = builder.Services;
 
 var configuraton = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .Build();
 
-builder.Services.AddDbContext<ApplicationContext>(options =>
-    options.UseSqlServer(configuraton.GetConnectionString("DefaultConnection")))
-    .AddIdentity<ApplicationUser,IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationContext>();
-
-builder.Services.AddAuthorization(); // without this line i took this error :
-                                     // System.InvalidOperationException: "Unable to find the required services.
-                                     // Please add all the required services by calling
-                                     // 'IServiceCollection.AddAuthorization'
-                                     // in the application startup code."
-
-builder.Services.AddControllersWithViews(); //for mvc
+services.ConfigureSqlServer(configuraton)
+    .AddControllers();
 
 LoggerConfigurator.ConfigureLog(configuraton);
 builder.Host.UseSerilog();
 
 var app = builder.Build();
 
-app.UseHttpsRedirection(); //for mvc
-app.UseRouting(); //for mvc
+app.UseHttpsRedirection();
 
-app.UseAuthentication();
-app.UseAuthorization();
+app.UseRouting();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}"); //for mvc
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 
-//app.MapGet("/", () => "World!");
 app.Run();
 

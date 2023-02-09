@@ -9,9 +9,7 @@ namespace GreenFood.Domain.Models
         public string? FullName { get; set; }
         [Required]
         public DateTime RegDate { get; set; }
-        [Required]
-        public DateTime LastLogDate { get; set; }
-        public IEnumerable<Product>? Products { get; set; }
-        public IEnumerable<Order>? Orders { get; set; }
+        public virtual IEnumerable<Product>? Products { get; set; }
+        public virtual IEnumerable<Order>? Orders { get; set; }
     }
 }

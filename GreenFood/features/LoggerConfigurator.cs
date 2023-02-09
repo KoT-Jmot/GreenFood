@@ -11,7 +11,8 @@ namespace GreenFood.Web.features
         {
             var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
-            Log.Logger = new LoggerConfiguration()
+            Log.Logger = 
+                new LoggerConfiguration()
                 .Enrich.FromLogContext()
                 .Enrich.WithExceptionDetails()
                 .WriteTo.Debug()
@@ -19,7 +20,9 @@ namespace GreenFood.Web.features
                 .CreateLogger();
         }
 
-        static private ElasticsearchSinkOptions ConfigureELS(IConfigurationRoot configuraton, string env)
+        static private ElasticsearchSinkOptions ConfigureELS(
+            IConfigurationRoot configuraton,
+            string env)
         {
             return new ElasticsearchSinkOptions(new Uri(configuraton["ELKConfiguration:Uri"]))
             {
