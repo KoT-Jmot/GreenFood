@@ -6,14 +6,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 var services = builder.Services;
 
-var configuraton = new ConfigurationBuilder()
-                   .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+var configuration = new ConfigurationBuilder()
+                   .AddJsonFile("appsettings.json", false, true)
+                   .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", false, true)
                    .Build();
 
-services.ConfigureSqlServer(configuraton)
+services.ConfigureSqlServer(configuration)
         .AddControllers();
 
-LoggerConfigurator.ConfigureLog(configuraton);
+LoggerConfigurator.ConfigureLog(configuration);
 builder.Host.UseSerilog();
 
 var app = builder.Build();
@@ -28,4 +29,3 @@ app.UseEndpoints(endpoints =>
 });
 
 app.Run();
-
