@@ -1,5 +1,6 @@
 ﻿using GreenFood.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace GreenFood.Web.Extensions
 {
@@ -10,7 +11,10 @@ namespace GreenFood.Web.Extensions
             IConfiguration configuraton)
         {
             services.AddDbContext<ApplicationContext>(options =>
-                options.UseSqlServer(configuraton.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(configuraton.GetConnectionString("DefaultConnection"), b =>
+                {
+                    b.MigrationsAssembly(Assembly.Load("GreenFood.Infrastructure").FullName);
+                }));
 
             return services;
         }
