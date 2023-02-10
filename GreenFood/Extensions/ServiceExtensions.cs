@@ -11,6 +11,7 @@ namespace GreenFood.Web.Extensions
         {
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(configuraton.GetConnectionString("DefaultConnection")));
+
             return services;
         }
     }

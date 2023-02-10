@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GreenFood.Domain.Models
 {
@@ -14,11 +13,11 @@ namespace GreenFood.Domain.Models
         [Required]
         public Guid User_Id { get; set; }
         [Required]
+        public ApplicationUser User { get; set; } = null!;
+        [Required]
         public Guid Product_Id { get; set; }
         [Required]
-        public ApplicationUser User { get; set; }
-        [Required]
-        public Product Product { get; set; }
+        public Product Product { get; set; } = null!;
         [Required]
         public DateTime RegDate { get; set; }
     }

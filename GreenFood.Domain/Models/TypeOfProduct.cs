@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GreenFood.Domain.Models
 {
@@ -7,9 +6,9 @@ namespace GreenFood.Domain.Models
     {
         [Key]
         [Required]
-        public int Type_Id { get; set; }
+        public Guid Type_Id { get; set; }
         [Required]
         public string? Name { get; set; }
-        public virtual IEnumerable<Product>? Products { get; set; } = null!;
+        public virtual IEnumerable<Product> Products { get; set; } = null!;
     }
 }

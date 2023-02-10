@@ -7,11 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 
 var configuraton = new ConfigurationBuilder()
-    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-    .Build();
+                   .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                   .Build();
 
 services.ConfigureSqlServer(configuraton)
-    .AddControllers();
+        .AddControllers();
 
 LoggerConfigurator.ConfigureLog(configuraton);
 builder.Host.UseSerilog();

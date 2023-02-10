@@ -7,24 +7,23 @@ namespace GreenFood.Web.features
 {
     public static class LoggerConfigurator
     {
-        static public void ConfigureLog(IConfigurationRoot configuraton)
+        static public void ConfigureLog(IConfigurationRoot configuration)
         {
             var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
-            Log.Logger = 
-                new LoggerConfiguration()
-                .Enrich.FromLogContext()
-                .Enrich.WithExceptionDetails()
-                .WriteTo.Debug()
-                .WriteTo.Elasticsearch(ConfigureELS(configuraton, env!))
-                .CreateLogger();
+            Log.Logger = new LoggerConfiguration()
+                        .Enrich.FromLogContext()
+                        .Enrich.WithExceptionDetails()
+                        .WriteTo.Debug()
+                        .WriteTo.Elasticsearch(ConfigureELS(configuration, env!))
+                        .CreateLogger();
         }
 
         static private ElasticsearchSinkOptions ConfigureELS(
-            IConfigurationRoot configuraton,
+            IConfigurationRoot configuration,
             string env)
         {
-            return new ElasticsearchSinkOptions(new Uri(configuraton["ELKConfiguration:Uri"]!))
+            return new ElasticsearchSinkOptions(new Uri(configuration["ELKConfiguration:Uri"]!))
             {
                 AutoRegisterTemplate = true,
                 IndexFormat = $"{Assembly.GetExecutingAssembly().GetName().Name!.ToLower()}-{env.ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM}"

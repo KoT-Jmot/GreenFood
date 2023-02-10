@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenFood.Web", "GreenFood\
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{CC0AE0B2-8951-4D9C-B9EF-61B5DA24D333}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenFood.Domain", "GreenFood.Domain\GreenFood.Domain.csproj", "{A042D019-E190-4E95-A173-72E1F0300581}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenFood.Domain", "GreenFood.Domain\GreenFood.Domain.csproj", "{A042D019-E190-4E95-A173-72E1F0300581}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenFood.Infrastructure", "GreenFood.Infrastructure\GreenFood.Infrastructure.csproj", "{BBD9B926-2735-48DF-BF33-B7E8A7A27C6E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenFood.Infrastructure", "GreenFood.Infrastructure\GreenFood.Infrastructure.csproj", "{BBD9B926-2735-48DF-BF33-B7E8A7A27C6E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
