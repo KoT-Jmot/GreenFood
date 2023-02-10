@@ -3,28 +3,30 @@ using Serilog.Exceptions;
 using Serilog.Sinks.Elasticsearch;
 using System.Reflection;
 
-namespace GreenFood.features
+namespace GreenFood.Web.features
 {
     public static class LoggerConfigurator
     {
-        static public void ConfigureLog(IConfigurationRoot configuraton)
+        static public void ConfigureLog(IConfigurationRoot configuration)
         {
             var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
             Log.Logger = new LoggerConfiguration()
-                .Enrich.FromLogContext()
-                .Enrich.WithExceptionDetails()
-                .WriteTo.Debug()
-                .WriteTo.Elasticsearch(ConfigureELS(configuraton, env))
-                .CreateLogger();
+                        .Enrich.FromLogContext()
+                        .Enrich.WithExceptionDetails()
+                        .WriteTo.Debug()
+                        .WriteTo.Elasticsearch(ConfigureELS(configuration, env!))
+                        .CreateLogger();
         }
 
-        static private ElasticsearchSinkOptions ConfigureELS(IConfigurationRoot configuraton, string env)
+        static private ElasticsearchSinkOptions ConfigureELS(
+            IConfigurationRoot configuration,
+            string env)
         {
-            return new ElasticsearchSinkOptions(new Uri(configuraton["ELKConfiguration:Uri"]))
+            return new ElasticsearchSinkOptions(new Uri(configuration["ELKConfiguration:Uri"]!))
             {
                 AutoRegisterTemplate = true,
-                IndexFormat = $"{Assembly.GetExecutingAssembly().GetName().Name.ToLower()}-{env.ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM}"
+                IndexFormat = $"{Assembly.GetExecutingAssembly().GetName().Name!.ToLower()}-{env.ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM}"
             };
         }
     }
