@@ -3,7 +3,7 @@ version: '3.4'
 services:
   greenfood:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Docker
       - ASPNETCORE_URLS=http://+:80
     ports:
       - "5000:80"
@@ -43,6 +43,8 @@ services:
     environment:
       - SA_PASSWORD=My_secret_p@ssword
       - ACCEPT_EULA=Y
+    volumes:
+      - restate-sql-server:/var/opt/mssql
     networks:
       - elastic
 
@@ -52,3 +54,6 @@ networks:
 
 volumes:
   elasticsearch-data: 
+    external: false
+  restate-sql-server:
+    external: false
