@@ -1,5 +1,7 @@
+using GreenFood.Infrastructure;
 using GreenFood.Web.Extensions;
 using GreenFood.Web.features;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,11 +14,12 @@ var configuraton = new ConfigurationBuilder()
 
 services.ConfigureSqlServer(configuraton)
         .AddControllers();
-
-LoggerConfigurator.ConfigureLog(configuraton);
+LoggerConfigurator.ConfigureLog(configuration);
 builder.Host.UseSerilog();
 
 var app = builder.Build();
+
+await app.ConfigureMigrationAsync();
 
 app.UseHttpsRedirection();
 

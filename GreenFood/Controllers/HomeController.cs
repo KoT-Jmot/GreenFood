@@ -1,6 +1,4 @@
-﻿using GreenFood.Domain.Models;
-using GreenFood.Infrastructure;
-using Microsoft.AspNetCore.Identity;
+﻿using GreenFood.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GreenFood.Web.Controllers
@@ -14,9 +12,10 @@ namespace GreenFood.Web.Controllers
             _db = db;
         }
         [Route("Index")]
-        public string Index()
+        public IActionResult Index()
         {
-            return "Hello world!";
+            throw new System.TimeoutException();
+            return Ok(ModelState);
         }
     }
 }
