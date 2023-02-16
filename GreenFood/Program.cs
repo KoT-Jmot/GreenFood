@@ -1,29 +1,40 @@
-using GreenFood.Web.Contracts;
-using GreenFood.Web.Exception;
 using GreenFood.Web.Extensions;
 using GreenFood.Web.Features;
-using GreenFood.Web.Services;
+using GreenFood.Web.ExceptionHandler;
+using GreenFood.Application.Contracts;
+using GreenFood.Application.Services;
 using Serilog;
+using FluentValidation;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var services = builder.Services;
 
-var configuraton = new ConfigurationBuilder()
+var configuration = new ConfigurationBuilder()
                    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                   .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json",optional: false, reloadOnChange: true)
                    .Build();
 
-services.ConfigureSqlServer(configuraton)
-        .AddControllers();
 LoggerConfigurator.ConfigureLog(configuration);
-builder.Services.AddScoped<IManagerOperations, ManagerOperations>();
+
+services.ConfigureSqlServer(configuration)
+        .AddControllers();
+
+services.AddValidatorsFromAssembly(Assembly.Load("GreenFood.Application"));
+
+services.AddAuthentication();
+services.ConfigureIdentity();
+services.ConfigureJWT(configuration);
+
+services.ConfigureServices();
 
 builder.Host.UseSerilog();
 
 var app = builder.Build();
 
 var logger = app.Services.GetService<ILogger<Program>>();
-app.ConfigureExceptionHandler(logger);
+app.UseMiddleware<ExceptionMiddleware>();
 
 await app.ConfigureMigrationAsync();
 

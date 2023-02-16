@@ -1,21 +1,40 @@
-﻿using GreenFood.Infrastructure;
+﻿using GreenFood.Application.Contracts;
+using GreenFood.Application.DTO;
+using GreenFood.Domain.Models;
+using GreenFood.Infrastructure;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace GreenFood.Web.Controllers
 {
     [Route("Home")]
     public class HomeController : Controller
     {
-        private readonly ApplicationContext _db;
-        public HomeController(ApplicationContext db)
+        private readonly IAccountService _account;
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public HomeController(
+            IAccountService account,
+            UserManager<ApplicationUser> userManager)
         {
-            _db = db;
+            _account = account;
+            _userManager = userManager;
         }
         [Route("Index")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            throw new System.TimeoutException();
-            return Ok(ModelState);
+            _userManager.AddClaimAsync(1, new Claim(ClaimTypes.Role, "User"));
+            var user = new UserForRegistration 
+            {
+                FullName = "Ivan",
+                Email = "testpo4ta@gmail.com",
+                Password = "Aa123456789!",
+                PhoneNumber = "+375299267880"
+            };
+            await _account.SignUpAsync(user);
+            //var a = await _userManager.FindByEmailAsync("testpo4ta@gmail.com");
+            return Ok("awdwad");
         }
     }
 }

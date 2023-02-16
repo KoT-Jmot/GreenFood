@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace GreenFood.Web.Exception
+namespace GreenFood.Web.ExceptionHandler
 {
     public class ErrorDetails
     {

@@ -9,7 +9,7 @@ namespace GreenFood.Infrastructure.Configurations
         public void Configure(EntityTypeBuilder<Order> builder)
         {
             builder
-                .HasOne(o => o.User)
+                .HasOne(o => o.Customer)
                 .WithMany(u=>u.Orders);
 
             builder

@@ -9,7 +9,7 @@ namespace GreenFood.Infrastructure.Configurations
         public void Configure(EntityTypeBuilder<Product> builder)
         {
             builder
-                .HasOne(p => p.User)
+                .HasOne(p => p.Seller)
                 .WithMany(s => s.Products)
                 .OnDelete(DeleteBehavior.NoAction);
 
