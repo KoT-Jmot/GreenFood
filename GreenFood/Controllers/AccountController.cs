@@ -8,18 +8,21 @@ using System.Text.Json;
 
 namespace GreenFood.Web.Controllers
 {
-    [Route("AccountOperation")]
-    public class AccountOperationController : Controller
+    [Route("Account")]
+    public class AccountController : Controller
     {
         private readonly IAccountService _account;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AccountOperationController(
+        public AccountController(
             IAccountService account,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager)
         {
             _account = account;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         [HttpGet("GetUser"), Authorize]
@@ -39,18 +42,27 @@ namespace GreenFood.Web.Controllers
             return Ok(jsonString);
         }
 
+        [HttpGet("CreateRole/{role}")]
+        public async Task<IActionResult> CreateRoleAsync(string role)
+        {
+            if (await _roleManager.RoleExistsAsync(role))
+                throw new Exception("This role already exists!");
+
+            await _roleManager.CreateAsync(new IdentityRole(role));
+
+            return Ok(StatusCodes.Status200OK);
+        }
+
         [HttpPost("SignUp")]
-        public async Task<IActionResult> SignUpAsync(
-            [FromBody] UserForRegistrationDto user)
+        public async Task<IActionResult> SignUpAsync([FromBody] UserForRegistrationDto user)
         {
             await _account.SignUpAsync(user);
 
-            return Ok();
+            return Ok(StatusCodes.Status200OK);
         }
 
-        [Route("SignIn")]
-        public async Task<IActionResult> SignInAsync(
-            [FromBody] UserForLoginDto user)
+        [HttpPost("SignIn")]
+        public async Task<IActionResult> SignInAsync([FromBody] UserForLoginDto user)
         {
             var result = await _account.SignInAsync(user);
 

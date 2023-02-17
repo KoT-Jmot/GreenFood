@@ -5,9 +5,9 @@
         public Guid Id { get; set; }
         public int Count { get; set; }
         public Guid UserId { get; set; }
-        public ApplicationUser Customer { get; set; } = null!;
+        public virtual ApplicationUser Customer { get; set; } = null!;
         public Guid ProductId { get; set; }
-        public Product Product { get; set; } = null!;
-        public DateTime RegDate { get; set; }
+        public virtual Product Product { get; set; } = null!;
+        public DateTime CreateDate { get; set; }
     }
 }

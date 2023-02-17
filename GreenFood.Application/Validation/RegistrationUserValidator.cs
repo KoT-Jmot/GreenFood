@@ -7,7 +7,7 @@ namespace GreenFood.Application.Validation
     {
         public RegistrationUserValidator()
         {
-            RuleFor(u => u.FullName)
+            RuleFor(u => u.UserName)
                 .NotEmpty()
                 .NotNull()
                 .MaximumLength(30)
@@ -28,6 +28,7 @@ namespace GreenFood.Application.Validation
             RuleFor(u => u.Email)
                 .NotEmpty()
                 .NotNull()
+                .EmailAddress()
                 .WithMessage("Enter correct email");
         }
     }

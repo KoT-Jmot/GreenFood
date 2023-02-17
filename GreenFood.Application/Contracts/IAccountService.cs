@@ -4,7 +4,7 @@ namespace GreenFood.Application.Contracts
 {
     public interface IAccountService
     {
-        public Task<bool> SignUpAsync(UserForRegistrationDto userForRegistration);
-        public Task<string> SignInAsync(UserForLoginDto user);
+        Task<bool> SignUpAsync(UserForRegistrationDto userForRegistrationDto);
+        Task<string> SignInAsync(UserForLoginDto userForloginDto);
     }
 }

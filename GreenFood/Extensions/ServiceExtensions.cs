@@ -1,10 +1,14 @@
-﻿using GreenFood.Domain.Models;
+﻿using GreenFood.Application.Contracts;
+using GreenFood.Application.Services;
+using GreenFood.Domain.Models;
+using GreenFood.Domain.Utils;
 using GreenFood.Infrastructure;
 using Mapster;
 using MapsterMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 using System.Text;
@@ -15,10 +19,10 @@ namespace GreenFood.Web.Extensions
     {
         public static IServiceCollection ConfigureSqlServer(
                    this IServiceCollection services,
-                   IConfiguration configuraton)
+                   IConfiguration configuration)
         {
             services.AddDbContext<ApplicationContext>(options =>
-                options.UseSqlServer(configuraton.GetConnectionString("DefaultConnection"), b =>
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), b =>
                 {
                     b.MigrationsAssembly(Assembly.Load("GreenFood.Infrastructure").FullName);
                 }));
@@ -26,7 +30,7 @@ namespace GreenFood.Web.Extensions
             return services;
         }
 
-        public static IServiceCollection ConfigureServices(
+        public static IServiceCollection ConfigureMapster(
                    this IServiceCollection services)
         {
             var typeAdapterConfig = TypeAdapterConfig.GlobalSettings;
@@ -37,13 +41,22 @@ namespace GreenFood.Web.Extensions
 
             return services;
         }
+        public static IServiceCollection ConfigureServices(
+                   this IServiceCollection services)
+        {
+            services.AddScoped<IAccountService, AccountService>();
 
-        public static void ConfigureJWT(
+            return services;
+        } 
+
+            public static IServiceCollection ConfigureJWT(
             this IServiceCollection services,
             IConfiguration configuration)
         {
             var jwtSettings = configuration.GetSection("JwtSettings");
             var secretKey = Environment.GetEnvironmentVariable("SECRET");
+
+            services.AddSingleton<JWTConfig>();
 
             services.AddAuthentication(opt => {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -63,11 +76,18 @@ namespace GreenFood.Web.Extensions
                     SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!))
                 };
             });
+
+            return services;
         }
 
-        public static void ConfigureIdentity(this IServiceCollection services)
+        public static IServiceCollection ConfigureIdentity(this IServiceCollection services)
         {
-            var builder = services.AddIdentityCore<ApplicationUser>();
+            var builder = services.AddIdentityCore<ApplicationUser>(o=>
+            {
+
+            });
+
+            IdentityModelEventSource.ShowPII = true;
 
             builder = new IdentityBuilder(
                 builder.UserType,
@@ -77,9 +97,9 @@ namespace GreenFood.Web.Extensions
             builder.AddEntityFrameworkStores<ApplicationContext>()
                 .AddDefaultTokenProviders();
 
-            builder.AddSignInManager<SignInManager<ApplicationUser>>();
-
             builder.AddRoleManager<RoleManager<IdentityRole>>();
+
+            return services;
         }
     }
 }

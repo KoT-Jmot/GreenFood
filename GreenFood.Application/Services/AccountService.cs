@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Security.Claims;
 using Mapster;
+using GreenFood.Domain.Utils;
 
 namespace GreenFood.Application.Services
 {
@@ -19,30 +20,29 @@ namespace GreenFood.Application.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RegistrationUserValidator _registrationUserValidator;
         private readonly LoginUserValidator _loginUserValidator;
-        private readonly IGetFromConfiguration _configurationData;
+        private readonly JWTConfig _jwtConfig;
 
         public AccountService(
             UserManager<ApplicationUser> userManager,
             RegistrationUserValidator userValidator,
             LoginUserValidator loginUserValidator,
-            IGetFromConfiguration configurationData)
+            JWTConfig jwtConfig)
         {
             _userManager = userManager;
             _registrationUserValidator = userValidator;
             _loginUserValidator = loginUserValidator;
-            _configurationData = configurationData;
+            _jwtConfig = jwtConfig;
         }
 
-        public async Task<bool> SignUpAsync(UserForRegistrationDto userForRegistration)
+        public async Task<bool> SignUpAsync(UserForRegistrationDto userForRegistrationDto)
         {
-            await _registrationUserValidator.ValidateAndThrowAsync(userForRegistration);
+            await _registrationUserValidator.ValidateAndThrowAsync(userForRegistrationDto);
 
-            var user = userForRegistration.Adapt<ApplicationUser>();
+            var user = userForRegistrationDto.Adapt<ApplicationUser>();
 
-            user.UserName = userForRegistration.FullName;
-            user.RegDate = DateTime.UtcNow;
+            user.RegistrationDate = DateTime.UtcNow;
 
-            var result = await _userManager.CreateAsync(user!, userForRegistration.Password);
+            var result = await _userManager.CreateAsync(user!, userForRegistrationDto.Password);
 
             if (!result.Succeeded)
             {
@@ -54,29 +54,29 @@ namespace GreenFood.Application.Services
                 throw new RegistrationUserException(message);
             }
 
-            await _userManager.AddToRoleAsync(user!, AccountRoles.GetDefaultRole());
+            await _userManager.AddToRoleAsync(user, AccountRoles.GetDefaultRole());
 
             return true;
         }
 
-        public async Task<string> SignInAsync(UserForLoginDto user)
+        public async Task<string> SignInAsync(UserForLoginDto userForLoginDto)
         {
-            await _loginUserValidator.ValidateAndThrowAsync(user);
+            await _loginUserValidator.ValidateAndThrowAsync(userForLoginDto);
 
-            var _user = await _userManager.FindByEmailAsync(user.Email);
+            var user = await _userManager.FindByEmailAsync(userForLoginDto.Email);
 
-            var a = await _userManager.CheckPasswordAsync(_user, user.Password);
+            var isCorrectPassword = await _userManager.CheckPasswordAsync(user, userForLoginDto.Password);
 
-            if (_user != null && a)
-                return await CreateToken(_user);
-            else
+            if(user is null || !isCorrectPassword)
                 throw new LoginUserException();
+
+            return await CreateToken(user);
         }
 
-        private async Task<string> CreateToken(ApplicationUser _user)
+        private async Task<string> CreateToken(ApplicationUser user)
         {
             var signingCredentials = GetSigningCredentials();
-            var claims = await GetClaims(_user);
+            var claims = await GetClaims(user);
             var tokenOptions = GenerateTokenOptions(signingCredentials, claims);
 
             return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
@@ -84,18 +84,17 @@ namespace GreenFood.Application.Services
 
         private SigningCredentials GetSigningCredentials()
         {
-            var a = Environment.GetEnvironmentVariable("SECRET");
-            var key = Encoding.UTF8.GetBytes(a);
+            var key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SECRET")!);
             var secret = new SymmetricSecurityKey(key);
 
             return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
         }
 
-        private async Task<List<Claim>> GetClaims(ApplicationUser _user)
+        private async Task<IEnumerable<Claim>> GetClaims(ApplicationUser _user)
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, _user.UserName)
+                new(ClaimTypes.Name, _user.UserName)
             };
 
             var roles = await _userManager.GetRolesAsync(_user);
@@ -110,16 +109,14 @@ namespace GreenFood.Application.Services
 
         private JwtSecurityToken GenerateTokenOptions(
             SigningCredentials signingCredentials,
-            List<Claim> claims)
+            IEnumerable<Claim> claims)
         {
-            var jwtSettings = _configurationData.GetJWTSettings();
-
             var tokenOptions = new JwtSecurityToken(
-                issuer: jwtSettings.GetSection("validIssuer").Value,
-                audience: jwtSettings.GetSection("validAudience").Value,
+                issuer: _jwtConfig.GetValidIssuer(),
+                audience: _jwtConfig.GetValidAudience(),
                 claims: claims,
                 expires:
-                DateTime.Now.AddMinutes(Convert.ToDouble(jwtSettings.GetSection("expires").Value)),
+                DateTime.Now.AddMinutes(_jwtConfig.GetExpires()),
                 signingCredentials: signingCredentials
             );
 
