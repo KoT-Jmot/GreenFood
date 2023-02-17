@@ -1,6 +1,6 @@
-﻿namespace GreenFood.Web.Contracts
+﻿namespace GreenFood.Application.DTO
 {
-    public class InputUser
+    public class UserForRegistrationDto
     {
         public string FullName { get; set; } = null!;
         public string Password { get; set; } = null!;

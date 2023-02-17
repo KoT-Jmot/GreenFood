@@ -3,7 +3,7 @@ using GreenFood.Application.DTO;
 
 namespace GreenFood.Application.Validation
 {
-    public class RegistrationUserValidator : AbstractValidator<UserForRegistration>
+    public class RegistrationUserValidator : AbstractValidator<UserForRegistrationDto>
     {
         public RegistrationUserValidator()
         {

@@ -1,8 +1,6 @@
-﻿using GreenFood.Application.Contracts;
-using GreenFood.Application.Mapster;
-using GreenFood.Application.Services;
-using GreenFood.Domain.Models;
+﻿using GreenFood.Domain.Models;
 using GreenFood.Infrastructure;
+using Mapster;
 using MapsterMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -31,13 +29,11 @@ namespace GreenFood.Web.Extensions
         public static IServiceCollection ConfigureServices(
                    this IServiceCollection services)
         {
-            services
-                .AddSingleton(MapperConfig.GetConfiguredMappingConfig())
-                .AddSingleton<IUserMapper, UserMapper>();
+            var typeAdapterConfig = TypeAdapterConfig.GlobalSettings;
+            typeAdapterConfig.Scan(Assembly.Load("GreenFood.Application"));
 
-            services
-                .AddScoped<IAccountService, AccountService>()
-                .AddScoped<IMapper,ServiceMapper>();
+            var mapperConfig = new Mapper(typeAdapterConfig);
+            services.AddSingleton<IMapper>(mapperConfig);
 
             return services;
         }
@@ -48,6 +44,7 @@ namespace GreenFood.Web.Extensions
         {
             var jwtSettings = configuration.GetSection("JwtSettings");
             var secretKey = Environment.GetEnvironmentVariable("SECRET");
+
             services.AddAuthentication(opt => {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -63,7 +60,7 @@ namespace GreenFood.Web.Extensions
                     ValidIssuer = jwtSettings.GetSection("validIssuer").Value,
                     ValidAudience = jwtSettings.GetSection("validAudience").Value,
                     IssuerSigningKey = new
-                    SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
+                    SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!))
                 };
             });
         }
@@ -71,11 +68,18 @@ namespace GreenFood.Web.Extensions
         public static void ConfigureIdentity(this IServiceCollection services)
         {
             var builder = services.AddIdentityCore<ApplicationUser>();
-            builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole),
-           builder.Services);
-            builder.AddEntityFrameworkStores<ApplicationContext>()
-            .AddDefaultTokenProviders();
-        }
 
+            builder = new IdentityBuilder(
+                builder.UserType,
+                typeof(IdentityRole),
+                builder.Services);
+
+            builder.AddEntityFrameworkStores<ApplicationContext>()
+                .AddDefaultTokenProviders();
+
+            builder.AddSignInManager<SignInManager<ApplicationUser>>();
+
+            builder.AddRoleManager<RoleManager<IdentityRole>>();
+        }
     }
 }

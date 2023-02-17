@@ -13,6 +13,7 @@ namespace GreenFood.Web.Extensions
                 var db = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
                 await db.Database.MigrateAsync();
             }
+
             return app;
         }
     }
