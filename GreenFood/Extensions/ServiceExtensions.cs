@@ -7,11 +7,11 @@ using Mapster;
 using MapsterMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
 
 namespace GreenFood.Web.Extensions
 {
@@ -23,11 +23,12 @@ namespace GreenFood.Web.Extensions
         {
             services.AddDbContext<ApplicationContext>(optionsBuilder =>
                 optionsBuilder
-                    .UseLazyLoadingProxies()
+                    .UseLazyLoadingProxies(true)
                     .UseSqlServer(configuration.GetConnectionString("DefaultConnection"), b =>
                     {
                         b.MigrationsAssembly(Assembly.Load("GreenFood.Infrastructure").FullName);
                     }));
+                    
 
             return services;
         }
