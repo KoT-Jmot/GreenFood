@@ -16,13 +16,18 @@ namespace GreenFood.Application.Validation
             RuleFor(u => u.Password)
                 .NotEmpty()
                 .NotNull()
+                .Matches("[a-z]+")
+                .Matches("[A-Z]+")
+                .Matches("[0-9]+")
+                .Matches("[\\W]+")
+                .MinimumLength(8)
                 .MaximumLength(50)
                 .WithMessage("Enter correct password");
 
             RuleFor(u => u.PhoneNumber)
                 .NotEmpty()
                 .NotNull()
-                .Length(13)
+                .Matches("[+]{1}[0-9]{10,12}")
                 .WithMessage("Enter correct phone number");
 
             RuleFor(u => u.Email)

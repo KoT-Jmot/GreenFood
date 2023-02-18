@@ -46,7 +46,7 @@ namespace GreenFood.Application.Services
 
             if (!result.Succeeded)
             {
-                string message = string.Empty;
+                var message = string.Empty;
 
                 foreach (var error in result.Errors)
                     message += error.Description + "\n";

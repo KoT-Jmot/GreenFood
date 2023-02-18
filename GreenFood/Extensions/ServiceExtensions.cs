@@ -21,11 +21,13 @@ namespace GreenFood.Web.Extensions
                    this IServiceCollection services,
                    IConfiguration configuration)
         {
-            services.AddDbContext<ApplicationContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), b =>
-                {
-                    b.MigrationsAssembly(Assembly.Load("GreenFood.Infrastructure").FullName);
-                }));
+            services.AddDbContext<ApplicationContext>(optionsBuilder =>
+                optionsBuilder
+                    .UseLazyLoadingProxies()
+                    .UseSqlServer(configuration.GetConnectionString("DefaultConnection"), b =>
+                    {
+                        b.MigrationsAssembly(Assembly.Load("GreenFood.Infrastructure").FullName);
+                    }));
 
             return services;
         }
@@ -47,9 +49,9 @@ namespace GreenFood.Web.Extensions
             services.AddScoped<IAccountService, AccountService>();
 
             return services;
-        } 
+        }
 
-            public static IServiceCollection ConfigureJWT(
+        public static IServiceCollection ConfigureJWT(
             this IServiceCollection services,
             IConfiguration configuration)
         {
@@ -58,33 +60,39 @@ namespace GreenFood.Web.Extensions
 
             services.AddSingleton<JWTConfig>();
 
-            services.AddAuthentication(opt => {
+            services.AddAuthentication(opt =>
+            {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
+                .AddJwtBearer(options =>
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = jwtSettings.GetSection("validIssuer").Value,
-                    ValidAudience = jwtSettings.GetSection("validAudience").Value,
-                    IssuerSigningKey = new
-                    SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!))
-                };
-            });
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = jwtSettings.GetSection("validIssuer").Value,
+                        ValidAudience = jwtSettings.GetSection("validAudience").Value,
+                        IssuerSigningKey = new
+                        SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!))
+                    };
+                });
 
             return services;
         }
 
         public static IServiceCollection ConfigureIdentity(this IServiceCollection services)
         {
-            var builder = services.AddIdentityCore<ApplicationUser>(o=>
+            var builder = services.AddIdentityCore<ApplicationUser>(o =>
             {
-
+                o.Password.RequireDigit = true;
+                o.Password.RequireLowercase = true;
+                o.Password.RequireUppercase = true;
+                o.Password.RequireNonAlphanumeric = true;
+                o.Password.RequiredLength = 8;
+                o.User.RequireUniqueEmail = true;
             });
 
             IdentityModelEventSource.ShowPII = true;

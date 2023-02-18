@@ -9,7 +9,9 @@ namespace GreenFood.Web.ExceptionHandler
         private readonly RequestDelegate _next;
         private readonly ILogger<ExceptionMiddleware> _logger;
 
-        public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
+        public ExceptionMiddleware(
+            RequestDelegate next,
+            ILogger<ExceptionMiddleware> logger)
         {
             _logger = logger;
             _next = next;
@@ -23,7 +25,7 @@ namespace GreenFood.Web.ExceptionHandler
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex,ex.Message,DateTime.UtcNow);
+                _logger.LogError(ex, ex.Message, DateTime.UtcNow);
 
                 await HandleExceptionAsync(httpContext, ex);
             }
@@ -49,7 +51,6 @@ namespace GreenFood.Web.ExceptionHandler
             {
                 LoginUserException => StatusCodes.Status422UnprocessableEntity,
                 RegistrationUserException => StatusCodes.Status422UnprocessableEntity,
-
                 ArgumentNullException => StatusCodes.Status400BadRequest,
                 ValidationException => StatusCodes.Status422UnprocessableEntity,
                 _ => StatusCodes.Status500InternalServerError,
