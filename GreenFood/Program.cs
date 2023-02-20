@@ -1,29 +1,49 @@
 using GreenFood.Infrastructure;
 using GreenFood.Web.Extensions;
-using GreenFood.Web.features;
-using Microsoft.EntityFrameworkCore;
+using GreenFood.Web.Features;
+using GreenFood.Web.ExceptionHandler;
 using Serilog;
+using FluentValidation;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var services = builder.Services;
 
 var configuration = new ConfigurationBuilder()
-                   .AddJsonFile("appsettings.json", false, true)
-                   .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", false, true)
+                   .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                   .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json",optional: false, reloadOnChange: true)
                    .Build();
+
+LoggerConfigurator.ConfigureLog(configuration);
+
+builder.Host.UseSerilog();
 
 services.ConfigureSqlServer(configuration)
         .AddControllers();
-LoggerConfigurator.ConfigureLog(configuration);
-builder.Host.UseSerilog();
-var app = builder.Build();
+
+services.AddValidatorsFromAssembly(Assembly.Load("GreenFood.Application"));
+
+services.AddAuthentication();
+services.AddAuthorization();
+
+services.ConfigureIdentity()
+        .ConfigureJWT(configuration)
+        .ConfigureMapster()
+        .ConfigureServices();
+
+var app = await builder.Build().ConfigureMigrationAsync();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 await app.ConfigureMigrationAsync();
 
 app.UseHttpsRedirection();
 
 app.UseRouting();
+
+app.UseAuthentication()
+   .UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {

@@ -9,12 +9,18 @@ namespace GreenFood.Infrastructure.Configurations
         public void Configure(EntityTypeBuilder<Order> builder)
         {
             builder
-                .HasOne(o => o.User)
-                .WithMany(u=>u.Orders);
+                .HasKey(o => o.Id);
+
+            builder
+                .HasOne(o => o.Customer)
+                .WithMany(u => u.Orders)
+                .HasForeignKey(o => o.CustomerId);
+                
 
             builder
                 .HasOne(o => o.Product)
-                .WithMany(p=>p.Orders);
+                .WithMany(p=>p.Orders)
+                .HasForeignKey(o => o.ProductId);
         }
     }
 }
