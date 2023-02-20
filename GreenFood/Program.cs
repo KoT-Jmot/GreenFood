@@ -1,3 +1,4 @@
+using GreenFood.Infrastructure;
 using GreenFood.Web.Extensions;
 using GreenFood.Web.Features;
 using GreenFood.Web.ExceptionHandler;
@@ -35,6 +36,8 @@ var app = await builder.Build().ConfigureMigrationAsync();
 
 app.UseMiddleware<ExceptionMiddleware>();
 
+await app.ConfigureMigrationAsync();
+
 app.UseHttpsRedirection();
 
 app.UseRouting();
@@ -46,6 +49,5 @@ app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
 });
-
+app.MapGet("/", () => "Hello World!");
 app.Run();
-

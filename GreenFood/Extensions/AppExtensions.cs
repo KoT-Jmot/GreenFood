@@ -1,4 +1,4 @@
-﻿using GreenFood.Domain.Utils;
+using GreenFood.Domain.Utils;
 using GreenFood.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
