@@ -33,6 +33,7 @@ services.ConfigureIdentity()
         .ConfigureServices();
 
 var app = await builder.Build().ConfigureMigrationAsync();
+await app.InitializeDbContextAsync();
 
 app.UseMiddleware<ExceptionMiddleware>();
 

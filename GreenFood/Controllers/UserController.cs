@@ -15,14 +15,14 @@ namespace GreenFood.Web.Controllers
             _userManager = userManager;
         }
 
-        [HttpGet(""), Authorize]
+        [HttpGet, Authorize]
         public IActionResult GetAllUsers()
         {
 
             return Ok(_userManager.Users);
         }
 
-        [HttpGet(""), Authorize]
+        [HttpGet, Authorize]
         public async Task<IActionResult> GetUserByEmailAsync([FromQuery] string email)
         {
             var user = await _userManager.FindByEmailAsync(email);

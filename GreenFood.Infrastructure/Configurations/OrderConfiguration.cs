@@ -16,7 +16,6 @@ namespace GreenFood.Infrastructure.Configurations
                 .WithMany(u => u.Orders)
                 .HasForeignKey(o => o.CustomerId);
                 
-
             builder
                 .HasOne(o => o.Product)
                 .WithMany(p=>p.Orders)
