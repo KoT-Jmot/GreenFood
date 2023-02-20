@@ -3,7 +3,7 @@
     public class Product
     {
         public Guid Id { get; set; }
-        public Guid UserId { get; set; }
+        public Guid SellerId { get; set; }
         public virtual ApplicationUser Seller { get; set; } = null!;
         public string? Header { get; set; }
         public string? Description { get; set; }

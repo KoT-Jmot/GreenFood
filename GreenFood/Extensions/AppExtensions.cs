@@ -1,4 +1,5 @@
-﻿using GreenFood.Infrastructure;
+﻿using GreenFood.Domain.Utils;
+using GreenFood.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 namespace GreenFood.Web.Extensions
@@ -10,8 +11,8 @@ namespace GreenFood.Web.Extensions
         {
             await using(var scope = app.Services.CreateAsyncScope())
             {
-                var db = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
-                await db.Database.MigrateAsync();
+                var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
+                await dbContext.Database.MigrateAsync();
             }
 
             return app;

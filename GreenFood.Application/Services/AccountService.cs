@@ -90,14 +90,14 @@ namespace GreenFood.Application.Services
             return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
         }
 
-        private async Task<IEnumerable<Claim>> GetClaims(ApplicationUser _user)
+        private async Task<IEnumerable<Claim>> GetClaims(ApplicationUser user)
         {
             var claims = new List<Claim>
             {
-                new(ClaimTypes.Name, _user.UserName)
+                new(ClaimTypes.Name, user.UserName)
             };
 
-            var roles = await _userManager.GetRolesAsync(_user);
+            var roles = await _userManager.GetRolesAsync(user);
 
             foreach (var role in roles)
             {
