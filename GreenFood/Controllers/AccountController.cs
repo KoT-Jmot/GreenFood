@@ -19,7 +19,7 @@ namespace GreenFood.Web.Controllers
         {
             await _account.SignUpAsync(user);
 
-            return Ok(StatusCodes.Status200OK);
+            return Ok();
         }
 
         [HttpPost("SignIn")]
