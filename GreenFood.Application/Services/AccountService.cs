@@ -4,14 +4,13 @@ using GreenFood.Application.Validation;
 using Microsoft.AspNetCore.Identity;
 using GreenFood.Application.Contracts;
 using GreenFood.Domain.Exceptions;
-using GreenFood.Domain.Models.Utils;
+using GreenFood.Domain.Utils;
 using GreenFood.Domain.Models;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Security.Claims;
 using Mapster;
-using GreenFood.Domain.Utils;
 
 namespace GreenFood.Application.Services
 {
@@ -54,7 +53,7 @@ namespace GreenFood.Application.Services
                 throw new RegistrationUserException(message);
             }
 
-            await _userManager.AddToRoleAsync(user, AccountRoles.GetDefaultRole());
+            await _userManager.AddToRoleAsync(user, AccountRoles.GetDefaultRole);
 
             return true;
         }
