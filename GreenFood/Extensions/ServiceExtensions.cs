@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using GreenFood.Infrastructure.Repositories;
 
 namespace GreenFood.Web.Extensions
 {
@@ -48,6 +49,7 @@ namespace GreenFood.Web.Extensions
                    this IServiceCollection services)
         {
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<RepositoryManager>();
 
             return services;
         }

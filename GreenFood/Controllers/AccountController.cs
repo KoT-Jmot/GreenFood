@@ -1,5 +1,6 @@
 ﻿using GreenFood.Application.Contracts;
 using GreenFood.Application.DTO;
+using GreenFood.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GreenFood.Web.Controllers
@@ -8,7 +9,6 @@ namespace GreenFood.Web.Controllers
     public class AccountController : Controller
     {
         private readonly IAccountService _account;
-
         public AccountController(IAccountService account)
         {
             _account = account;

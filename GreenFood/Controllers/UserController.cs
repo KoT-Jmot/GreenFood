@@ -18,7 +18,6 @@ namespace GreenFood.Web.Controllers
         [HttpGet, Authorize]
         public IActionResult GetAllUsers()
         {
-
             return Ok(_userManager.Users);
         }
 

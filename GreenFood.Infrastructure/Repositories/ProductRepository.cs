@@ -1,0 +1,21 @@
+﻿using GreenFood.Domain.Contracts;
+using GreenFood.Domain.Models;
+
+namespace GreenFood.Infrastructure.Repositories
+{
+    public class ProductRepository : BaseRepository<Product>, IProductRepository
+    {
+        public ProductRepository(
+            ApplicationContext context) : base(context)
+        {
+        }
+
+        public IQueryable<Product> GetProductsByUserId(
+            string userId,
+            bool trackChenges = false)
+        {
+            return GetByQueryable(p => p.SellerId!.Equals(userId), trackChenges);
+        }
+        
+    }
+}
