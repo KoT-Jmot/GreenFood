@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace GreenFood.Web.Controllers
 {
     [Route("Users")]
+    [Authorize]
     public class UserController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -15,14 +16,14 @@ namespace GreenFood.Web.Controllers
             _userManager = userManager;
         }
 
-        [HttpGet, Authorize]
+        [HttpGet]
         public IActionResult GetAllUsers()
         {
             return Ok(_userManager.Users);
         }
 
-        [HttpGet, Authorize]
-        public async Task<IActionResult> GetUserByEmailAsync([FromQuery] string email)
+        [HttpGet("/{email}")]
+        public async Task<IActionResult> GetUserByEmailAsync([FromRoute] string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
 

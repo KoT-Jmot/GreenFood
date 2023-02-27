@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using GreenFood.Infrastructure.Repositories;
+using GreenFood.Infrastructure.Configurations;
 
 namespace GreenFood.Web.Extensions
 {
@@ -29,7 +30,8 @@ namespace GreenFood.Web.Extensions
                     {
                         b.MigrationsAssembly(Assembly.Load("GreenFood.Infrastructure").FullName);
                     }));
-                    
+
+            services.AddScoped<IRepositoryManager, RepositoryManager>();
 
             return services;
         }
@@ -49,7 +51,8 @@ namespace GreenFood.Web.Extensions
                    this IServiceCollection services)
         {
             services.AddScoped<IAccountService, AccountService>();
-            services.AddScoped<RepositoryManager>();
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<ICategoryService, CategoryService>();
 
             return services;
         }

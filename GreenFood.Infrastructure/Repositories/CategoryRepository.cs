@@ -3,9 +3,9 @@ using GreenFood.Domain.Models;
 
 namespace GreenFood.Infrastructure.Repositories
 {
-    public class TypeOfProductRepository : BaseRepository<TypeOfProduct>, ITypeOfProductRepository
+    public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
     {
-        public TypeOfProductRepository(
+        public CategoryRepository(
             ApplicationContext context) : base(context)
         {
         }

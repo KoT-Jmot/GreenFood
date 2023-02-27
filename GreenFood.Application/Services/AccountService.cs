@@ -93,7 +93,8 @@ namespace GreenFood.Application.Services
         {
             var claims = new List<Claim>
             {
-                new(ClaimTypes.Name, user.UserName)
+                new(ClaimTypes.Name, user.UserName),
+                new(ClaimTypes.NameIdentifier, user.Id)
             };
 
             var roles = await _userManager.GetRolesAsync(user);

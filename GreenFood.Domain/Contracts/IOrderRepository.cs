@@ -2,7 +2,7 @@
 
 namespace GreenFood.Domain.Contracts
 {
-    public interface IOrderRepository
+    public interface IOrderRepository : IBaseRepository<Order>
     {
         public IQueryable<Order> GetOrdersByUserId(
             string userId,

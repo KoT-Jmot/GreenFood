@@ -12,9 +12,9 @@ namespace GreenFood.Infrastructure.Repositories
 
         public IQueryable<Product> GetProductsByUserId(
             string userId,
-            bool trackChenges = false)
+            bool trackChanges = false)
         {
-            return GetByQueryable(p => p.SellerId!.Equals(userId), trackChenges);
+            return GetByQueryable(p => p.SellerId!.Equals(userId), trackChanges);
         }
         
     }

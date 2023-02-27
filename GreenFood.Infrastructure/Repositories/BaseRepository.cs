@@ -7,7 +7,7 @@ namespace GreenFood.Infrastructure.Repositories
 {
     public abstract class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     {
-        private readonly DbSet<T> _set;
+        protected readonly DbSet<T> _set;
 
         protected BaseRepository(ApplicationContext context)
         {
@@ -29,11 +29,6 @@ namespace GreenFood.Infrastructure.Repositories
         public async Task AddAsync(T obj)
         {
             await _set.AddAsync(obj);
-        }
-
-        public async Task AddRangeAsync(IEnumerable<T> obj)
-        {
-            await _set.AddRangeAsync(obj);
         }
 
         public async Task RemoveAsync(T obj)

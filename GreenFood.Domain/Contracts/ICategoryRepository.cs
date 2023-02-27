@@ -2,7 +2,7 @@
 
 namespace GreenFood.Domain.Contracts
 {
-    public interface ITypeOfProductRepository : IBaseRepository<TypeOfProduct>
+    public interface ICategoryRepository : IBaseRepository<Category>
     {
     }
 }

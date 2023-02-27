@@ -1,41 +1,29 @@
 ﻿using GreenFood.Domain.Contracts;
+using GreenFood.Infrastructure.Configurations;
 
 namespace GreenFood.Infrastructure.Repositories
 {
-    public class RepositoryManager
+    public class RepositoryManager : IRepositoryManager
     {
         private readonly ApplicationContext _context;
-        private IProductRepository? _product;
-        private IOrderRepository? _order;
-        private ITypeOfProductRepository? _typeOfProduct;
+
+        private IProductRepository? _productRepository;
+        private IOrderRepository? _orderRepository;
+        private ICategoryRepository? _categoryRepository;
+
         public RepositoryManager(ApplicationContext context)
         {
             _context = context;
         }
 
-        public IProductRepository Products()
-        {
-            if (_product == null)
-                _product = new ProductRepository(_context);
+        public IProductRepository Products =>
+            _productRepository??=new ProductRepository(_context);
 
-            return _product;
-        }
+        public IOrderRepository Orders =>
+            _orderRepository ??= new OrderRepository(_context);
 
-        public IOrderRepository Orders()
-        {
-            if (_order == null)
-                _order = new OrderRepository(_context);
-
-            return _order;
-        }
-
-        public ITypeOfProductRepository TypesOfProducts()
-        {
-            if (_typeOfProduct == null)
-                _typeOfProduct = new TypeOfProductRepository(_context);
-
-            return _typeOfProduct;
-        }
+        public ICategoryRepository Categories =>
+                _categoryRepository ??= new CategoryRepository(_context);
 
         public async Task SaveChanges()
         {
