@@ -4,11 +4,11 @@ using Mapster;
 
 namespace GreenFood.Application.Mapster
 {
-    public class CategoryMapper : IRegister
+    public class OrderMapper : IRegister
     {
         public void Register(TypeAdapterConfig config)
         {
-            config.NewConfig<CategoryForAddDto, Category>();
+            config.NewConfig<OrderForAddDto, Order>();
         }
     }
 }

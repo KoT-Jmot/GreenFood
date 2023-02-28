@@ -51,6 +51,7 @@ namespace GreenFood.Web.ExceptionHandler
             {
                 LoginUserException => StatusCodes.Status422UnprocessableEntity,
                 RegistrationUserException => StatusCodes.Status422UnprocessableEntity,
+                CategoryException => StatusCodes.Status422UnprocessableEntity,
                 ArgumentNullException => StatusCodes.Status400BadRequest,
                 ValidationException => StatusCodes.Status422UnprocessableEntity,
                 _ => StatusCodes.Status500InternalServerError,

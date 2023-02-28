@@ -4,6 +4,7 @@ namespace GreenFood.Application.Contracts
 {
     public interface ICategoryService
     {
-        public Task CreateCategoryAsync(CategoryForAddDto productTypeDto);
+        Task CreateCategoryAsync(string categoryName);
+        Task DeleteCategoryAsync(Guid categoryId);
     }
 }

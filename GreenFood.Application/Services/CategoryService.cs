@@ -1,37 +1,34 @@
-﻿using FluentValidation;
-using GreenFood.Application.Contracts;
-using GreenFood.Application.DTO;
-using GreenFood.Application.Validation;
+﻿using GreenFood.Application.Contracts;
 using GreenFood.Domain.Exceptions;
 using GreenFood.Domain.Models;
 using GreenFood.Infrastructure.Configurations;
-using Mapster;
 
 namespace GreenFood.Application.Services
 {
     public class CategoryService : ICategoryService
     {
-        private readonly AddCategoryValidator _addValidator;
         private readonly IRepositoryManager _manager;
 
-        public CategoryService(
-            AddCategoryValidator addValidator,
-            IRepositoryManager manager)
+        public CategoryService(IRepositoryManager manager)
         {
-            _addValidator = addValidator;
             _manager = manager;
         }
 
-        public async Task CreateCategoryAsync(CategoryForAddDto categoryDto)
+        public async Task CreateCategoryAsync(string categoryName)
         {
-            await _addValidator.ValidateAndThrowAsync(categoryDto);
+            if (_manager.Categories.CategoryByNameExisted(categoryName))
+                throw new CategoryException("This category already exists!");
 
-            if (_manager.Categories.GetAll().Where(t => t.Name == categoryDto.Name).Any())
-                throw new CategoryException("This type already exists!");
+            await _manager.Categories.AddAsync(new Category() { Name = categoryName });
 
-            var category = categoryDto.Adapt<Category>();
+            await _manager.SaveChangesAsync();
+        }
 
-            await _manager.Categories.AddAsync(category);
+        public async Task DeleteCategoryAsync(Guid categoryId)
+        {
+            await _manager.Categories.RemoveAsync(new Category() { Id = categoryId });
+
+            await _manager.SaveChangesAsync();
         }
     }
 }

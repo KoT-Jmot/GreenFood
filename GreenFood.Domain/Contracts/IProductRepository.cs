@@ -6,6 +6,6 @@ namespace GreenFood.Domain.Contracts
     {
         IQueryable<Product> GetProductsByUserId(
             string userId,
-            bool trackChenges = false);
+            bool trackChanges = false);
     }
 }

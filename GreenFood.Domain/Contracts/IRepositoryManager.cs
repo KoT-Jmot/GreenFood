@@ -7,6 +7,6 @@ namespace GreenFood.Infrastructure.Configurations
         IProductRepository Products { get; }
         IOrderRepository Orders { get; }
         ICategoryRepository Categories { get; }
-        Task SaveChanges();
+        Task SaveChangesAsync();
     }
 }

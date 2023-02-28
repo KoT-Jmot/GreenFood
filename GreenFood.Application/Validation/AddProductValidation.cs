@@ -31,11 +31,15 @@ namespace GreenFood.Application.Validation
             RuleFor(p => p.Price)
                 .NotNull()
                 .NotEmpty()
+                .GreaterThan(0)
+                .LessThan(1000000000)
                 .WithMessage("Enter correct price!");
 
             RuleFor(p => p.Count)
                 .NotEmpty()
                 .NotNull()
+                .GreaterThan(0)
+                .LessThan(10000000)
                 .WithMessage("Enter correct count!");
         }
     }

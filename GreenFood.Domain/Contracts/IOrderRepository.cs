@@ -4,8 +4,8 @@ namespace GreenFood.Domain.Contracts
 {
     public interface IOrderRepository : IBaseRepository<Order>
     {
-        public IQueryable<Order> GetOrdersByUserId(
+        IQueryable<Order> GetOrdersByUserId(
             string userId,
-            bool trackChenges = false);
+            bool trackChanges = false);
     }
 }

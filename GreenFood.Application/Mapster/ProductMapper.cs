@@ -9,6 +9,7 @@ namespace GreenFood.Application.Mapster
         public void Register(TypeAdapterConfig config)
         {
             config.NewConfig<ProductForAddDto, Product>();
+            config.NewConfig<ProductForDeleteDto, Product>();
         }
     }
 }

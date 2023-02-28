@@ -4,6 +4,7 @@ namespace GreenFood.Application.Contracts
 {
     public interface IProductService
     {
-        public Task CreateProduct(ProductForAddDto productDto);
+        Task CreateProductByUserId(ProductForAddDto productDto, string userId);
+        Task DeleteProductAsync(ProductForDeleteDto productDto, string userId);
     }
 }

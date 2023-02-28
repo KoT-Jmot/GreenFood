@@ -7,7 +7,16 @@ namespace GreenFood.Infrastructure.Repositories
     {
         public CategoryRepository(
             ApplicationContext context) : base(context)
+        { 
+        }
+
+        public bool CategoryByNameExisted(string name)
         {
+            return GetByQueryable(c => c.Name == name).Any();
+        }
+        public bool CategoryByIdExisted(Guid categoruId)
+        {
+            return GetByQueryable(c => c.Id == categoruId).Any();
         }
     }
 }

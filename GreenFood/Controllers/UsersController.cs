@@ -6,12 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace GreenFood.Web.Controllers
 {
     [Route("Users")]
-    [Authorize]
-    public class UserController : Controller
+    [Authorize(Roles ="Admin, SuperAdmin")]
+    public class UsersController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public UserController(UserManager<ApplicationUser> userManager)
+        public UsersController(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
         }
