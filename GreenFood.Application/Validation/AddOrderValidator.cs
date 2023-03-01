@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using GreenFood.Application.DTO;
+using GreenFood.Application.DTO.InputDto;
 
 namespace GreenFood.Application.Validation
 {
@@ -9,11 +9,18 @@ namespace GreenFood.Application.Validation
         {
             RuleFor(o => o.ProductId)
                 .NotNull()
-                .NotEmpty();
+                .NotEmpty()
+                .WithMessage("Incorrect product!");
 
             RuleFor(o => o.Count)
                 .GreaterThan(0)
-                .LessThan(10000000);
+                .LessThan(10000000)
+                .WithMessage("Incorrect count!");
+
+            RuleFor(o => o.CustomerId)
+                .NotNull()
+                .NotEmpty()
+                .WithMessage("Incorrect customer!");
         }
     }
 }

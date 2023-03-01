@@ -19,4 +19,10 @@
     <ProjectReference Include="..\GreenFood.Infrastructure\GreenFood.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DTO\ServicesDto\" />
+    <Folder Include="DTO\OutputDto\" />
+    <Folder Include="DTO\InputDto\" />
+  </ItemGroup>
+
 </Project>

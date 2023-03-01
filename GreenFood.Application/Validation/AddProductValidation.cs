@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using GreenFood.Application.DTO;
+using GreenFood.Application.DTO.InputDto;
 using System;
 using System.Collections.Generic;
 using System.Linq;

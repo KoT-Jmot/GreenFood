@@ -1,4 +1,4 @@
-﻿using GreenFood.Application.DTO;
+﻿using GreenFood.Application.DTO.ServicesDto;
 using GreenFood.Domain.Models;
 using Mapster;
 

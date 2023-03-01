@@ -7,5 +7,10 @@ namespace GreenFood.Domain.Contracts
         IQueryable<Product> GetProductsByUserId(
             string userId,
             bool trackChanges = false);
+
+        Product? GetProductByIdAndUserId(
+            Guid productId,
+            string userId,
+            bool trackChanges = false);
     }
 }

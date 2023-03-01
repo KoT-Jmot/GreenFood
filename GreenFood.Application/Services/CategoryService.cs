@@ -19,14 +19,24 @@ namespace GreenFood.Application.Services
             if (_manager.Categories.CategoryByNameExisted(categoryName))
                 throw new CategoryException("This category already exists!");
 
-            await _manager.Categories.AddAsync(new Category() { Name = categoryName });
+            Category category = new Category()
+            {
+                Name = categoryName
+            };
+
+            await _manager.Categories.AddAsync(category);
 
             await _manager.SaveChangesAsync();
         }
 
-        public async Task DeleteCategoryAsync(Guid categoryId)
+        public async Task DeleteCategoryByIdAsync(Guid categoryId)
         {
-            await _manager.Categories.RemoveAsync(new Category() { Id = categoryId });
+            var category = await _manager.Categories.GetByIdAsync(categoryId);
+
+            if (category is null)
+                throw new Exception();
+
+            await _manager.Categories.RemoveAsync(category);
 
             await _manager.SaveChangesAsync();
         }

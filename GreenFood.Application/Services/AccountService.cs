@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using GreenFood.Application.DTO;
 using GreenFood.Application.Validation;
 using Microsoft.AspNetCore.Identity;
 using GreenFood.Application.Contracts;
@@ -11,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Security.Claims;
 using Mapster;
+using GreenFood.Application.DTO.ServicesDto;
 
 namespace GreenFood.Application.Services
 {

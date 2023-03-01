@@ -17,7 +17,7 @@ namespace GreenFood.Web.Controllers
             _category = category;
         }
 
-        [HttpPost]
+        [HttpPost("/{categoryName}")]
         public async Task<IActionResult> AddCategory([FromRoute] string categoryName)
         {
             await _category.CreateCategoryAsync(categoryName);
@@ -25,10 +25,10 @@ namespace GreenFood.Web.Controllers
             return Ok();
         }
 
-        [HttpDelete]
+        [HttpDelete("/{categoryId}")]
         public async Task<IActionResult> DeleteCategory([FromRoute] Guid categoryId)
         {
-            await _category.DeleteCategoryAsync(categoryId);
+            await _category.DeleteCategoryByIdAsync(categoryId);
 
             return Ok();
         }

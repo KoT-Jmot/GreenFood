@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using GreenFood.Application.Contracts;
-using GreenFood.Application.DTO;
+using GreenFood.Application.DTO.InputDto;
 using GreenFood.Application.Validation;
 using GreenFood.Domain.Exceptions;
 using GreenFood.Domain.Models;
@@ -37,14 +37,14 @@ namespace GreenFood.Application.Services
             await _manager.SaveChangesAsync();
         }
 
-        public async Task DeleteProductAsync(ProductForDeleteDto productDto, string userId)
+        public async Task DeleteProductByIdAndUserIdAsync(string userId, Guid productId)
         {
-            if (productDto.SallerId != userId)
-                throw new Exception("Access is denied!");
+            var product = _manager.Products.GetProductByIdAndUserId(productId, userId);
 
-            var prduct = productDto.Adapt<Product>();
+            if (product is null)
+                throw new Exception();
 
-            await _manager.Products.RemoveAsync(prduct);
+            await _manager.Products.RemoveAsync(product);
 
             await _manager.SaveChangesAsync();
         }

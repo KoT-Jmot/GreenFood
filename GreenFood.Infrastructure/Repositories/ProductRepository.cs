@@ -17,5 +17,12 @@ namespace GreenFood.Infrastructure.Repositories
             return GetByQueryable(p => p.SellerId!.Equals(userId), trackChanges);
         }
         
+        public Product? GetProductByIdAndUserId(
+            Guid productId,
+            string userId,
+            bool trackChanges = false)
+        {
+            return GetByQueryable(p => p.Id == productId && p.SellerId == userId).FirstOrDefault();
+        }
     }
 }
