@@ -93,6 +93,20 @@ namespace GreenFood.Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("GreenFood.Domain.Models.Category", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
             modelBuilder.Entity("GreenFood.Domain.Models.Order", b =>
                 {
                     b.Property<Guid>("Id")
@@ -127,6 +141,9 @@ namespace GreenFood.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
@@ -136,34 +153,20 @@ namespace GreenFood.Infrastructure.Migrations
                     b.Property<string>("Header")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal?>("Price")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("SellerId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<Guid>("TypeId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("SellerId");
 
-                    b.HasIndex("TypeId");
-
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("GreenFood.Domain.Models.TypeOfProduct", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TypeOfProducts");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -320,21 +323,21 @@ namespace GreenFood.Infrastructure.Migrations
 
             modelBuilder.Entity("GreenFood.Domain.Models.Product", b =>
                 {
+                    b.HasOne("GreenFood.Domain.Models.Category", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("GreenFood.Domain.Models.ApplicationUser", "Seller")
                         .WithMany("Products")
                         .HasForeignKey("SellerId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("GreenFood.Domain.Models.TypeOfProduct", "Type")
-                        .WithMany("Products")
-                        .HasForeignKey("TypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Category");
 
                     b.Navigation("Seller");
-
-                    b.Navigation("Type");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -395,14 +398,14 @@ namespace GreenFood.Infrastructure.Migrations
                     b.Navigation("Products");
                 });
 
+            modelBuilder.Entity("GreenFood.Domain.Models.Category", b =>
+                {
+                    b.Navigation("Products");
+                });
+
             modelBuilder.Entity("GreenFood.Domain.Models.Product", b =>
                 {
                     b.Navigation("Orders");
-                });
-
-            modelBuilder.Entity("GreenFood.Domain.Models.TypeOfProduct", b =>
-                {
-                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

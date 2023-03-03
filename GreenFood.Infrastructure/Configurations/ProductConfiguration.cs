@@ -18,9 +18,9 @@ namespace GreenFood.Infrastructure.Configurations
                 .OnDelete(DeleteBehavior.NoAction);
 
             builder
-                .HasOne(p => p.Type)
+                .HasOne(p => p.Category)
                 .WithMany(t => t.Products)
-                .HasForeignKey(p => p.TypeId);
+                .HasForeignKey(p => p.CategoryId);
         }
     }
 }

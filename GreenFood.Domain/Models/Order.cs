@@ -1,8 +1,7 @@
 ﻿namespace GreenFood.Domain.Models
 {
-    public class Order
+    public class Order : BaseEntity
     {
-        public Guid Id { get; set; }
         public int Count { get; set; }
         public string? CustomerId { get; set; }
         public virtual ApplicationUser Customer { get; set; } = null!;

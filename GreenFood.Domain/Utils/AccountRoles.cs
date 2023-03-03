@@ -1,9 +1,11 @@
-﻿namespace GreenFood.Domain.Utils
+﻿using System.Security.Claims;
+
+namespace GreenFood.Domain.Utils
 {
     public static class AccountRoles
     {
-        public static string GetDefaultRole => "User";
-        public static string GetAdministratorRole => "Admin";
-        public static string GetSuperAdministratorRole => "SuperAdmin";
+        public const string GetDefaultRole = "User";
+        public const string GetAdministratorRole = "Admin";
+        public const string GetSuperAdministratorRole = "SuperAdmin";
     }
 }

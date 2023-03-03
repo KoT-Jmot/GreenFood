@@ -12,15 +12,18 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GreenFood.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20230210185551_InIt")]
-    partial class InIt
+    [Migration("20230223120352_v6")]
+    partial class v6
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.2")
+                .HasAnnotation("ProductVersion", "7.0.3")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -43,10 +46,6 @@ namespace GreenFood.Infrastructure.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -71,7 +70,7 @@ namespace GreenFood.Infrastructure.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("RegDate")
+                    b.Property<DateTime>("RegistrationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("SecurityStamp")
@@ -97,6 +96,20 @@ namespace GreenFood.Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("GreenFood.Domain.Models.Category", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
             modelBuilder.Entity("GreenFood.Domain.Models.Order", b =>
                 {
                     b.Property<Guid>("Id")
@@ -106,27 +119,21 @@ namespace GreenFood.Infrastructure.Migrations
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("Product_Id")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("RegDate")
+                    b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
+                    b.Property<string>("CustomerId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<Guid>("User_Id")
+                    b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("CustomerId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Orders");
                 });
@@ -137,6 +144,9 @@ namespace GreenFood.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
@@ -144,44 +154,22 @@ namespace GreenFood.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Header")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("Type_Id")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<decimal?>("Price")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid>("Type_Id1")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("UserId")
+                    b.Property<string>("SellerId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<Guid>("User_Id")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("Type_Id1");
+                    b.HasIndex("CategoryId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("SellerId");
 
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("GreenFood.Domain.Models.TypeOfProduct", b =>
-                {
-                    b.Property<Guid>("Type_Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Type_Id");
-
-                    b.ToTable("TypeOfProducts");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -319,40 +307,40 @@ namespace GreenFood.Infrastructure.Migrations
 
             modelBuilder.Entity("GreenFood.Domain.Models.Order", b =>
                 {
+                    b.HasOne("GreenFood.Domain.Models.ApplicationUser", "Customer")
+                        .WithMany("Orders")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("GreenFood.Domain.Models.Product", "Product")
                         .WithMany("Orders")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("GreenFood.Domain.Models.ApplicationUser", "User")
-                        .WithMany("Orders")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Customer");
 
                     b.Navigation("Product");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("GreenFood.Domain.Models.Product", b =>
                 {
-                    b.HasOne("GreenFood.Domain.Models.TypeOfProduct", "Type")
+                    b.HasOne("GreenFood.Domain.Models.Category", "Category")
                         .WithMany("Products")
-                        .HasForeignKey("Type_Id1")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("GreenFood.Domain.Models.ApplicationUser", "User")
+                    b.HasOne("GreenFood.Domain.Models.ApplicationUser", "Seller")
                         .WithMany("Products")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("SellerId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("Type");
+                    b.Navigation("Category");
 
-                    b.Navigation("User");
+                    b.Navigation("Seller");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -413,14 +401,14 @@ namespace GreenFood.Infrastructure.Migrations
                     b.Navigation("Products");
                 });
 
+            modelBuilder.Entity("GreenFood.Domain.Models.Category", b =>
+                {
+                    b.Navigation("Products");
+                });
+
             modelBuilder.Entity("GreenFood.Domain.Models.Product", b =>
                 {
                     b.Navigation("Orders");
-                });
-
-            modelBuilder.Entity("GreenFood.Domain.Models.TypeOfProduct", b =>
-                {
-                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

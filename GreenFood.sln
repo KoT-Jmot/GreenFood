@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenFood.Domain", "GreenFo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenFood.Infrastructure", "GreenFood.Infrastructure\GreenFood.Infrastructure.csproj", "{BBD9B926-2735-48DF-BF33-B7E8A7A27C6E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenFood.Application", "GreenFood.Application\GreenFood.Application.csproj", "{72D6B30C-39E1-4B43-B2FA-D43CF2416AA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenFood.Application", "GreenFood.Application\GreenFood.Application.csproj", "{72D6B30C-39E1-4B43-B2FA-D43CF2416AA8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

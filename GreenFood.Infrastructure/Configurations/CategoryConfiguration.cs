@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace GreenFood.Infrastructure.Configurations
 {
-    public class TypeConfiguration : IEntityTypeConfiguration<TypeOfProduct>
+    public class CategoryConfiguration : IEntityTypeConfiguration<Category>
     {
-        public void Configure(EntityTypeBuilder<TypeOfProduct> builder)
+        public void Configure(EntityTypeBuilder<Category> builder)
         {
             builder
                 .HasKey(t => t.Id);

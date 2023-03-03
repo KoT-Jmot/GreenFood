@@ -1,4 +1,4 @@
-﻿namespace GreenFood.Application.DTO
+﻿namespace GreenFood.Application.DTO.InputDto
 {
     public class UserForLoginDto
     {

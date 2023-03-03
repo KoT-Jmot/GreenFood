@@ -1,4 +1,3 @@
-using GreenFood.Infrastructure;
 using GreenFood.Web.Extensions;
 using GreenFood.Web.Features;
 using GreenFood.Web.ExceptionHandler;
@@ -50,5 +49,5 @@ app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
 });
-app.MapGet("/", () => "Hello World!");
+
 app.Run();
