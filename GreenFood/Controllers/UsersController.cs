@@ -3,6 +3,7 @@ using GreenFood.Domain.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace GreenFood.Web.Controllers
 {
@@ -18,9 +19,11 @@ namespace GreenFood.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllUsers()
+        public IActionResult GetAllUsersAsync()
         {
-            return Ok(_userManager.Users);
+            var users = _userManager.Users.ToListAsync();
+
+            return Ok(users);
         }
 
         [HttpGet("{email}")]

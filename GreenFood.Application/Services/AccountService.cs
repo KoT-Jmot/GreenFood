@@ -33,7 +33,7 @@ namespace GreenFood.Application.Services
             _jwtConfig = jwtConfig;
         }
 
-        public async Task<bool> SignUpAsync(UserForRegistrationDto userForRegistrationDto)
+        public async Task<string> SignUpAsync(UserForRegistrationDto userForRegistrationDto)
         {
             await _registrationUserValidator.ValidateAndThrowAsync(userForRegistrationDto);
 
@@ -55,7 +55,7 @@ namespace GreenFood.Application.Services
 
             await _userManager.AddToRoleAsync(user, AccountRoles.GetDefaultRole);
 
-            return true;
+            return user.Id;
         }
 
         public async Task<string> SignInAsync(UserForLoginDto userForLoginDto)

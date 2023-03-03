@@ -14,15 +14,15 @@ namespace GreenFood.Application.Services
     public class CategoryService : ICategoryService
     {
         private readonly IRepositoryManager _manager;
-        private readonly AddCategoryValidator _addRule;
+        private readonly AddCategoryValidator _addCategoryValidator;
 
         public CategoryService(
             IRepositoryManager manager,
-            AddCategoryValidator addRule)
+            AddCategoryValidator addCategoryValidator)
         {
 
             _manager = manager;
-            _addRule = addRule;
+            _addCategoryValidator = addCategoryValidator;
         }
 
         public async Task<OutputCategoryDto> GetCategoryByIdAsync(Guid categoryId)
@@ -32,28 +32,31 @@ namespace GreenFood.Application.Services
             if (category is null)
                 throw new EntityNotFoundException("Category was not found!");
 
-            return category.Adapt<OutputCategoryDto>();
+            var outputCategory = category.Adapt<OutputCategoryDto>();
+
+            return outputCategory;
         }
 
         public async Task<IEnumerable<OutputCategoryDto>> GetAllCategoriesAsync()
         {
             var categories = await _manager.Categories.GetAll().ToListAsync();
 
-            return categories.Adapt<IEnumerable<OutputCategoryDto>>();
+            var outputCategories = categories.Adapt<IEnumerable<OutputCategoryDto>>();
+
+            return outputCategories;
         }
         
         public async Task<Guid> CreateCategoryAsync(CategoryDto categoryDto)
         {
 
-            await _addRule.ValidateAndThrowAsync(categoryDto);
+            await _addCategoryValidator.ValidateAndThrowAsync(categoryDto);
 
-            if (await _manager.Categories.GetCategoryByNameAsync(categoryDto.Name) is not null)
+            if (await _manager.Categories.GetCategoryByNameAsync(categoryDto.Name!) is not null)
                 throw new CreatingCategoryException("This category already exists!");
 
             var category = categoryDto.Adapt<Category>();
 
             await _manager.Categories.AddAsync(category);
-
             await _manager.SaveChangesAsync();
 
             return category.Id;
@@ -67,7 +70,6 @@ namespace GreenFood.Application.Services
                 throw new EntityNotFoundException("Category was not found!");
 
             await _manager.Categories.RemoveAsync(category);
-
             await _manager.SaveChangesAsync();
         }
     }

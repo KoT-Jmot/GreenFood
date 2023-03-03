@@ -21,33 +21,37 @@ namespace GreenFood.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<OutputProductDto>> GetAllProducts()
+        public async Task<IActionResult> GetAllProductsAsync()
         {
-            return await _product.GetAllProductsAsync();
+            var products = await _product.GetAllProductsAsync();
+
+            return Ok(products);
         }
 
         [HttpGet("{productId}")]
-        public async Task<OutputProductDto> GetProductById([FromRoute] Guid productId)
+        public async Task<IActionResult> GetProductByIdAsync([FromRoute] Guid productId)
         {
-            return await _product.GetProductByIdAsync(productId);
+            var product = await _product.GetProductByIdAsync(productId);
+
+            return Ok(product);
         }
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> AddProduct([FromBody] ProductDto productDto)
+        public async Task<IActionResult> CreateProductAsync([FromBody] ProductDto productDto)
         {
             var userId = User.GetUserId();
 
             var productId = await _product.CreateProductByUserIdAsync(productDto, userId);
 
-            return Ok(productId);
+            return Created(nameof(CreateProductAsync), productId);
         }
 
         [Authorize]
         [HttpDelete("{productId}")]
-        public async Task<IActionResult> DeleteProductById([FromRoute] Guid productId)
+        public async Task<IActionResult> DeleteProductByIdAsync([FromRoute] Guid productId)
         {
-            string userId = User.GetUserId();
+            var userId = User.GetUserId();
 
             await _product.DeleteProductByIdAndUserIdAsync(userId, productId);
 

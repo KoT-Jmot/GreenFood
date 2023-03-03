@@ -14,14 +14,14 @@ namespace GreenFood.Application.Services
     public class OrderService : IOrderService
     {
         private readonly IRepositoryManager _manager;
-        private readonly AddOrderValidator _addRule;
+        private readonly AddOrderValidator _addOrderValidator;
 
         public OrderService(
             IRepositoryManager manager,
-            AddOrderValidator addRule)
+            AddOrderValidator addOrderValidator)
         {
             _manager = manager;
-            _addRule = addRule;
+            _addOrderValidator = addOrderValidator;
         }
 
         public async Task<OutputOrderDto> GetOrderByIdAsync(Guid orderId)
@@ -31,21 +31,25 @@ namespace GreenFood.Application.Services
             if (order is null)
                 throw new EntityNotFoundException("Order was not found!");
 
-            return order.Adapt<OutputOrderDto>();
+            var outputOrder = order.Adapt<OutputOrderDto>();
+
+            return outputOrder;
         }
 
         public async Task<IEnumerable<OutputOrderDto>> GetAllOrdersAsync()
         {
             var orders = await _manager.Orders.GetAll().ToListAsync();
 
-            return orders.Adapt<IEnumerable<OutputOrderDto>>();
+            var outputOrders = orders.Adapt<IEnumerable<OutputOrderDto>>();
+
+            return outputOrders;
         }
 
         public async Task<Guid> CreateOrderByUserIdAsync(
             OrderDto orderDto,
             string customerId)
         {
-            await _addRule.ValidateAndThrowAsync(orderDto);
+            await _addOrderValidator.ValidateAndThrowAsync(orderDto);
 
             var product = await _manager.Products.GetByIdAsync(orderDto.ProductId, true);
 
@@ -60,10 +64,9 @@ namespace GreenFood.Application.Services
             order.CustomerId = customerId;
 
             await _manager.Orders.AddAsync(order);
+            await _manager.SaveChangesAsync();
 
             product.Count -= order.Count;
-
-            await _manager.SaveChangesAsync();
 
             return order.Id;
         }
@@ -78,7 +81,6 @@ namespace GreenFood.Application.Services
                 throw new EntityNotFoundException("Order was not found!");
 
             await _manager.Orders.RemoveAsync(order);
-
             await _manager.SaveChangesAsync();
         }
     }

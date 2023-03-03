@@ -12,42 +12,40 @@ namespace GreenFood.Web.Controllers
     public class CategoriesController : Controller
     {
         private readonly ICategoryService _category;
-        private readonly AddCategoryValidator _addRule;
 
-        public CategoriesController(
-            ICategoryService category,
-            AddCategoryValidator addRule)
+        public CategoriesController(ICategoryService category)
         {
             _category = category;
-            _addRule = addRule;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<OutputCategoryDto>> GetAllCategories()
+        public async Task<IActionResult> GetAllCategoriesAsync()
         {
-            return await _category.GetAllCategoriesAsync();
+            var categories = await _category.GetAllCategoriesAsync();
+
+            return Ok(categories);
         }
 
         [HttpGet("{categoryId}")]
-        public async Task<OutputCategoryDto> GetCategoryById([FromRoute] Guid categoryId)
-        {
-            return await _category.GetCategoryByIdAsync(categoryId);
+        public async Task<IActionResult> GetCategoryByIdAsync([FromRoute] Guid categoryId)
+        { 
+            var category = await _category.GetCategoryByIdAsync(categoryId);
+
+            return Ok(category);
         }
 
         //[Authorize(Roles = $"{AccountRoles.GetAdministratorRole}")]
         [HttpPost]
-        public async Task<IActionResult> AddCategory([FromBody] CategoryDto categoryDto)
+        public async Task<IActionResult> CreateCategoryAsync([FromBody] CategoryDto categoryDto)
         {
-            await _addRule.ValidateAndThrowAsync(categoryDto);
-
             var categoryId = await _category.CreateCategoryAsync(categoryDto);
 
-            return Ok(categoryId);
+            return Created(nameof(CreateCategoryAsync), categoryId);
         }
 
         //[Authorize(Roles = $"{AccountRoles.GetAdministratorRole}")]
         [HttpDelete("{categoryId}")]
-        public async Task<IActionResult> DeleteCategory([FromRoute] Guid categoryId)
+        public async Task<IActionResult> DeleteCategoryAsync([FromRoute] Guid categoryId)
         {
             await _category.DeleteCategoryByIdAsync(categoryId);
 

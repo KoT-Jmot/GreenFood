@@ -22,29 +22,33 @@ namespace GreenFood.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<OutputOrderDto>> GetAllOrders()
+        public async Task<IActionResult> GetAllOrdersAsync()
         {
-            return await _order.GetAllOrdersAsync();
+            var orders = await _order.GetAllOrdersAsync();
+
+            return Ok(orders);
         }
 
         [HttpGet("{orderId}")]
-        public async Task<OutputOrderDto> GetOrderById(Guid orderId)
+        public async Task<IActionResult> GetOrderByIdAsync(Guid orderId)
         {
-            return await _order.GetOrderByIdAsync(orderId);
+            var order = await _order.GetOrderByIdAsync(orderId);
+
+            return Ok(order);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateOrder([FromBody] OrderDto inputOrderDto)
+        public async Task<IActionResult> CreateOrderAsync([FromBody] OrderDto inputOrderDto)
         {
             var userId = User.GetUserId();
 
             var orderId = await _order.CreateOrderByUserIdAsync(inputOrderDto, userId);
 
-            return Ok(orderId);
+            return Created(nameof(CreateOrderAsync), orderId);
         }
 
         [HttpDelete("{orderId}")]
-        public async Task<IActionResult> DeleteOrderById([FromRoute] Guid orderId)
+        public async Task<IActionResult> DeleteOrderByIdAsync([FromRoute] Guid orderId)
         {
             var userId = User.GetUserId();
 

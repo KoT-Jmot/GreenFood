@@ -14,14 +14,14 @@ namespace GreenFood.Application.Services
     public class ProductService : IProductService
     {
         private readonly IRepositoryManager _manager;
-        private readonly AddProductValidation _addRule;
+        private readonly AddProductValidation _addProductValidator;
 
         public ProductService(
             IRepositoryManager manager,
-            AddProductValidation addRule)
+            AddProductValidation addProductValidator)
         {
             _manager = manager;
-            _addRule = addRule;
+            _addProductValidator = addProductValidator;
         }
 
         public async Task<OutputProductDto> GetProductByIdAsync(Guid productId)
@@ -31,21 +31,25 @@ namespace GreenFood.Application.Services
             if (product is null)
                 throw new EntityNotFoundException("Product was not found!");
 
-            return product.Adapt<OutputProductDto>();
+            var outputProduct = product.Adapt<OutputProductDto>();
+
+            return outputProduct;
         }
 
         public async Task<IEnumerable<OutputProductDto>> GetAllProductsAsync()
         {
             var products = await _manager.Products.GetAll().ToListAsync();
 
-            return products.Adapt<IEnumerable<OutputProductDto>>();
+            var outputProducts = products.Adapt<IEnumerable<OutputProductDto>>();
+
+            return outputProducts;
         }
 
         public async Task<Guid> CreateProductByUserIdAsync(
             ProductDto productDto,
             string sellerId)
         {
-            await _addRule.ValidateAndThrowAsync(productDto);
+            await _addProductValidator.ValidateAndThrowAsync(productDto);
 
             var category = await _manager.Categories.GetByIdAsync(productDto.CategoryId);
 
@@ -56,7 +60,6 @@ namespace GreenFood.Application.Services
             product.SellerId = sellerId;
 
             await _manager.Products.AddAsync(product);
-
             await _manager.SaveChangesAsync();
 
             return product.Id;
@@ -72,7 +75,6 @@ namespace GreenFood.Application.Services
                 throw new EntityNotFoundException("Product was not found!");
 
             await _manager.Products.RemoveAsync(product);
-
             await _manager.SaveChangesAsync();
         }
     }

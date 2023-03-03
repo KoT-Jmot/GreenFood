@@ -17,17 +17,17 @@ namespace GreenFood.Web.Controllers
         [HttpPost("SignUp")]
         public async Task<IActionResult> SignUpAsync([FromBody] UserForRegistrationDto userDto)
         {
-            await _account.SignUpAsync(userDto);
+            var userId = await _account.SignUpAsync(userDto);
 
-            return Ok();
+            return Created(nameof(SignUpAsync), userId);
         }
 
         [HttpPost("SignIn")]
         public async Task<IActionResult> SignInAsync([FromBody] UserForLoginDto userDto)
         {
-            var result = await _account.SignInAsync(userDto);
+            var jwtToken = await _account.SignInAsync(userDto);
 
-            return Ok(result);
+            return Ok(jwtToken);
         }
     }
 }

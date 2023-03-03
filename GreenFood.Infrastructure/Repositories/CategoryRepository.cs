@@ -13,7 +13,7 @@ namespace GreenFood.Infrastructure.Repositories
 
         public async Task<Category?> GetCategoryByNameAsync(string name)
         {
-            return await GetByQueryable(c => c.Name.Equals(name)).FirstOrDefaultAsync();
+            return await GetByQueryable(c => c.Name!.Equals(name)).FirstOrDefaultAsync();
         }
     }
 }

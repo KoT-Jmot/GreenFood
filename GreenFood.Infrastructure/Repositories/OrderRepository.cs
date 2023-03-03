@@ -16,7 +16,7 @@ namespace GreenFood.Infrastructure.Repositories
             string userId,
             bool trackChanges = false)
         {
-            return await GetByQueryable(o => o.Id.Equals(orderId) && o.CustomerId.Equals(userId), trackChanges).FirstOrDefaultAsync();
+            return await GetByQueryable(o => o.Id.Equals(orderId) && o.CustomerId!.Equals(userId), trackChanges).FirstOrDefaultAsync();
         }
     }
 }
