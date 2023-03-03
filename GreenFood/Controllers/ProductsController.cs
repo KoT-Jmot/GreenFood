@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using GreenFood.Domain.Utils;
 using GreenFood.Application.DTO.InputDto;
 using Mapster;
-using GreenFood.Application.DTO.ServicesDto;
 using GreenFood.Application.DTO.OutputDto;
 using GreenFood.Application.Validation;
 using FluentValidation;
@@ -12,39 +11,39 @@ using FluentValidation;
 namespace GreenFood.Web.Controllers
 {
     [Route("Products")]
-    [Authorize]
     public class ProductsController : Controller
     {
         private readonly IProductService _product;
-        private readonly AddProductValidation _addValidationRules;
 
-        public ProductsController(
-            IProductService product,
-            AddProductValidation addValidationRules)
+        public ProductsController(IProductService product)
         {
             _product = product;
-            _addValidationRules = addValidationRules;
         }
 
-        [HttpGet("{userEmail}")]
-        public async Task<IEnumerable<OutputProductDto>> GetProductByUserEmail([FromRoute] string userEmail)
+        [HttpGet]
+        public async Task<IEnumerable<OutputProductDto>> GetAllProducts()
         {
-            return await _product.GetProductByUserEmail(userEmail);
+            return await _product.GetAllProductsAsync();
         }
 
+        [HttpGet("{productId}")]
+        public async Task<OutputProductDto> GetProductById([FromRoute] Guid productId)
+        {
+            return await _product.GetProductByIdAsync(productId);
+        }
+
+        [Authorize]
         [HttpPost]
-        public async Task<IActionResult> AddProduct([FromBody] InputProductDto inputProductDto)
+        public async Task<IActionResult> AddProduct([FromBody] ProductDto productDto)
         {
-            await _addValidationRules.ValidateAndThrowAsync(inputProductDto);
+            var userId = User.GetUserId();
 
-            var productDto = inputProductDto.Adapt<ProductDto>();
-            productDto.SellerId = User.GetUserId();
-
-            var productId = await _product.CreateProductByUserId(productDto);
+            var productId = await _product.CreateProductByUserIdAsync(productDto, userId);
 
             return Ok(productId);
         }
 
+        [Authorize]
         [HttpDelete("{productId}")]
         public async Task<IActionResult> DeleteProductById([FromRoute] Guid productId)
         {
@@ -52,7 +51,7 @@ namespace GreenFood.Web.Controllers
 
             await _product.DeleteProductByIdAndUserIdAsync(userId, productId);
 
-            return Ok(StatusCode(200));
+            return NoContent();
         }
     }
 }

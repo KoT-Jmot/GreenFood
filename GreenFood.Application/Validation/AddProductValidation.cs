@@ -3,7 +3,7 @@ using GreenFood.Application.DTO.InputDto;
 
 namespace GreenFood.Application.Validation
 {
-    public class AddProductValidation : AbstractValidator<InputProductDto>
+    public class AddProductValidation : AbstractValidator<ProductDto>
     {
         public AddProductValidation()
         {

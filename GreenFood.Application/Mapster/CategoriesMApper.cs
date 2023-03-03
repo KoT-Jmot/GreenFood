@@ -1,4 +1,5 @@
-﻿using GreenFood.Application.DTO.OutputDto;
+﻿using GreenFood.Application.DTO.InputDto;
+using GreenFood.Application.DTO.OutputDto;
 using GreenFood.Domain.Models;
 using Mapster;
 
@@ -8,7 +9,8 @@ namespace GreenFood.Application.Mapster
     {
         public void Register(TypeAdapterConfig config)
         {
-            config.NewConfig<IEnumerable<Category>, IEnumerable<OutputCategoryDto>>();
+            config.NewConfig<CategoryDto, Category>();
+            config.NewConfig<Category, OutputCategoryDto>();
         }
     }
 }

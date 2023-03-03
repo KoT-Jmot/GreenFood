@@ -49,10 +49,12 @@ namespace GreenFood.Web.ExceptionHandler
         {
             return exception switch
             {
+                ArgumentNullException => StatusCodes.Status400BadRequest,
+                ProductCountException => StatusCodes.Status400BadRequest,
+                CreatingCategoryException => StatusCodes.Status400BadRequest,
+                EntityNotFoundException => StatusCodes.Status404NotFound,
                 LoginUserException => StatusCodes.Status422UnprocessableEntity,
                 RegistrationUserException => StatusCodes.Status422UnprocessableEntity,
-                CategoryException => StatusCodes.Status422UnprocessableEntity,
-                ArgumentNullException => StatusCodes.Status400BadRequest,
                 ValidationException => StatusCodes.Status422UnprocessableEntity,
                 _ => StatusCodes.Status500InternalServerError,
             };

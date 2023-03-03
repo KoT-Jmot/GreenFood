@@ -1,30 +1,56 @@
-﻿using GreenFood.Application.Contracts;
+﻿using FluentValidation;
+using GreenFood.Application.Contracts;
+using GreenFood.Application.DTO.InputDto;
 using GreenFood.Application.DTO.OutputDto;
+using GreenFood.Application.Validation;
 using GreenFood.Domain.Exceptions;
 using GreenFood.Domain.Models;
 using GreenFood.Infrastructure.Configurations;
 using Mapster;
+using Microsoft.EntityFrameworkCore;
 
 namespace GreenFood.Application.Services
 {
     public class CategoryService : ICategoryService
     {
         private readonly IRepositoryManager _manager;
+        private readonly AddCategoryValidator _addRule;
 
-        public CategoryService(IRepositoryManager manager)
+        public CategoryService(
+            IRepositoryManager manager,
+            AddCategoryValidator addRule)
         {
+
             _manager = manager;
+            _addRule = addRule;
         }
 
-        public async Task<Guid> CreateCategoryAsync(string categoryName)
+        public async Task<OutputCategoryDto> GetCategoryByIdAsync(Guid categoryId)
         {
-            if (_manager.Categories.CategoryByNameExisted(categoryName))
-                throw new CategoryException("This category already exists!");
+            var category = await _manager.Categories.GetByIdAsync(categoryId);
 
-            Category category = new Category()
-            {
-                Name = categoryName
-            };
+            if (category is null)
+                throw new EntityNotFoundException("Category was not found!");
+
+            return category.Adapt<OutputCategoryDto>();
+        }
+
+        public async Task<IEnumerable<OutputCategoryDto>> GetAllCategoriesAsync()
+        {
+            var categories = await _manager.Categories.GetAll().ToListAsync();
+
+            return categories.Adapt<IEnumerable<OutputCategoryDto>>();
+        }
+        
+        public async Task<Guid> CreateCategoryAsync(CategoryDto categoryDto)
+        {
+
+            await _addRule.ValidateAndThrowAsync(categoryDto);
+
+            if (await _manager.Categories.GetCategoryByNameAsync(categoryDto.Name) is not null)
+                throw new CreatingCategoryException("This category already exists!");
+
+            var category = categoryDto.Adapt<Category>();
 
             await _manager.Categories.AddAsync(category);
 
@@ -38,19 +64,11 @@ namespace GreenFood.Application.Services
             var category = await _manager.Categories.GetByIdAsync(categoryId);
 
             if (category is null)
-                throw new Exception();
+                throw new EntityNotFoundException("Category was not found!");
 
             await _manager.Categories.RemoveAsync(category);
 
             await _manager.SaveChangesAsync();
-        }
-
-        public async Task<IEnumerable<OutputCategoryDto>> GetAllCategories()
-        {
-            var categories = await Task.Run( ()=> _manager.Categories.GetAll());
-
-            return categories.Adapt<IEnumerable<OutputCategoryDto>>();
-
         }
     }
 }

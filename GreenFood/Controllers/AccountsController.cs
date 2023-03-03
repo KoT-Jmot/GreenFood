@@ -1,5 +1,5 @@
 ﻿using GreenFood.Application.Contracts;
-using GreenFood.Application.DTO.ServicesDto;
+using GreenFood.Application.DTO.InputDto;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GreenFood.Web.Controllers

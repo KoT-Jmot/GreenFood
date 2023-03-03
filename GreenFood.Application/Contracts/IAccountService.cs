@@ -1,4 +1,4 @@
-﻿using GreenFood.Application.DTO.ServicesDto;
+﻿using GreenFood.Application.DTO.InputDto;
 
 namespace GreenFood.Application.Contracts
 {

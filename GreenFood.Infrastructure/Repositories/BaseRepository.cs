@@ -26,19 +26,19 @@ namespace GreenFood.Infrastructure.Repositories
                         : await Set.AsNoTracking().FirstOrDefaultAsync(t => t.Id.Equals(id));
         }
 
-        public async Task AddAsync(T obj)
+        public async Task AddAsync(T entity)
         {
-            await Set.AddAsync(obj);
+            await Set.AddAsync(entity);
         }
 
-        public async Task RemoveAsync(T obj)
+        public async Task RemoveAsync(T entity)
         {
-            await Task.Run(() => Set.Remove(obj));
+            await Task.Run(() => Set.Remove(entity));
         }
 
-        public async Task RemoveRangeAsync(IEnumerable<T> obj)
+        public async Task RemoveRangeAsync(IEnumerable<T> entity)
         {
-            await Task.Run(() => Set.RemoveRange(obj));
+            await Task.Run(() => Set.RemoveRange(entity));
         }
 
         protected virtual IQueryable<T> GetByQueryable(

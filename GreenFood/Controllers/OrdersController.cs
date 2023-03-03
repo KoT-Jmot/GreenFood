@@ -2,7 +2,6 @@
 using GreenFood.Application.Contracts;
 using GreenFood.Application.DTO.InputDto;
 using GreenFood.Application.DTO.OutputDto;
-using GreenFood.Application.DTO.ServicesDto;
 using GreenFood.Application.Validation;
 using GreenFood.Domain.Utils;
 using Mapster;
@@ -16,25 +15,30 @@ namespace GreenFood.Web.Controllers
     public class OrdersController : Controller
     {
         private readonly IOrderService _order;
-        private readonly AddOrderValidator _addValidationRules;
 
-        public OrdersController(
-            IOrderService order,
-            AddOrderValidator addValidationRules)
+        public OrdersController(IOrderService order)
         {
             _order = order;
-            _addValidationRules = addValidationRules;
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<OutputOrderDto>> GetAllOrders()
+        {
+            return await _order.GetAllOrdersAsync();
+        }
+
+        [HttpGet("{orderId}")]
+        public async Task<OutputOrderDto> GetOrderById(Guid orderId)
+        {
+            return await _order.GetOrderByIdAsync(orderId);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateOrder([FromBody] InputOrderDto inputOrderDto)
+        public async Task<IActionResult> CreateOrder([FromBody] OrderDto inputOrderDto)
         {
-            await _addValidationRules.ValidateAndThrowAsync(inputOrderDto);
+            var userId = User.GetUserId();
 
-            var orderDto = inputOrderDto.Adapt<OrderDto>();
-            orderDto.CustomerId = User.GetUserId();
-
-            var orderId = await _order.CreateOrder(orderDto);
+            var orderId = await _order.CreateOrderByUserIdAsync(inputOrderDto, userId);
 
             return Ok(orderId);
         }
@@ -42,19 +46,11 @@ namespace GreenFood.Web.Controllers
         [HttpDelete("{orderId}")]
         public async Task<IActionResult> DeleteOrderById([FromRoute] Guid orderId)
         {
-            string userId = User.GetUserId();
+            var userId = User.GetUserId();
 
-            await _order.DeleteOrderByIdAndUserId(userId, orderId);
+            await _order.DeleteOrderByIdAndUserIdAsync(userId, orderId);
 
-            return Ok(StatusCode(200));
-        }
-
-        [HttpGet]
-        public async Task<IEnumerable<OutputOrderDto>> GetUsersOrders()
-        {
-            string userId = User.GetUserId();
-
-            return await _order.GetOrdersByUserId(userId);
+            return NoContent();
         }
     }
 }

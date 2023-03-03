@@ -1,16 +1,17 @@
-﻿using GreenFood.Application.DTO.OutputDto;
-using GreenFood.Application.DTO.ServicesDto;
+﻿using GreenFood.Application.DTO.InputDto;
+using GreenFood.Application.DTO.OutputDto;
 
 namespace GreenFood.Application.Contracts
 {
     public interface IOrderService
     {
-        Task<Guid> CreateOrder(OrderDto orderDto);
-        Task DeleteOrderByIdAndUserId(
+        Task<OutputOrderDto> GetOrderByIdAsync(Guid orderId);
+        Task<IEnumerable<OutputOrderDto>> GetAllOrdersAsync();
+        Task<Guid> CreateOrderByUserIdAsync(
+            OrderDto orderDto,
+            string customerId);
+        Task DeleteOrderByIdAndUserIdAsync(
             string userId,
             Guid orderId);
-        Task<IEnumerable<OutputOrderDto>> GetOrdersByUserId(
-            string userId,
-            bool trackChanges = false);
     }
 }
