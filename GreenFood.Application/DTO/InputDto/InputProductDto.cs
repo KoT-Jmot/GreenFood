@@ -1,6 +1,6 @@
 ﻿namespace GreenFood.Application.DTO.InputDto
 {
-    public class ProductForAddDto
+    public class InputProductDto
     {
         public string Header { get; set; } = null!;
         public string Description { get; set; } = null!;

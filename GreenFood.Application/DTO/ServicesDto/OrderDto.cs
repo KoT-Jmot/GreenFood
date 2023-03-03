@@ -1,6 +1,6 @@
-﻿namespace GreenFood.Application.DTO.InputDto
+﻿namespace GreenFood.Application.DTO.ServicesDto
 {
-    public class OrderForAddDto
+    public class OrderDto
     {
         public int Count { get; set; }
         public Guid ProductId { get; set; }

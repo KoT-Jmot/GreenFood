@@ -2,7 +2,7 @@
 {
     public class CategoryException : Exception
     {
-        public CategoryException(string? message= "Incorrect type of product!") : base(message)
+        public CategoryException(string? message= "Incorrect category of product!") : base(message)
         {
         }
     }

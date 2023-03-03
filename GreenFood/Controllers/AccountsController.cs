@@ -4,12 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GreenFood.Web.Controllers
 {
-    [Route("Account")]
-    public class AccountController : Controller
+    [Route("Accounts")]
+    public class AccountsController : Controller
     {
         private readonly IAccountService _account;
 
-        public AccountController(IAccountService account)
+        public AccountsController(IAccountService account)
         {
             _account = account;
         }

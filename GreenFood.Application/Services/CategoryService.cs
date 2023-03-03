@@ -1,7 +1,9 @@
 ﻿using GreenFood.Application.Contracts;
+using GreenFood.Application.DTO.OutputDto;
 using GreenFood.Domain.Exceptions;
 using GreenFood.Domain.Models;
 using GreenFood.Infrastructure.Configurations;
+using Mapster;
 
 namespace GreenFood.Application.Services
 {
@@ -14,7 +16,7 @@ namespace GreenFood.Application.Services
             _manager = manager;
         }
 
-        public async Task CreateCategoryAsync(string categoryName)
+        public async Task<Guid> CreateCategoryAsync(string categoryName)
         {
             if (_manager.Categories.CategoryByNameExisted(categoryName))
                 throw new CategoryException("This category already exists!");
@@ -27,6 +29,8 @@ namespace GreenFood.Application.Services
             await _manager.Categories.AddAsync(category);
 
             await _manager.SaveChangesAsync();
+
+            return category.Id;
         }
 
         public async Task DeleteCategoryByIdAsync(Guid categoryId)
@@ -39,6 +43,14 @@ namespace GreenFood.Application.Services
             await _manager.Categories.RemoveAsync(category);
 
             await _manager.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<OutputCategoryDto>> GetAllCategories()
+        {
+            var categories = await Task.Run( ()=> _manager.Categories.GetAll());
+
+            return categories.Adapt<IEnumerable<OutputCategoryDto>>();
+
         }
     }
 }

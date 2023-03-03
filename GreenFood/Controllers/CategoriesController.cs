@@ -1,13 +1,11 @@
 ﻿using GreenFood.Application.Contracts;
-using GreenFood.Application.DTO;
-using GreenFood.Domain.Utils;
-using Microsoft.AspNetCore.Authorization;
+using GreenFood.Application.DTO.OutputDto;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GreenFood.Web.Controllers
 {
     [Route("Categories")]
-    [Authorize(Roles = $"{AccountRoles.GetAdministratorRole}")]
+    //[Authorize(Roles = $"{AccountRoles.GetAdministratorRole}")]
     public class CategoriesController : Controller
     {
         private readonly ICategoryService _category;
@@ -17,20 +15,26 @@ namespace GreenFood.Web.Controllers
             _category = category;
         }
 
-        [HttpPost("/{categoryName}")]
-        public async Task<IActionResult> AddCategory([FromRoute] string categoryName)
+        [HttpGet]
+        public async Task<IEnumerable<OutputCategoryDto>> GetAllCategories()
         {
-            await _category.CreateCategoryAsync(categoryName);
-
-            return Ok();
+            return await _category.GetAllCategories();
         }
 
-        [HttpDelete("/{categoryId}")]
+        [HttpPost("{categoryName}")]
+        public async Task<IActionResult> AddCategory([FromRoute] string categoryName)
+        {
+            var categoryId = await _category.CreateCategoryAsync(categoryName);
+
+            return Ok(categoryId);
+        }
+
+        [HttpDelete("{categoryId}")]
         public async Task<IActionResult> DeleteCategory([FromRoute] Guid categoryId)
         {
             await _category.DeleteCategoryByIdAsync(categoryId);
 
-            return Ok();
+            return Ok(StatusCode(200));
         }
     }
 }

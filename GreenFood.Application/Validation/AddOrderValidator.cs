@@ -3,7 +3,7 @@ using GreenFood.Application.DTO.InputDto;
 
 namespace GreenFood.Application.Validation
 {
-    public class AddOrderValidator : AbstractValidator<OrderForAddDto>
+    public class AddOrderValidator : AbstractValidator<InputOrderDto>
     {
         public AddOrderValidator()
         {
@@ -16,11 +16,6 @@ namespace GreenFood.Application.Validation
                 .GreaterThan(0)
                 .LessThan(10000000)
                 .WithMessage("Incorrect count!");
-
-            RuleFor(o => o.CustomerId)
-                .NotNull()
-                .NotEmpty()
-                .WithMessage("Incorrect customer!");
         }
     }
 }

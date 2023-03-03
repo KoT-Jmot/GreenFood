@@ -16,7 +16,7 @@ namespace GreenFood.Infrastructure.Repositories
         {
             return GetByQueryable(p => p.SellerId!.Equals(userId), trackChanges);
         }
-        
+
         public Product? GetProductByIdAndUserId(
             Guid productId,
             string userId,
