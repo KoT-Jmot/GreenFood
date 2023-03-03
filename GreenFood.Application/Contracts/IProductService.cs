@@ -1,10 +1,17 @@
-﻿using GreenFood.Application.DTO;
+﻿using GreenFood.Application.DTO.InputDto;
+using GreenFood.Application.DTO.OutputDto;
 
 namespace GreenFood.Application.Contracts
 {
     public interface IProductService
     {
-        Task CreateProductByUserId(ProductForAddDto productDto, string userId);
-        Task DeleteProductAsync(ProductForDeleteDto productDto, string userId);
+        Task<OutputProductDto> GetProductByIdAsync(Guid productId);
+        Task<IEnumerable<OutputProductDto>> GetAllProductsAsync();
+        Task<Guid> CreateProductByUserIdAsync(
+            ProductDto productDto,
+            string sellerId);
+        Task DeleteProductByIdAndUserIdAsync(
+            string userId,
+            Guid productId);
     }
 }

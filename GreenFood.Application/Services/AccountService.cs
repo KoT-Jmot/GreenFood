@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using GreenFood.Application.DTO;
 using GreenFood.Application.Validation;
 using Microsoft.AspNetCore.Identity;
 using GreenFood.Application.Contracts;
@@ -11,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Security.Claims;
 using Mapster;
+using GreenFood.Application.DTO.InputDto;
 
 namespace GreenFood.Application.Services
 {
@@ -33,7 +33,7 @@ namespace GreenFood.Application.Services
             _jwtConfig = jwtConfig;
         }
 
-        public async Task<bool> SignUpAsync(UserForRegistrationDto userForRegistrationDto)
+        public async Task<string> SignUpAsync(UserForRegistrationDto userForRegistrationDto)
         {
             await _registrationUserValidator.ValidateAndThrowAsync(userForRegistrationDto);
 
@@ -55,7 +55,7 @@ namespace GreenFood.Application.Services
 
             await _userManager.AddToRoleAsync(user, AccountRoles.GetDefaultRole);
 
-            return true;
+            return user.Id;
         }
 
         public async Task<string> SignInAsync(UserForLoginDto userForLoginDto)

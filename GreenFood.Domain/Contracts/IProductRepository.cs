@@ -4,7 +4,8 @@ namespace GreenFood.Domain.Contracts
 {
     public interface IProductRepository : IBaseRepository<Product>
     {
-        IQueryable<Product> GetProductsByUserId(
+        Task<Product?> GetProductByIdAndUserIdAsync(
+            Guid productId,
             string userId,
             bool trackChanges = false);
     }

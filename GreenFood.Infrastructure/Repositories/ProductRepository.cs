@@ -1,5 +1,6 @@
 ﻿using GreenFood.Domain.Contracts;
 using GreenFood.Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace GreenFood.Infrastructure.Repositories
 {
@@ -10,12 +11,12 @@ namespace GreenFood.Infrastructure.Repositories
         {
         }
 
-        public IQueryable<Product> GetProductsByUserId(
+        public async Task<Product?> GetProductByIdAndUserIdAsync(
+            Guid productId,
             string userId,
             bool trackChanges = false)
         {
-            return GetByQueryable(p => p.SellerId!.Equals(userId), trackChanges);
+            return await GetByQueryable(p => p.Id.Equals(productId) && p.SellerId!.Equals(userId), trackChanges).FirstOrDefaultAsync();
         }
-        
     }
 }

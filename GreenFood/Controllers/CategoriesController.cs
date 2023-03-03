@@ -1,13 +1,14 @@
-﻿using GreenFood.Application.Contracts;
-using GreenFood.Application.DTO;
-using GreenFood.Domain.Utils;
-using Microsoft.AspNetCore.Authorization;
+﻿using FluentValidation;
+using GreenFood.Application.Contracts;
+using GreenFood.Application.DTO.InputDto;
+using GreenFood.Application.DTO.OutputDto;
+using GreenFood.Application.Validation;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace GreenFood.Web.Controllers
 {
     [Route("Categories")]
-    [Authorize(Roles = $"{AccountRoles.GetAdministratorRole}")]
     public class CategoriesController : Controller
     {
         private readonly ICategoryService _category;
@@ -17,20 +18,38 @@ namespace GreenFood.Web.Controllers
             _category = category;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddCategory([FromRoute] string categoryName)
+        [HttpGet]
+        public async Task<IActionResult> GetAllCategoriesAsync()
         {
-            await _category.CreateCategoryAsync(categoryName);
+            var categories = await _category.GetAllCategoriesAsync();
 
-            return Ok();
+            return Ok(categories);
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> DeleteCategory([FromRoute] Guid categoryId)
-        {
-            await _category.DeleteCategoryAsync(categoryId);
+        [HttpGet("{categoryId}")]
+        public async Task<IActionResult> GetCategoryByIdAsync([FromRoute] Guid categoryId)
+        { 
+            var category = await _category.GetCategoryByIdAsync(categoryId);
 
-            return Ok();
+            return Ok(category);
+        }
+
+        //[Authorize(Roles = $"{AccountRoles.GetAdministratorRole}")]
+        [HttpPost]
+        public async Task<IActionResult> CreateCategoryAsync([FromBody] CategoryDto categoryDto)
+        {
+            var categoryId = await _category.CreateCategoryAsync(categoryDto);
+
+            return Created(nameof(CreateCategoryAsync), categoryId);
+        }
+
+        //[Authorize(Roles = $"{AccountRoles.GetAdministratorRole}")]
+        [HttpDelete("{categoryId}")]
+        public async Task<IActionResult> DeleteCategoryAsync([FromRoute] Guid categoryId)
+        {
+            await _category.DeleteCategoryByIdAsync(categoryId);
+
+            return NoContent();
         }
     }
 }

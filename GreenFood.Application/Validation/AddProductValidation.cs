@@ -1,14 +1,9 @@
 ﻿using FluentValidation;
-using GreenFood.Application.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using GreenFood.Application.DTO.InputDto;
 
 namespace GreenFood.Application.Validation
 {
-    public class AddProductValidation : AbstractValidator<ProductForAddDto>
+    public class AddProductValidation : AbstractValidator<ProductDto>
     {
         public AddProductValidation()
         {

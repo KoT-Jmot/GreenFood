@@ -7,11 +7,11 @@ namespace GreenFood.Infrastructure.Repositories
 {
     public abstract class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     {
-        protected readonly DbSet<T> _set;
+        protected readonly DbSet<T> Set;
 
         protected BaseRepository(ApplicationContext context)
         {
-            _set = context.Set<T>();
+            Set = context.Set<T>();
         }
 
         public  IQueryable<T> GetAll(bool trackChanges = false)
@@ -22,29 +22,29 @@ namespace GreenFood.Infrastructure.Repositories
         public async Task<T?> GetByIdAsync(Guid id, bool trackChanges = false)
         {
             return trackChanges
-                        ? await _set.FirstOrDefaultAsync(t => t.Id.Equals(id))
-                        : await _set.AsNoTracking().FirstOrDefaultAsync(t => t.Id.Equals(id));
+                        ? await Set.FirstOrDefaultAsync(t => t.Id.Equals(id))
+                        : await Set.AsNoTracking().FirstOrDefaultAsync(t => t.Id.Equals(id));
         }
 
-        public async Task AddAsync(T obj)
+        public async Task AddAsync(T entity)
         {
-            await _set.AddAsync(obj);
+            await Set.AddAsync(entity);
         }
 
-        public async Task RemoveAsync(T obj)
+        public async Task RemoveAsync(T entity)
         {
-            await Task.Run(() => _set.Remove(obj));
+            await Task.Run(() => Set.Remove(entity));
         }
 
-        public async Task RemoveRangeAsync(IEnumerable<T> obj)
+        public async Task RemoveRangeAsync(IEnumerable<T> entity)
         {
-            await Task.Run(() => _set.RemoveRange(obj));
+            await Task.Run(() => Set.RemoveRange(entity));
         }
 
         protected virtual IQueryable<T> GetByQueryable(
             Expression<Func<T,bool>> expression, bool trackChanges = false)
         {
-            var items = _set.Where(expression);
+            var items = Set.Where(expression);
 
             return trackChanges
                         ? items

@@ -1,12 +1,14 @@
 ﻿using GreenFood.Domain.Models;
+using GreenFood.Domain.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace GreenFood.Web.Controllers
 {
     [Route("Users")]
-    [Authorize(Roles ="Admin, SuperAdmin")]
+    [Authorize(Roles = AccountRoles.GetAdministratorRole)]
     public class UsersController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -17,12 +19,14 @@ namespace GreenFood.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllUsers()
+        public IActionResult GetAllUsersAsync()
         {
-            return Ok(_userManager.Users);
+            var users = _userManager.Users.ToListAsync();
+
+            return Ok(users);
         }
 
-        [HttpGet("/{email}")]
+        [HttpGet("{email}")]
         public async Task<IActionResult> GetUserByEmailAsync([FromRoute] string email)
         {
             var user = await _userManager.FindByEmailAsync(email);

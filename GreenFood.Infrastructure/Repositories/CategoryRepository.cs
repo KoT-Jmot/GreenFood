@@ -1,5 +1,6 @@
 ﻿using GreenFood.Domain.Contracts;
 using GreenFood.Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace GreenFood.Infrastructure.Repositories
 {
@@ -10,13 +11,9 @@ namespace GreenFood.Infrastructure.Repositories
         { 
         }
 
-        public bool CategoryByNameExisted(string name)
+        public async Task<Category?> GetCategoryByNameAsync(string name)
         {
-            return GetByQueryable(c => c.Name == name).Any();
-        }
-        public bool CategoryByIdExisted(Guid categoruId)
-        {
-            return GetByQueryable(c => c.Id == categoruId).Any();
+            return await GetByQueryable(c => c.Name!.Equals(name)).FirstOrDefaultAsync();
         }
     }
 }

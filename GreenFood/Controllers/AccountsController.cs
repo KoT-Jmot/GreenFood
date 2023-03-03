@@ -1,15 +1,15 @@
 ﻿using GreenFood.Application.Contracts;
-using GreenFood.Application.DTO;
+using GreenFood.Application.DTO.InputDto;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GreenFood.Web.Controllers
 {
-    [Route("Account")]
-    public class AccountController : Controller
+    [Route("Accounts")]
+    public class AccountsController : Controller
     {
         private readonly IAccountService _account;
 
-        public AccountController(IAccountService account)
+        public AccountsController(IAccountService account)
         {
             _account = account;
         }
@@ -17,17 +17,17 @@ namespace GreenFood.Web.Controllers
         [HttpPost("SignUp")]
         public async Task<IActionResult> SignUpAsync([FromBody] UserForRegistrationDto userDto)
         {
-            await _account.SignUpAsync(userDto);
+            var userId = await _account.SignUpAsync(userDto);
 
-            return Ok();
+            return Created(nameof(SignUpAsync), userId);
         }
 
         [HttpPost("SignIn")]
         public async Task<IActionResult> SignInAsync([FromBody] UserForLoginDto userDto)
         {
-            var result = await _account.SignInAsync(userDto);
+            var jwtToken = await _account.SignInAsync(userDto);
 
-            return Ok(result);
+            return Ok(jwtToken);
         }
     }
 }
