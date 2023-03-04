@@ -5,13 +5,17 @@ namespace GreenFood.Application.Contracts
 {
     public interface IProductService
     {
-        Task<OutputProductDto> GetProductByIdAsync(Guid productId);
-        Task<IEnumerable<OutputProductDto>> GetAllProductsAsync();
+        Task<OutputProductDto> GetProductByIdAsync(
+            Guid productId,
+            CancellationToken cancellationToken = default);
+        Task<IEnumerable<OutputProductDto>> GetAllProductsAsync(CancellationToken cancellationToken = default);
         Task<Guid> CreateProductByUserIdAsync(
             ProductDto productDto,
-            string sellerId);
+            string sellerId,
+            CancellationToken cancellationToken = default);
         Task DeleteProductByIdAndUserIdAsync(
             string userId,
-            Guid productId);
+            Guid productId,
+            CancellationToken cancellationToken = default);
     }
 }

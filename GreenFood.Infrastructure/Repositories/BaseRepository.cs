@@ -19,30 +19,40 @@ namespace GreenFood.Infrastructure.Repositories
             return GetByQueryable(_=>true, trackChanges);
         }
  
-        public async Task<T?> GetByIdAsync(Guid id, bool trackChanges = false)
+        public async Task<T?> GetByIdAsync(
+            Guid id,
+            CancellationToken cancellationToken = default,
+            bool trackChanges = false)
         {
             return trackChanges
-                        ? await Set.FirstOrDefaultAsync(t => t.Id.Equals(id))
-                        : await Set.AsNoTracking().FirstOrDefaultAsync(t => t.Id.Equals(id));
+                        ? await Set.FirstOrDefaultAsync(t => t.Id.Equals(id), cancellationToken)
+                        : await Set.AsNoTracking().FirstOrDefaultAsync(t => t.Id.Equals(id), cancellationToken);
         }
 
-        public async Task AddAsync(T entity)
+        public async Task AddAsync(
+            T entity,
+            CancellationToken cancellationToken = default)
         {
-            await Set.AddAsync(entity);
+            await Set.AddAsync(entity, cancellationToken);
         }
 
-        public async Task RemoveAsync(T entity)
+        public async Task RemoveAsync(
+            T entity,
+            CancellationToken cancellationToken = default)
         {
-            await Task.Run(() => Set.Remove(entity));
+            await Task.Run(() => Set.Remove(entity), cancellationToken);
         }
 
-        public async Task RemoveRangeAsync(IEnumerable<T> entity)
+        public async Task RemoveRangeAsync(
+            IEnumerable<T> entity,
+            CancellationToken cancellationToken = default)
         {
-            await Task.Run(() => Set.RemoveRange(entity));
+            await Task.Run(() => Set.RemoveRange(entity), cancellationToken);
         }
 
         protected virtual IQueryable<T> GetByQueryable(
-            Expression<Func<T,bool>> expression, bool trackChanges = false)
+            Expression<Func<T,bool>> expression,
+            bool trackChanges = false)
         {
             var items = Set.Where(expression);
 

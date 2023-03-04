@@ -22,37 +22,37 @@ namespace GreenFood.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllOrdersAsync()
+        public async Task<IActionResult> GetAllOrdersAsync(CancellationToken cancellationToken)
         {
-            var orders = await _order.GetAllOrdersAsync();
+            var orders = await _order.GetAllOrdersAsync(cancellationToken);
 
             return Ok(orders);
         }
 
         [HttpGet("{orderId}")]
-        public async Task<IActionResult> GetOrderByIdAsync(Guid orderId)
+        public async Task<IActionResult> GetOrderByIdAsync(Guid orderId, CancellationToken cancellationToken)
         {
-            var order = await _order.GetOrderByIdAsync(orderId);
+            var order = await _order.GetOrderByIdAsync(orderId, cancellationToken);
 
             return Ok(order);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateOrderAsync([FromBody] OrderDto inputOrderDto)
+        public async Task<IActionResult> CreateOrderAsync([FromBody] OrderDto inputOrderDto, CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
 
-            var orderId = await _order.CreateOrderByUserIdAsync(inputOrderDto, userId);
+            var orderId = await _order.CreateOrderByUserIdAsync(inputOrderDto, userId, cancellationToken);
 
             return Created(nameof(CreateOrderAsync), orderId);
         }
 
         [HttpDelete("{orderId}")]
-        public async Task<IActionResult> DeleteOrderByIdAsync([FromRoute] Guid orderId)
+        public async Task<IActionResult> DeleteOrderByIdAsync([FromRoute] Guid orderId, CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
 
-            await _order.DeleteOrderByIdAndUserIdAsync(userId, orderId);
+            await _order.DeleteOrderByIdAndUserIdAsync(userId, orderId, cancellationToken);
 
             return NoContent();
         }

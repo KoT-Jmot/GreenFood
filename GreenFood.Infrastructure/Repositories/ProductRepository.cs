@@ -14,9 +14,10 @@ namespace GreenFood.Infrastructure.Repositories
         public async Task<Product?> GetProductByIdAndUserIdAsync(
             Guid productId,
             string userId,
+            CancellationToken cancellationToken = default,
             bool trackChanges = false)
         {
-            return await GetByQueryable(p => p.Id.Equals(productId) && p.SellerId!.Equals(userId), trackChanges).FirstOrDefaultAsync();
+            return await GetByQueryable(p => p.Id.Equals(productId) && p.SellerId!.Equals(userId), trackChanges).FirstOrDefaultAsync(cancellationToken);
         }
     }
 }

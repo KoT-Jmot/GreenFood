@@ -14,19 +14,21 @@ namespace GreenFood.Application.Services
     public class OrderService : IOrderService
     {
         private readonly IRepositoryManager _manager;
-        private readonly AddOrderValidator _addOrderValidator;
+        private readonly AddOrderValidator _OrderValidator;
 
         public OrderService(
             IRepositoryManager manager,
-            AddOrderValidator addOrderValidator)
+            AddOrderValidator OrderValidator)
         {
             _manager = manager;
-            _addOrderValidator = addOrderValidator;
+            _OrderValidator = OrderValidator;
         }
 
-        public async Task<OutputOrderDto> GetOrderByIdAsync(Guid orderId)
+        public async Task<OutputOrderDto> GetOrderByIdAsync(
+            Guid orderId,
+            CancellationToken cancellationToken = default)
         {
-            var order = await _manager.Orders.GetByIdAsync(orderId);
+            var order = await _manager.Orders.GetByIdAsync(orderId, cancellationToken);
 
             if (order is null)
                 throw new EntityNotFoundException("Order was not found!");
@@ -36,9 +38,9 @@ namespace GreenFood.Application.Services
             return outputOrder;
         }
 
-        public async Task<IEnumerable<OutputOrderDto>> GetAllOrdersAsync()
+        public async Task<IEnumerable<OutputOrderDto>> GetAllOrdersAsync(CancellationToken cancellationToken = default)
         {
-            var orders = await _manager.Orders.GetAll().ToListAsync();
+            var orders = await _manager.Orders.GetAll().ToListAsync(cancellationToken);
 
             var outputOrders = orders.Adapt<IEnumerable<OutputOrderDto>>();
 
@@ -47,11 +49,12 @@ namespace GreenFood.Application.Services
 
         public async Task<Guid> CreateOrderByUserIdAsync(
             OrderDto orderDto,
-            string customerId)
+            string customerId,
+            CancellationToken cancellationToken = default)
         {
-            await _addOrderValidator.ValidateAndThrowAsync(orderDto);
+            await _OrderValidator.ValidateAndThrowAsync(orderDto, cancellationToken);
 
-            var product = await _manager.Products.GetByIdAsync(orderDto.ProductId, true);
+            var product = await _manager.Products.GetByIdAsync(orderDto.ProductId, cancellationToken, true);
 
             if (product is null)
                 throw new EntityNotFoundException("Product was not found!");
@@ -63,8 +66,8 @@ namespace GreenFood.Application.Services
             order.CreateDate = DateTime.Now;
             order.CustomerId = customerId;
 
-            await _manager.Orders.AddAsync(order);
-            await _manager.SaveChangesAsync();
+            await _manager.Orders.AddAsync(order, cancellationToken);
+            await _manager.SaveChangesAsync(cancellationToken);
 
             product.Count -= order.Count;
 
@@ -73,15 +76,16 @@ namespace GreenFood.Application.Services
 
         public async Task DeleteOrderByIdAndUserIdAsync(
             string userId,
-            Guid orderId)
+            Guid orderId,
+            CancellationToken cancellationToken = default)
         {
-            var order = await _manager.Orders.GetOrderByIdAndUserIdAsync(orderId, userId);
+            var order = await _manager.Orders.GetOrderByIdAndUserIdAsync(orderId, userId, cancellationToken);
 
             if (order is null)
                 throw new EntityNotFoundException("Order was not found!");
 
-            await _manager.Orders.RemoveAsync(order);
-            await _manager.SaveChangesAsync();
+            await _manager.Orders.RemoveAsync(order, cancellationToken);
+            await _manager.SaveChangesAsync(cancellationToken);
         }
     }
 }

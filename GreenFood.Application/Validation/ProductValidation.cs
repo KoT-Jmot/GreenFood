@@ -3,9 +3,9 @@ using GreenFood.Application.DTO.InputDto;
 
 namespace GreenFood.Application.Validation
 {
-    public class AddProductValidation : AbstractValidator<ProductDto>
+    public class ProductValidation : AbstractValidator<ProductDto>
     {
-        public AddProductValidation()
+        public ProductValidation()
         {
             RuleFor(p=>p.Header)
                 .NotEmpty()
