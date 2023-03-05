@@ -6,7 +6,7 @@ namespace GreenFood.Domain.Contracts
     {
         Task<Category?> GetCategoryByNameAsync(
             string name,
-            CancellationToken cancellationToken = default,
-            bool TrackChanges = false);
+            bool trackChanges = false,
+            CancellationToken cancellationToken = default);
     }
 }

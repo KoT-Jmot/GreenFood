@@ -29,7 +29,7 @@ namespace GreenFood.Application.Services
             Guid categoryId,
             CancellationToken cancellationToken)
         {
-            var category = await _manager.Categories.GetByIdAsync(categoryId, cancellationToken);
+            var category = await _manager.Categories.GetByIdAsync(categoryId, false, cancellationToken);
 
             if (category is null)
                 throw new EntityNotFoundException("Category was not found!");
@@ -55,7 +55,7 @@ namespace GreenFood.Application.Services
 
             await _CategoryValidator.ValidateAndThrowAsync(categoryDto, cancellationToken);
 
-            if (await _manager.Categories.GetCategoryByNameAsync(categoryDto.Name!, cancellationToken) is not null)
+            if (await _manager.Categories.GetCategoryByNameAsync(categoryDto.Name!,false, cancellationToken) is not null)
                 throw new CreatingCategoryException("This category already exists!");
 
             var category = categoryDto.Adapt<Category>();
@@ -70,7 +70,7 @@ namespace GreenFood.Application.Services
             Guid categoryId,
             CancellationToken cancellationToken)
         {
-            var category = await _manager.Categories.GetByIdAsync(categoryId, cancellationToken);
+            var category = await _manager.Categories.GetByIdAsync(categoryId,false, cancellationToken);
 
             if (category is null)
                 throw new EntityNotFoundException("Category was not found!");

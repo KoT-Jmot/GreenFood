@@ -21,8 +21,8 @@ namespace GreenFood.Infrastructure.Repositories
  
         public async Task<T?> GetByIdAsync(
             Guid id,
-            CancellationToken cancellationToken = default,
-            bool trackChanges = false)
+            bool trackChanges = false,
+            CancellationToken cancellationToken = default)
         {
             return trackChanges
                         ? await Set.FirstOrDefaultAsync(t => t.Id.Equals(id), cancellationToken)

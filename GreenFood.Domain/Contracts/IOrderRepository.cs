@@ -7,7 +7,7 @@ namespace GreenFood.Domain.Contracts
         Task<Order?> GetOrderByIdAndUserIdAsync(
             Guid orderId,
             string userId,
-            CancellationToken cancellationToken = default,
-            bool trackChanges = false);
+            bool trackChanges = false,
+            CancellationToken cancellationToken = default);
     }
 }

@@ -28,7 +28,7 @@ namespace GreenFood.Application.Services
             Guid orderId,
             CancellationToken cancellationToken)
         {
-            var order = await _manager.Orders.GetByIdAsync(orderId, cancellationToken);
+            var order = await _manager.Orders.GetByIdAsync(orderId, false, cancellationToken);
 
             if (order is null)
                 throw new EntityNotFoundException("Order was not found!");
@@ -54,7 +54,7 @@ namespace GreenFood.Application.Services
         {
             await _OrderValidator.ValidateAndThrowAsync(orderDto, cancellationToken);
 
-            var product = await _manager.Products.GetByIdAsync(orderDto.ProductId, cancellationToken, true);
+            var product = await _manager.Products.GetByIdAsync(orderDto.ProductId, true, cancellationToken);
 
             if (product is null)
                 throw new EntityNotFoundException("Product was not found!");
@@ -79,7 +79,7 @@ namespace GreenFood.Application.Services
             Guid orderId,
             CancellationToken cancellationToken)
         {
-            var order = await _manager.Orders.GetOrderByIdAndUserIdAsync(orderId, userId, cancellationToken);
+            var order = await _manager.Orders.GetOrderByIdAndUserIdAsync(orderId, userId, false, cancellationToken);
 
             if (order is null)
                 throw new EntityNotFoundException("Order was not found!");
