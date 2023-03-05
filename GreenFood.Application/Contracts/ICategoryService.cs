@@ -5,9 +5,15 @@ namespace GreenFood.Application.Contracts
 {
     public interface ICategoryService
     {
-        Task<OutputCategoryDto> GetCategoryByIdAsync(Guid categoryId, CancellationToken cancellationToken = default);
-        Task<IEnumerable<OutputCategoryDto>> GetAllCategoriesAsync(CancellationToken cancellationToken = default);
-        Task<Guid> CreateCategoryAsync(CategoryDto categoryDto, CancellationToken cancellationToken = default);
-        Task DeleteCategoryByIdAsync(Guid categoryId, CancellationToken cancellationToken = default);
+        Task<IEnumerable<OutputCategoryDto>> GetAllCategoriesAsync(CancellationToken cancellationToken);
+        Task<OutputCategoryDto> GetCategoryByIdAsync(
+            Guid categoryId,
+            CancellationToken cancellationToken);
+        Task<Guid> CreateCategoryAsync(
+            CategoryDto categoryDto,
+            CancellationToken cancellationToken);
+        Task DeleteCategoryByIdAsync(
+            Guid categoryId,
+            CancellationToken cancellationToken);
     }
 }

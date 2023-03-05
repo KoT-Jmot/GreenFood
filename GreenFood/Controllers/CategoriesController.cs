@@ -27,7 +27,9 @@ namespace GreenFood.Web.Controllers
         }
 
         [HttpGet("{categoryId}")]
-        public async Task<IActionResult> GetCategoryByIdAsync([FromRoute] Guid categoryId, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetCategoryByIdAsync(
+            [FromRoute] Guid categoryId,
+            CancellationToken cancellationToken)
         { 
             var category = await _category.GetCategoryByIdAsync(categoryId, cancellationToken);
 
@@ -36,7 +38,9 @@ namespace GreenFood.Web.Controllers
 
         //[Authorize(Roles = $"{AccountRoles.GetAdministratorRole}")]
         [HttpPost]
-        public async Task<IActionResult> CreateCategoryAsync([FromBody] CategoryDto categoryDto, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateCategoryAsync(
+            [FromBody] CategoryDto categoryDto,
+            CancellationToken cancellationToken)
         {
             var categoryId = await _category.CreateCategoryAsync(categoryDto, cancellationToken);
 
@@ -45,7 +49,9 @@ namespace GreenFood.Web.Controllers
 
         //[Authorize(Roles = $"{AccountRoles.GetAdministratorRole}")]
         [HttpDelete("{categoryId}")]
-        public async Task<IActionResult> DeleteCategoryAsync([FromRoute] Guid categoryId, CancellationToken cancellationToken)
+        public async Task<IActionResult> DeleteCategoryAsync(
+            [FromRoute] Guid categoryId,
+            CancellationToken cancellationToken)
         {
             await _category.DeleteCategoryByIdAsync(categoryId, cancellationToken);
 

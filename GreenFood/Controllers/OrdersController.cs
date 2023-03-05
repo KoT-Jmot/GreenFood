@@ -30,7 +30,9 @@ namespace GreenFood.Web.Controllers
         }
 
         [HttpGet("{orderId}")]
-        public async Task<IActionResult> GetOrderByIdAsync(Guid orderId, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetOrderByIdAsync(
+            Guid orderId,
+            CancellationToken cancellationToken)
         {
             var order = await _order.GetOrderByIdAsync(orderId, cancellationToken);
 
@@ -38,7 +40,9 @@ namespace GreenFood.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateOrderAsync([FromBody] OrderDto inputOrderDto, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateOrderAsync(
+            [FromBody] OrderDto inputOrderDto,
+            CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
 
@@ -48,7 +52,9 @@ namespace GreenFood.Web.Controllers
         }
 
         [HttpDelete("{orderId}")]
-        public async Task<IActionResult> DeleteOrderByIdAsync([FromRoute] Guid orderId, CancellationToken cancellationToken)
+        public async Task<IActionResult> DeleteOrderByIdAsync(
+            [FromRoute] Guid orderId,
+            CancellationToken cancellationToken)
         {
             var userId = User.GetUserId();
 

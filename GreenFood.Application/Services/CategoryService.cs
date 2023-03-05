@@ -25,7 +25,9 @@ namespace GreenFood.Application.Services
             _CategoryValidator = CategoryValidator;
         }
 
-        public async Task<OutputCategoryDto> GetCategoryByIdAsync(Guid categoryId, CancellationToken cancellationToken = default)
+        public async Task<OutputCategoryDto> GetCategoryByIdAsync(
+            Guid categoryId,
+            CancellationToken cancellationToken)
         {
             var category = await _manager.Categories.GetByIdAsync(categoryId, cancellationToken);
 
@@ -37,7 +39,7 @@ namespace GreenFood.Application.Services
             return outputCategory;
         }
 
-        public async Task<IEnumerable<OutputCategoryDto>> GetAllCategoriesAsync(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<OutputCategoryDto>> GetAllCategoriesAsync(CancellationToken cancellationToken)
         {
             var categories = await _manager.Categories.GetAll().ToListAsync(cancellationToken);
 
@@ -46,7 +48,9 @@ namespace GreenFood.Application.Services
             return outputCategories;
         }
         
-        public async Task<Guid> CreateCategoryAsync(CategoryDto categoryDto, CancellationToken cancellationToken = default)
+        public async Task<Guid> CreateCategoryAsync(
+            CategoryDto categoryDto,
+            CancellationToken cancellationToken)
         {
 
             await _CategoryValidator.ValidateAndThrowAsync(categoryDto, cancellationToken);
@@ -62,7 +66,9 @@ namespace GreenFood.Application.Services
             return category.Id;
         }
 
-        public async Task DeleteCategoryByIdAsync(Guid categoryId, CancellationToken cancellationToken = default)
+        public async Task DeleteCategoryByIdAsync(
+            Guid categoryId,
+            CancellationToken cancellationToken)
         {
             var category = await _manager.Categories.GetByIdAsync(categoryId, cancellationToken);
 

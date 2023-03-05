@@ -33,7 +33,9 @@ namespace GreenFood.Application.Services
             _jwtConfig = jwtConfig;
         }
 
-        public async Task<string> SignUpAsync(UserForRegistrationDto userForRegistrationDto, CancellationToken cancellationToken = default)
+        public async Task<string> SignUpAsync(
+            UserForRegistrationDto userForRegistrationDto,
+            CancellationToken cancellationToken)
         {
             await _registrationUserValidator.ValidateAndThrowAsync(userForRegistrationDto, cancellationToken);
 
@@ -58,7 +60,9 @@ namespace GreenFood.Application.Services
             return user.Id;
         }
 
-        public async Task<string> SignInAsync(UserForLoginDto userForLoginDto, CancellationToken cancellationToken = default)
+        public async Task<string> SignInAsync(
+            UserForLoginDto userForLoginDto,
+            CancellationToken cancellationToken)
         {
             await _loginUserValidator.ValidateAndThrowAsync(userForLoginDto, cancellationToken);
 

@@ -26,7 +26,7 @@ namespace GreenFood.Application.Services
 
         public async Task<OutputOrderDto> GetOrderByIdAsync(
             Guid orderId,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken)
         {
             var order = await _manager.Orders.GetByIdAsync(orderId, cancellationToken);
 
@@ -38,7 +38,7 @@ namespace GreenFood.Application.Services
             return outputOrder;
         }
 
-        public async Task<IEnumerable<OutputOrderDto>> GetAllOrdersAsync(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<OutputOrderDto>> GetAllOrdersAsync(CancellationToken cancellationToken)
         {
             var orders = await _manager.Orders.GetAll().ToListAsync(cancellationToken);
 
@@ -50,7 +50,7 @@ namespace GreenFood.Application.Services
         public async Task<Guid> CreateOrderByUserIdAsync(
             OrderDto orderDto,
             string customerId,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken)
         {
             await _OrderValidator.ValidateAndThrowAsync(orderDto, cancellationToken);
 
@@ -77,7 +77,7 @@ namespace GreenFood.Application.Services
         public async Task DeleteOrderByIdAndUserIdAsync(
             string userId,
             Guid orderId,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken)
         {
             var order = await _manager.Orders.GetOrderByIdAndUserIdAsync(orderId, userId, cancellationToken);
 

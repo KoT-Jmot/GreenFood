@@ -26,7 +26,7 @@ namespace GreenFood.Application.Services
 
         public async Task<OutputProductDto> GetProductByIdAsync(
             Guid productId,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken)
         {
             var product = await _manager.Products.GetByIdAsync(productId, cancellationToken);
 
@@ -38,7 +38,7 @@ namespace GreenFood.Application.Services
             return outputProduct;
         }
 
-        public async Task<IEnumerable<OutputProductDto>> GetAllProductsAsync(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<OutputProductDto>> GetAllProductsAsync(CancellationToken cancellationToken)
         {
             var products = await _manager.Products.GetAll().ToListAsync(cancellationToken);
 
@@ -50,7 +50,7 @@ namespace GreenFood.Application.Services
         public async Task<Guid> CreateProductByUserIdAsync(
             ProductDto productDto,
             string sellerId,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken)
         {
             await _ProductValidator.ValidateAndThrowAsync(productDto, cancellationToken);
 
@@ -71,7 +71,7 @@ namespace GreenFood.Application.Services
         public async Task DeleteProductByIdAndUserIdAsync(
             string userId,
             Guid productId,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken)
         {
             var product = await _manager.Products.GetProductByIdAndUserIdAsync(productId, userId, cancellationToken);
 

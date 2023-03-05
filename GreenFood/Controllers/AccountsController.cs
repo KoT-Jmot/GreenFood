@@ -15,7 +15,9 @@ namespace GreenFood.Web.Controllers
         }
 
         [HttpPost("SignUp")]
-        public async Task<IActionResult> SignUpAsync([FromBody] UserForRegistrationDto userDto, CancellationToken cancellationToken)
+        public async Task<IActionResult> SignUpAsync(
+            [FromBody] UserForRegistrationDto userDto,
+            CancellationToken cancellationToken)
         {
             var userId = await _account.SignUpAsync(userDto, cancellationToken);
 
@@ -23,7 +25,9 @@ namespace GreenFood.Web.Controllers
         }
 
         [HttpPost("SignIn")]
-        public async Task<IActionResult> SignInAsync([FromBody] UserForLoginDto userDto, CancellationToken cancellationToken)
+        public async Task<IActionResult> SignInAsync(
+            [FromBody] UserForLoginDto userDto,
+            CancellationToken cancellationToken)
         {
             var jwtToken = await _account.SignInAsync(userDto, cancellationToken);
 
