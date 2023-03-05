@@ -14,20 +14,22 @@ namespace GreenFood.Application.Services
     public class CategoryService : ICategoryService
     {
         private readonly IRepositoryManager _manager;
-        private readonly AddCategoryValidator _addCategoryValidator;
+        private readonly AddCategoryValidator _CategoryValidator;
 
         public CategoryService(
             IRepositoryManager manager,
-            AddCategoryValidator addCategoryValidator)
+            AddCategoryValidator CategoryValidator)
         {
 
             _manager = manager;
-            _addCategoryValidator = addCategoryValidator;
+            _CategoryValidator = CategoryValidator;
         }
 
-        public async Task<OutputCategoryDto> GetCategoryByIdAsync(Guid categoryId)
+        public async Task<OutputCategoryDto> GetCategoryByIdAsync(
+            Guid categoryId,
+            CancellationToken cancellationToken)
         {
-            var category = await _manager.Categories.GetByIdAsync(categoryId);
+            var category = await _manager.Categories.GetByIdAsync(categoryId, false, cancellationToken);
 
             if (category is null)
                 throw new EntityNotFoundException("Category was not found!");
@@ -37,40 +39,44 @@ namespace GreenFood.Application.Services
             return outputCategory;
         }
 
-        public async Task<IEnumerable<OutputCategoryDto>> GetAllCategoriesAsync()
+        public async Task<IEnumerable<OutputCategoryDto>> GetAllCategoriesAsync(CancellationToken cancellationToken)
         {
-            var categories = await _manager.Categories.GetAll().ToListAsync();
+            var categories = await _manager.Categories.GetAll().ToListAsync(cancellationToken);
 
             var outputCategories = categories.Adapt<IEnumerable<OutputCategoryDto>>();
 
             return outputCategories;
         }
         
-        public async Task<Guid> CreateCategoryAsync(CategoryDto categoryDto)
+        public async Task<Guid> CreateCategoryAsync(
+            CategoryDto categoryDto,
+            CancellationToken cancellationToken)
         {
 
-            await _addCategoryValidator.ValidateAndThrowAsync(categoryDto);
+            await _CategoryValidator.ValidateAndThrowAsync(categoryDto, cancellationToken);
 
-            if (await _manager.Categories.GetCategoryByNameAsync(categoryDto.Name!) is not null)
+            if (await _manager.Categories.GetCategoryByNameAsync(categoryDto.Name!,false, cancellationToken) is not null)
                 throw new CreatingCategoryException("This category already exists!");
 
             var category = categoryDto.Adapt<Category>();
 
-            await _manager.Categories.AddAsync(category);
-            await _manager.SaveChangesAsync();
+            await _manager.Categories.AddAsync(category, cancellationToken);
+            await _manager.SaveChangesAsync(cancellationToken);
 
             return category.Id;
         }
 
-        public async Task DeleteCategoryByIdAsync(Guid categoryId)
+        public async Task DeleteCategoryByIdAsync(
+            Guid categoryId,
+            CancellationToken cancellationToken)
         {
-            var category = await _manager.Categories.GetByIdAsync(categoryId);
+            var category = await _manager.Categories.GetByIdAsync(categoryId,false, cancellationToken);
 
             if (category is null)
                 throw new EntityNotFoundException("Category was not found!");
 
-            await _manager.Categories.RemoveAsync(category);
-            await _manager.SaveChangesAsync();
+            await _manager.Categories.RemoveAsync(category, cancellationToken);
+            await _manager.SaveChangesAsync(cancellationToken);
         }
     }
 }

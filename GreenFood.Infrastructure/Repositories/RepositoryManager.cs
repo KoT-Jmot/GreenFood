@@ -25,9 +25,9 @@ namespace GreenFood.Infrastructure.Repositories
         public ICategoryRepository Categories =>
                 _categoryRepository ??= new CategoryRepository(_context);
 
-        public async Task SaveChangesAsync()
+        public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }

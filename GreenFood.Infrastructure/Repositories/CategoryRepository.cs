@@ -11,9 +11,12 @@ namespace GreenFood.Infrastructure.Repositories
         { 
         }
 
-        public async Task<Category?> GetCategoryByNameAsync(string name)
+        public async Task<Category?> GetCategoryByNameAsync(
+            string name,
+            bool trackChanges = false,
+            CancellationToken cancellationToken = default)
         {
-            return await GetByQueryable(c => c.Name!.Equals(name)).FirstOrDefaultAsync();
+            return await GetByQueryable(c => c.Name!.Equals(name), trackChanges).FirstOrDefaultAsync(cancellationToken);
         }
     }
 }

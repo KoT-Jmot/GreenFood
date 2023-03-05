@@ -15,17 +15,21 @@ namespace GreenFood.Web.Controllers
         }
 
         [HttpPost("SignUp")]
-        public async Task<IActionResult> SignUpAsync([FromBody] UserForRegistrationDto userDto)
+        public async Task<IActionResult> SignUpAsync(
+            [FromBody] UserForRegistrationDto userDto,
+            CancellationToken cancellationToken)
         {
-            var userId = await _account.SignUpAsync(userDto);
+            var userId = await _account.SignUpAsync(userDto, cancellationToken);
 
             return Created(nameof(SignUpAsync), userId);
         }
 
         [HttpPost("SignIn")]
-        public async Task<IActionResult> SignInAsync([FromBody] UserForLoginDto userDto)
+        public async Task<IActionResult> SignInAsync(
+            [FromBody] UserForLoginDto userDto,
+            CancellationToken cancellationToken)
         {
-            var jwtToken = await _account.SignInAsync(userDto);
+            var jwtToken = await _account.SignInAsync(userDto, cancellationToken);
 
             return Ok(jwtToken);
         }

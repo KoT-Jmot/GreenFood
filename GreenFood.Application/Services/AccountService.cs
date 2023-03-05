@@ -33,9 +33,11 @@ namespace GreenFood.Application.Services
             _jwtConfig = jwtConfig;
         }
 
-        public async Task<string> SignUpAsync(UserForRegistrationDto userForRegistrationDto)
+        public async Task<string> SignUpAsync(
+            UserForRegistrationDto userForRegistrationDto,
+            CancellationToken cancellationToken)
         {
-            await _registrationUserValidator.ValidateAndThrowAsync(userForRegistrationDto);
+            await _registrationUserValidator.ValidateAndThrowAsync(userForRegistrationDto, cancellationToken);
 
             var user = userForRegistrationDto.Adapt<ApplicationUser>();
 
@@ -58,9 +60,11 @@ namespace GreenFood.Application.Services
             return user.Id;
         }
 
-        public async Task<string> SignInAsync(UserForLoginDto userForLoginDto)
+        public async Task<string> SignInAsync(
+            UserForLoginDto userForLoginDto,
+            CancellationToken cancellationToken)
         {
-            await _loginUserValidator.ValidateAndThrowAsync(userForLoginDto);
+            await _loginUserValidator.ValidateAndThrowAsync(userForLoginDto, cancellationToken);
 
             var user = await _userManager.FindByEmailAsync(userForLoginDto.Email);
 
