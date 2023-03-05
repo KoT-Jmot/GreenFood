@@ -19,10 +19,11 @@ namespace GreenFood.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllCategoriesAsync(CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAllCategoriesAsync(
+            [FromQuery] CategoryQueryDto categoryQuery,
+            CancellationToken cancellationToken)
         {
-            var categories = await _category.GetAllCategoriesAsync(cancellationToken);
-
+            var categories = await _category.GetAllCategoriesAsync(categoryQuery, cancellationToken);
             return Ok(categories);
         }
 

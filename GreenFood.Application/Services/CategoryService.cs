@@ -3,11 +3,13 @@ using GreenFood.Application.Contracts;
 using GreenFood.Application.DTO.InputDto;
 using GreenFood.Application.DTO.OutputDto;
 using GreenFood.Application.Validation;
+using GreenFood.Domain.Utils;
 using GreenFood.Domain.Exceptions;
 using GreenFood.Domain.Models;
 using GreenFood.Infrastructure.Configurations;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace GreenFood.Application.Services
 {
@@ -15,14 +17,17 @@ namespace GreenFood.Application.Services
     {
         private readonly IRepositoryManager _manager;
         private readonly AddCategoryValidator _CategoryValidator;
+        private readonly HttpResponseMessage _httpResponse;
 
         public CategoryService(
             IRepositoryManager manager,
-            AddCategoryValidator CategoryValidator)
+            AddCategoryValidator CategoryValidator,
+            HttpResponseMessage httpResponse)
         {
 
             _manager = manager;
             _CategoryValidator = CategoryValidator;
+            _httpResponse = httpResponse;
         }
 
         public async Task<OutputCategoryDto> GetCategoryByIdAsync(
@@ -39,11 +44,32 @@ namespace GreenFood.Application.Services
             return outputCategory;
         }
 
-        public async Task<IEnumerable<OutputCategoryDto>> GetAllCategoriesAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<OutputCategoryDto>> GetAllCategoriesAsync(
+            CategoryQueryDto categoryQuery,
+            CancellationToken cancellationToken)
         {
-            var categories = await _manager.Categories.GetAll().ToListAsync(cancellationToken);
+            var categories = _manager.Categories.GetAll();
 
-            var outputCategories = categories.Adapt<IEnumerable<OutputCategoryDto>>();
+            if (categoryQuery.Name is not null)
+                categories = categories.Where(c => c.Name!.Contains(categoryQuery.Name));
+
+            var totalCount = categories.Count();
+            var metaData = new MetaData
+            {
+                TotalCount = totalCount,
+                CurrentPage = categoryQuery.pageNumber,
+                PageSize = categoryQuery.pageSize,
+                TotalPages = totalCount / categoryQuery.pageSize
+            };
+            _httpResponse.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metaData));
+
+            var pagingCategories = await categories
+                                        .Skip((categoryQuery.pageNumber-1)*categoryQuery.pageSize)
+                                        .OrderBy(c=>c.Name)
+                                        .Take(categoryQuery.pageSize)
+                                        .ToListAsync(cancellationToken);
+
+            var outputCategories = pagingCategories.Adapt<IEnumerable<OutputCategoryDto>>();
 
             return outputCategories;
         }
