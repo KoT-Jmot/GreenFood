@@ -1,9 +1,12 @@
 ﻿using FluentValidation;
 using GreenFood.Application.Contracts;
+using GreenFood.Application.DTO;
 using GreenFood.Application.DTO.InputDto;
 using GreenFood.Application.DTO.OutputDto;
 using GreenFood.Application.Validation;
+using GreenFood.Web.features;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 
 namespace GreenFood.Web.Controllers
@@ -19,12 +22,13 @@ namespace GreenFood.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllCategoriesAsync(
+        public async Task<CustomActionResult<PagedList<OutputCategoryDto>>> GetAllCategoriesAsync(
             [FromQuery] CategoryQueryDto categoryQuery,
             CancellationToken cancellationToken)
         {
-            var categories = await _category.GetAllCategoriesAsync(categoryQuery, cancellationToken);
-            return Ok(categories);
+            var result = await _category.GetAllCategoriesAsync(categoryQuery, cancellationToken);
+
+            return new CustomActionResult<PagedList<OutputCategoryDto>>(result);
         }
 
         [HttpGet("{categoryId}")]

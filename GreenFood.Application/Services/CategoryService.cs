@@ -9,7 +9,8 @@ using GreenFood.Domain.Models;
 using GreenFood.Infrastructure.Configurations;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
+using Microsoft.IdentityModel.Tokens;
+using GreenFood.Application.DTO;
 
 namespace GreenFood.Application.Services
 {
@@ -17,17 +18,14 @@ namespace GreenFood.Application.Services
     {
         private readonly IRepositoryManager _manager;
         private readonly AddCategoryValidator _CategoryValidator;
-        private readonly HttpResponseMessage _httpResponse;
 
         public CategoryService(
             IRepositoryManager manager,
-            AddCategoryValidator CategoryValidator,
-            HttpResponseMessage httpResponse)
+            AddCategoryValidator CategoryValidator)
         {
 
             _manager = manager;
             _CategoryValidator = CategoryValidator;
-            _httpResponse = httpResponse;
         }
 
         public async Task<OutputCategoryDto> GetCategoryByIdAsync(
@@ -44,34 +42,27 @@ namespace GreenFood.Application.Services
             return outputCategory;
         }
 
-        public async Task<IEnumerable<OutputCategoryDto>> GetAllCategoriesAsync(
+        public async Task<PagedList<OutputCategoryDto>> GetAllCategoriesAsync(
             CategoryQueryDto categoryQuery,
             CancellationToken cancellationToken)
         {
             var categories = _manager.Categories.GetAll();
 
-            if (categoryQuery.Name is not null)
-                categories = categories.Where(c => c.Name!.Contains(categoryQuery.Name));
-
             var totalCount = categories.Count();
-            var metaData = new MetaData
-            {
-                TotalCount = totalCount,
-                CurrentPage = categoryQuery.pageNumber,
-                PageSize = categoryQuery.pageSize,
-                TotalPages = totalCount / categoryQuery.pageSize
-            };
-            _httpResponse.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metaData));
+
+            if (!categoryQuery.Name.IsNullOrEmpty())
+                categories = categories.Where(c => c.Name!.Contains(categoryQuery.Name!));
 
             var pagingCategories = await categories
-                                        .Skip((categoryQuery.pageNumber-1)*categoryQuery.pageSize)
-                                        .OrderBy(c=>c.Name)
+                                        .Skip((categoryQuery.pageNumber - 1) * categoryQuery.pageSize)
                                         .Take(categoryQuery.pageSize)
-                                        .ToListAsync(cancellationToken);
+                                        .ToListAsync();
 
             var outputCategories = pagingCategories.Adapt<IEnumerable<OutputCategoryDto>>();
 
-            return outputCategories;
+            var result = PagedList<OutputCategoryDto>.ToPagedList(outputCategories, categoryQuery.pageNumber, categoryQuery.pageSize, totalCount);
+
+            return result;
         }
         
         public async Task<Guid> CreateCategoryAsync(

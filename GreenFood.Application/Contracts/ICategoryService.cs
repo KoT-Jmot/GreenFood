@@ -1,11 +1,12 @@
-﻿using GreenFood.Application.DTO.InputDto;
+﻿using GreenFood.Application.DTO;
+using GreenFood.Application.DTO.InputDto;
 using GreenFood.Application.DTO.OutputDto;
 
 namespace GreenFood.Application.Contracts
 {
     public interface ICategoryService
     {
-        Task<IEnumerable<OutputCategoryDto>> GetAllCategoriesAsync(
+        Task<PagedList<OutputCategoryDto>> GetAllCategoriesAsync(
             CategoryQueryDto categoryQuery,
             CancellationToken cancellationToken);
         Task<OutputCategoryDto> GetCategoryByIdAsync(
