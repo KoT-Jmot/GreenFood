@@ -1,7 +1,7 @@
 ﻿using GreenFood.Application.Contracts;
 using GreenFood.Domain.Utils;
 
-namespace GreenFood.Application.DTO
+namespace GreenFood.Application.RequestFeatures
 {
     public class PagedList<T> : List<T>, IPagination
     {
@@ -13,7 +13,7 @@ namespace GreenFood.Application.DTO
             int currentPage)
         {
             var pageSize = items.Count();
-            var totalPages = totalCount / pageSize;
+            var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
 
             MetaData = new MetaData(currentPage, totalPages, pageSize, totalCount);
 
@@ -23,7 +23,7 @@ namespace GreenFood.Application.DTO
             IEnumerable<T> source,
             int currentPage,
             int totalCount)
-        { 
+        {
             return new PagedList<T>(source, totalCount, currentPage);
         }
     }

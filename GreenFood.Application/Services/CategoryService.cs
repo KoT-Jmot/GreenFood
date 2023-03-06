@@ -3,14 +3,13 @@ using GreenFood.Application.Contracts;
 using GreenFood.Application.DTO.InputDto;
 using GreenFood.Application.DTO.OutputDto;
 using GreenFood.Application.Validation;
-using GreenFood.Domain.Utils;
 using GreenFood.Domain.Exceptions;
 using GreenFood.Domain.Models;
 using GreenFood.Infrastructure.Configurations;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using GreenFood.Application.DTO;
+using GreenFood.Application.RequestFeatures;
 
 namespace GreenFood.Application.Services
 {
@@ -60,9 +59,9 @@ namespace GreenFood.Application.Services
 
             var outputCategories = pagingCategories.Adapt<IEnumerable<OutputCategoryDto>>();
 
-            var result = PagedList<OutputCategoryDto>.ToPagedList(outputCategories, categoryQuery.pageNumber, categoryQuery.pageSize, totalCount);
+            var categoriesWithMetaData = PagedList<OutputCategoryDto>.ToPagedList(outputCategories, categoryQuery.pageNumber, totalCount);
 
-            return result;
+            return categoriesWithMetaData;
         }
         
         public async Task<Guid> CreateCategoryAsync(

@@ -1,5 +1,5 @@
 ﻿using GreenFood.Application.Contracts;
-using GreenFood.Domain.Utils;
+using GreenFood.Application.RequestFeatures;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 namespace GreenFood.Web.features
@@ -19,7 +19,10 @@ namespace GreenFood.Web.features
                 {ResponceHeaders.CurrentPage, _result.MetaData!.CurrentPage.ToString()},
                 {ResponceHeaders.TotalCount, _result.MetaData.TotalCount.ToString()},
                 {ResponceHeaders.TotalPages, _result.MetaData.TotalPages.ToString()},
-                {ResponceHeaders.PageSize, _result.MetaData.PageSize.ToString()}
+                {ResponceHeaders.PageSize, _result.MetaData.PageSize.ToString()},
+                {ResponceHeaders.HasNext, _result.MetaData.HasNext.ToString()},
+                {ResponceHeaders.HasPrevious, _result.MetaData.HasPrevious.ToString()}
+
             };
 
             foreach (var item in headers)

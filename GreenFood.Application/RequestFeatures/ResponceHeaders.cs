@@ -1,4 +1,4 @@
-﻿namespace GreenFood.Domain.Utils
+﻿namespace GreenFood.Application.RequestFeatures
 {
     public static class ResponceHeaders
     {
@@ -6,5 +6,7 @@
         public const string TotalCount = "x-total";
         public const string TotalPages = "x-total-pages";
         public const string PageSize = "x-page-size";
+        public const string HasNext = "x-next-page";
+        public const string HasPrevious = "x-prev-page";
     }
 }
