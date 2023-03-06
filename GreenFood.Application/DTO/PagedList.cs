@@ -22,7 +22,6 @@ namespace GreenFood.Application.DTO
         public static PagedList<T> ToPagedList(
             IEnumerable<T> source,
             int currentPage,
-            int pageSize,
             int totalCount)
         { 
             return new PagedList<T>(source, totalCount, currentPage);
