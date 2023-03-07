@@ -2,12 +2,14 @@
 using GreenFood.Application.Contracts;
 using GreenFood.Application.DTO.InputDto;
 using GreenFood.Application.DTO.OutputDto;
+using GreenFood.Application.RequestFeatures;
 using GreenFood.Application.Validation;
 using GreenFood.Domain.Exceptions;
 using GreenFood.Domain.Models;
 using GreenFood.Infrastructure.Configurations;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace GreenFood.Application.Services
 {
@@ -38,13 +40,38 @@ namespace GreenFood.Application.Services
             return outputProduct;
         }
 
-        public async Task<IEnumerable<OutputProductDto>> GetAllProductsAsync(CancellationToken cancellationToken)
+        public async Task<PagedList<OutputProductDto>> GetAllProductsAsync(
+            ProductQueryDto productQuery,
+            CancellationToken cancellationToken)
         {
-            var products = await _manager.Products.GetAll().ToListAsync(cancellationToken);
+            var products = _manager.Products.GetAll();
 
-            var outputProducts = products.Adapt<IEnumerable<OutputProductDto>>();
+            if (!productQuery.Header.IsNullOrEmpty())
+                products = products.Where(p => p.Header!.Contains(productQuery.Header));
 
-            return outputProducts;
+            if (productQuery.Count is not null)
+                products = products.Where(p => p.Count == productQuery.Count);
+
+            if (productQuery.Price is not null)
+                products = products.Where(p => p.Price == productQuery.Price);
+
+            if (productQuery.CategoryId is not null)
+                products = products.Where(p => p.CategoryId == productQuery.CategoryId);
+
+            products = products.OrderBy(p => p.Header);
+
+            var totalCount = products.Count();
+
+            var pagingProducts = await products
+                                        .Skip((productQuery.pageNumber - 1) * productQuery.pageSize)
+                                        .Take(productQuery.pageSize)
+                                        .ToListAsync(cancellationToken);
+
+            var outputProducts = pagingProducts.Adapt<IEnumerable<OutputProductDto>>();
+
+            var productsWithMetaData = PagedList<OutputProductDto>.ToPagedList(outputProducts, productQuery.pageNumber, totalCount, productQuery.pageSize);
+
+            return productsWithMetaData;
         }
 
         public async Task<Guid> CreateProductByUserIdAsync(

@@ -10,9 +10,9 @@ namespace GreenFood.Application.RequestFeatures
         public PagedList(
             IEnumerable<T> items,
             int totalCount,
-            int currentPage)
+            int currentPage,
+            int pageSize)
         {
-            var pageSize = items.Count();
             var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
 
             MetaData = new MetaData(currentPage, totalPages, pageSize, totalCount);
@@ -22,9 +22,10 @@ namespace GreenFood.Application.RequestFeatures
         public static PagedList<T> ToPagedList(
             IEnumerable<T> source,
             int currentPage,
-            int totalCount)
+            int totalCount,
+            int pageSize)
         {
-            return new PagedList<T>(source, totalCount, currentPage);
+            return new PagedList<T>(source, totalCount, currentPage, pageSize);
         }
     }
 

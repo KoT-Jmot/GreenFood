@@ -3,10 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using GreenFood.Domain.Utils;
 using GreenFood.Application.DTO.InputDto;
-using Mapster;
 using GreenFood.Application.DTO.OutputDto;
-using GreenFood.Application.Validation;
-using FluentValidation;
+using GreenFood.Web.features;
+using GreenFood.Application.RequestFeatures;
 
 namespace GreenFood.Web.Controllers
 {
@@ -21,11 +20,13 @@ namespace GreenFood.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllProductsAsync(CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAllProductsAsync(
+            [FromQuery] ProductQueryDto productQuery,
+            CancellationToken cancellationToken)
         {
-            var products = await _product.GetAllProductsAsync(cancellationToken);
+            var products = await _product.GetAllProductsAsync(productQuery, cancellationToken);
 
-            return Ok(products);
+            return new CustomActionResult<PagedList<OutputProductDto>>(products);
         }
 
         [HttpGet("{productId}")]

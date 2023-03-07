@@ -18,7 +18,7 @@ namespace GreenFood.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<CustomActionResult<PagedList<OutputCategoryDto>>> GetAllCategoriesAsync(
+        public async Task<IActionResult> GetAllCategoriesAsync(
             [FromQuery] CategoryQueryDto categoryQuery,
             CancellationToken cancellationToken)
         {

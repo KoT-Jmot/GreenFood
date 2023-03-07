@@ -2,7 +2,7 @@
 {
     public abstract class BaseQueryDto
     {
-        public int pageNumber;
-        public int pageSize;
+        public int pageNumber { get; set; } = 1;
+        public int pageSize { get; set; } = 10;
     }
 }

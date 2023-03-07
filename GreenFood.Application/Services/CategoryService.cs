@@ -47,19 +47,21 @@ namespace GreenFood.Application.Services
         {
             var categories = _manager.Categories.GetAll();
 
-            var totalCount = categories.Count();
-
             if (!categoryQuery.Name.IsNullOrEmpty())
                 categories = categories.Where(c => c.Name!.Contains(categoryQuery.Name!));
+
+            categories = categories.OrderBy(c => c.Name);
+
+            var totalCount = categories.Count();
 
             var pagingCategories = await categories
                                         .Skip((categoryQuery.pageNumber - 1) * categoryQuery.pageSize)
                                         .Take(categoryQuery.pageSize)
-                                        .ToListAsync();
+                                        .ToListAsync(cancellationToken);
 
             var outputCategories = pagingCategories.Adapt<IEnumerable<OutputCategoryDto>>();
 
-            var categoriesWithMetaData = PagedList<OutputCategoryDto>.ToPagedList(outputCategories, categoryQuery.pageNumber, totalCount);
+            var categoriesWithMetaData = PagedList<OutputCategoryDto>.ToPagedList(outputCategories, categoryQuery.pageNumber, totalCount, categoryQuery.pageSize);
 
             return categoriesWithMetaData;
         }

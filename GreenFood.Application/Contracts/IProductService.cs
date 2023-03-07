@@ -1,11 +1,14 @@
 ﻿using GreenFood.Application.DTO.InputDto;
 using GreenFood.Application.DTO.OutputDto;
+using GreenFood.Application.RequestFeatures;
 
 namespace GreenFood.Application.Contracts
 {
     public interface IProductService
     {
-        Task<IEnumerable<OutputProductDto>> GetAllProductsAsync(CancellationToken cancellationToken);
+        Task<PagedList<OutputProductDto>> GetAllProductsAsync(
+            ProductQueryDto productQuery,
+            CancellationToken cancellationToken);
         Task<OutputProductDto> GetProductByIdAsync(
             Guid productId,
             CancellationToken cancellationToken);
