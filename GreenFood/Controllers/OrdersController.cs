@@ -1,12 +1,9 @@
-﻿using FluentValidation;
-using GreenFood.Application.Contracts;
+﻿using GreenFood.Application.Contracts;
 using GreenFood.Application.DTO.InputDto;
 using GreenFood.Application.DTO.OutputDto;
 using GreenFood.Application.RequestFeatures;
-using GreenFood.Application.Validation;
 using GreenFood.Domain.Utils;
 using GreenFood.Web.features;
-using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,7 +27,7 @@ namespace GreenFood.Web.Controllers
         {
             var orders = await _order.GetAllOrdersAsync(orderQuery, cancellationToken);
 
-            return new CustomActionResult<PagedList<OutputOrderDto>>(orders);
+            return new PagingActionResult<PagedList<OutputOrderDto>>(orders);
         }
 
         [HttpGet("{orderId}")]

@@ -26,7 +26,7 @@ namespace GreenFood.Web.Controllers
         {
             var products = await _product.GetAllProductsAsync(productQuery, cancellationToken);
 
-            return new CustomActionResult<PagedList<OutputProductDto>>(products);
+            return new PagingActionResult<PagedList<OutputProductDto>>(products);
         }
 
         [HttpGet("{productId}")]

@@ -51,8 +51,7 @@ namespace GreenFood.Application.Services
                 categories = categories.Where(c => c.Name!.Contains(categoryQuery.Name!));
 
             categories = categories.OrderBy(c => c.Name);
-
-            var totalCount = categories.Count();
+            var totalCount = categories.CountAsync();
 
             var pagingCategories = await categories
                                         .Skip((categoryQuery.pageNumber - 1) * categoryQuery.pageSize)
@@ -61,7 +60,9 @@ namespace GreenFood.Application.Services
 
             var outputCategories = pagingCategories.Adapt<IEnumerable<OutputCategoryDto>>();
 
-            var categoriesWithMetaData = PagedList<OutputCategoryDto>.ToPagedList(outputCategories, categoryQuery.pageNumber, totalCount, categoryQuery.pageSize);
+            var count = await totalCount;
+
+            var categoriesWithMetaData = PagedList<OutputCategoryDto>.ToPagedList(outputCategories, categoryQuery.pageNumber, count, categoryQuery.pageSize);
 
             return categoriesWithMetaData;
         }

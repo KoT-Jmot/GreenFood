@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 namespace GreenFood.Web.features
 {
-    public class CustomActionResult<T> : IActionResult where T : IPagination
+    public class PagingActionResult<T> : IActionResult where T : IPagination
     {
         private readonly T _result;
 
-        public CustomActionResult(T result) {
+        public PagingActionResult(T result) {
             _result = result; 
         }
 

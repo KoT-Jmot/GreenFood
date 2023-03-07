@@ -24,7 +24,7 @@ namespace GreenFood.Web.Controllers
         {
             var categoeies = await _category.GetAllCategoriesAsync(categoryQuery, cancellationToken);
 
-            return new CustomActionResult<PagedList<OutputCategoryDto>>(categoeies);
+            return new PagingActionResult<PagedList<OutputCategoryDto>>(categoeies);
         }
 
         [HttpGet("{categoryId}")]

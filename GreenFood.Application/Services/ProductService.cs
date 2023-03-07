@@ -59,8 +59,7 @@ namespace GreenFood.Application.Services
                 products = products.Where(p => p.CategoryId == productQuery.CategoryId);
 
             products = products.OrderBy(p => p.Header);
-
-            var totalCount = products.Count();
+            var totalCount = products.CountAsync();
 
             var pagingProducts = await products
                                         .Skip((productQuery.pageNumber - 1) * productQuery.pageSize)
@@ -69,7 +68,9 @@ namespace GreenFood.Application.Services
 
             var outputProducts = pagingProducts.Adapt<IEnumerable<OutputProductDto>>();
 
-            var productsWithMetaData = PagedList<OutputProductDto>.ToPagedList(outputProducts, productQuery.pageNumber, totalCount, productQuery.pageSize);
+            var count = await totalCount;
+
+            var productsWithMetaData = PagedList<OutputProductDto>.ToPagedList(outputProducts, productQuery.pageNumber, count, productQuery.pageSize);
 
             return productsWithMetaData;
         }
