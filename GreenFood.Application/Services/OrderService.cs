@@ -2,6 +2,7 @@
 using GreenFood.Application.Contracts;
 using GreenFood.Application.DTO.InputDto;
 using GreenFood.Application.DTO.OutputDto;
+using GreenFood.Application.Extensions;
 using GreenFood.Application.RequestFeatures;
 using GreenFood.Application.Validation;
 using GreenFood.Domain.Exceptions;
@@ -45,8 +46,7 @@ namespace GreenFood.Application.Services
         {
             var orders = _manager.Orders.GetAll();
 
-            if(orderQuery.ProductId is not null)
-                orders = orders.Where(o=>o.ProductId==orderQuery.ProductId);
+            orders.NotNullWhere(o => o.ProductId, orderQuery.ProductId);
 
             orders = orders.OrderBy(o=>o.CreateDate);
             var totalCount = orders.CountAsync();

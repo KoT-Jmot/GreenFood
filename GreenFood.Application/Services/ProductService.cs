@@ -2,6 +2,7 @@
 using GreenFood.Application.Contracts;
 using GreenFood.Application.DTO.InputDto;
 using GreenFood.Application.DTO.OutputDto;
+using GreenFood.Application.Extensions;
 using GreenFood.Application.RequestFeatures;
 using GreenFood.Application.Validation;
 using GreenFood.Domain.Exceptions;
@@ -49,14 +50,10 @@ namespace GreenFood.Application.Services
             if (!productQuery.Header.IsNullOrEmpty())
                 products = products.Where(p => p.Header!.Contains(productQuery.Header));
 
-            if (productQuery.Count is not null)
-                products = products.Where(p => p.Count == productQuery.Count);
-
-            if (productQuery.Price is not null)
-                products = products.Where(p => p.Price == productQuery.Price);
-
-            if (productQuery.CategoryId is not null)
-                products = products.Where(p => p.CategoryId == productQuery.CategoryId);
+            products
+                .NotNullWhere(p => p.Count, productQuery.Count)
+                .NotNullWhere(p => p.Price, productQuery.Price)
+                .NotNullWhere(p => p.CategoryId, productQuery.CategoryId);
 
             products = products.OrderBy(p => p.Header);
             var totalCount = products.CountAsync();
