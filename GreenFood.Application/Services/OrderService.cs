@@ -49,7 +49,7 @@ namespace GreenFood.Application.Services
             orders.NotNullWhere(o => o.ProductId, orderQuery.ProductId);
 
             orders = orders.OrderBy(o=>o.CreateDate);
-            var totalCount = orders.CountAsync();
+            var totalCountTask = orders.CountAsync();
 
             var pagingOrders = await orders
                                         .Skip((orderQuery.pageNumber - 1) * orderQuery.pageSize)
@@ -58,9 +58,9 @@ namespace GreenFood.Application.Services
 
             var outputOrders = pagingOrders.Adapt<IEnumerable<OutputOrderDto>>();
 
-            var count = await totalCount;
+            var totalCount = await totalCountTask;
 
-            var ordersWithMetaData = PagedList<OutputOrderDto>.ToPagedList(outputOrders, orderQuery.pageNumber, count, orderQuery.pageSize);
+            var ordersWithMetaData = PagedList<OutputOrderDto>.ToPagedList(outputOrders, orderQuery.pageNumber, totalCount, orderQuery.pageSize);
 
             return ordersWithMetaData;
         }

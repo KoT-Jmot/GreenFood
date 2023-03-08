@@ -56,7 +56,7 @@ namespace GreenFood.Application.Services
                 .NotNullWhere(p => p.CategoryId, productQuery.CategoryId);
 
             products = products.OrderBy(p => p.Header);
-            var totalCount = products.CountAsync();
+            var totalCountTask = products.CountAsync();
 
             var pagingProducts = await products
                                         .Skip((productQuery.pageNumber - 1) * productQuery.pageSize)
@@ -65,9 +65,9 @@ namespace GreenFood.Application.Services
 
             var outputProducts = pagingProducts.Adapt<IEnumerable<OutputProductDto>>();
 
-            var count = await totalCount;
+            var totalCount = await totalCountTask;
 
-            var productsWithMetaData = PagedList<OutputProductDto>.ToPagedList(outputProducts, productQuery.pageNumber, count, productQuery.pageSize);
+            var productsWithMetaData = PagedList<OutputProductDto>.ToPagedList(outputProducts, productQuery.pageNumber, totalCount, productQuery.pageSize);
 
             return productsWithMetaData;
         }
@@ -85,6 +85,7 @@ namespace GreenFood.Application.Services
                 throw new EntityNotFoundException("Category was not found!");
 
             var product = productDto.Adapt<Product>();
+            product.CreatedDate = DateTime.UtcNow;
             product.SellerId = sellerId;
 
             await _manager.Products.AddAsync(product, cancellationToken);

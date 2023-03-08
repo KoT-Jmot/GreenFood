@@ -7,6 +7,7 @@
         public string Description { get; set; } = null!;
         public int Count { get; set; }
         public decimal Price { get; set; }
+        public DateTime? CreatedDate { get; set; }
         public string? SellerId { get; set; }
         public Guid CategoryId { get; set; }
     }
