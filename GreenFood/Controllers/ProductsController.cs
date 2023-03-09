@@ -3,10 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using GreenFood.Domain.Utils;
 using GreenFood.Application.DTO.InputDto;
-using Mapster;
-using GreenFood.Application.DTO.OutputDto;
-using GreenFood.Application.Validation;
-using FluentValidation;
 
 namespace GreenFood.Web.Controllers
 {

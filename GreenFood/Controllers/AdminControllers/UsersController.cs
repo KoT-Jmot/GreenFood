@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace GreenFood.Web.Controllers
+namespace GreenFood.Web.Controllers.AdminControllers
 {
     [Route("Users")]
     [Authorize(Roles = AccountRoles.GetAdministratorRole)]
