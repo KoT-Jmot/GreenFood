@@ -23,6 +23,12 @@ namespace GreenFood.Domain.Utils
 
             if (!superAdminIsInitialize)
                 await roleManager.CreateAsync(new IdentityRole(superAdminName));
+
+            var blockedRole = AccountRoles.GetBlockedRole;
+            var blockedIsInitialize = await roleManager.RoleExistsAsync(blockedRole);
+
+            if (!blockedIsInitialize)
+                await roleManager.CreateAsync(new IdentityRole(blockedRole));
         }
     }
 }
