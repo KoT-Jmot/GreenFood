@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Identity;
 
 namespace GreenFood.Application.Services
 {
-    public class AccountManagement : IAccountManagement
+    public class AccountForAdminService : IAccountForAdminService
     {
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public AccountManagement(UserManager<ApplicationUser> userManager)
+        public AccountForAdminService(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
         }
@@ -36,7 +36,13 @@ namespace GreenFood.Application.Services
             if (user is null)
                 throw new EntityNotFoundException("User was not found!");
 
+            var hasThisRole = await _userManager.IsInRoleAsync(user, role);
+
+            if (hasThisRole)
+                throw new UserRoleException("User already has this role!");
+
             await _userManager.AddToRoleAsync(user, role);
+
         }
     }
 }

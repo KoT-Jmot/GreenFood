@@ -1,6 +1,6 @@
 ﻿namespace GreenFood.Application.Contracts
 {
-    public interface IAccountManagement
+    public interface IAccountForAdminService
     {
         Task<string> BlockUserById(string userId);
         Task<string> SetAdminByUserID(string userId);

@@ -9,9 +9,9 @@ namespace GreenFood.Web.Controllers.AdminControllers
     [Authorize(Roles = AccountRoles.GetAdministratorRole)]
     public class AccountsADminController : Controller
     {
-        private readonly IAccountManagement _accountManager;
+        private readonly IAccountForAdminService _accountManager;
 
-        public AccountsADminController(IAccountManagement accountManager)
+        public AccountsADminController(IAccountForAdminService accountManager)
         {
             _accountManager = accountManager;
         }
