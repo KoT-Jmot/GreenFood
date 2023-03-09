@@ -8,6 +8,7 @@
         public string? Description { get; set; }
         public int Count { get; set; }
         public decimal? Price { get; set; }
+        public DateTime? CreatedDate { get; set; }
         public Guid CategoryId { get; set; }
         public virtual Category Category { get; set; } = null!;
         public virtual IEnumerable<Order> Orders { get; set; } = null!;

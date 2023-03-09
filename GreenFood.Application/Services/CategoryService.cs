@@ -8,6 +8,9 @@ using GreenFood.Domain.Models;
 using GreenFood.Infrastructure.Configurations;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using GreenFood.Application.RequestFeatures;
+using GreenFood.Application.Extensions;
 
 namespace GreenFood.Application.Services
 {
@@ -39,13 +42,30 @@ namespace GreenFood.Application.Services
             return outputCategory;
         }
 
-        public async Task<IEnumerable<OutputCategoryDto>> GetAllCategoriesAsync(CancellationToken cancellationToken)
+        public async Task<PagedList<OutputCategoryDto>> GetAllCategoriesAsync(
+            CategoryQueryDto categoryQuery,
+            CancellationToken cancellationToken)
         {
-            var categories = await _manager.Categories.GetAll().ToListAsync(cancellationToken);
+            var categories = _manager.Categories.GetAll();
 
-            var outputCategories = categories.Adapt<IEnumerable<OutputCategoryDto>>();
+            if (!categoryQuery.Name.IsNullOrEmpty())
+                categories = categories.Where(c => c.Name!.Contains(categoryQuery.Name!));
 
-            return outputCategories;
+            categories = categories.OrderBy(c => c.Name);
+            var totalCountTask = categories.CountAsync();
+
+            var pagingCategories = await categories
+                                        .Skip((categoryQuery.pageNumber - 1) * categoryQuery.pageSize)
+                                        .Take(categoryQuery.pageSize)
+                                        .ToListAsync(cancellationToken);
+
+            var outputCategories = pagingCategories.Adapt<IEnumerable<OutputCategoryDto>>();
+
+            var totalCount = await totalCountTask;
+
+            var categoriesWithMetaData = PagedList<OutputCategoryDto>.ToPagedList(outputCategories, categoryQuery.pageNumber, totalCount, categoryQuery.pageSize);
+
+            return categoriesWithMetaData;
         }
         
         public async Task<Guid> CreateCategoryAsync(

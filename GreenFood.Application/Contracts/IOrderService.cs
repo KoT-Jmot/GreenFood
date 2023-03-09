@@ -1,11 +1,14 @@
 ﻿using GreenFood.Application.DTO.InputDto;
 using GreenFood.Application.DTO.OutputDto;
+using GreenFood.Application.RequestFeatures;
 
 namespace GreenFood.Application.Contracts
 {
     public interface IOrderService
     {
-        Task<IEnumerable<OutputOrderDto>> GetAllOrdersAsync(CancellationToken cancellationToken);
+        Task<PagedList<OutputOrderDto>> GetAllOrdersAsync(
+            OrderQueryDto orderQuery,
+            CancellationToken cancellationToken);
         Task<OutputOrderDto> GetOrderByIdAsync(
             Guid orderId,
             CancellationToken cancellationToken);

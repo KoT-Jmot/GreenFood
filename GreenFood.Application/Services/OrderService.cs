@@ -2,6 +2,8 @@
 using GreenFood.Application.Contracts;
 using GreenFood.Application.DTO.InputDto;
 using GreenFood.Application.DTO.OutputDto;
+using GreenFood.Application.Extensions;
+using GreenFood.Application.RequestFeatures;
 using GreenFood.Application.Validation;
 using GreenFood.Domain.Exceptions;
 using GreenFood.Domain.Models;
@@ -38,13 +40,29 @@ namespace GreenFood.Application.Services
             return outputOrder;
         }
 
-        public async Task<IEnumerable<OutputOrderDto>> GetAllOrdersAsync(CancellationToken cancellationToken)
+        public async Task<PagedList<OutputOrderDto>> GetAllOrdersAsync(
+            OrderQueryDto orderQuery,
+            CancellationToken cancellationToken)
         {
-            var orders = await _manager.Orders.GetAll().ToListAsync(cancellationToken);
+            var orders = _manager.Orders.GetAll();
 
-            var outputOrders = orders.Adapt<IEnumerable<OutputOrderDto>>();
+            orders.NotNullWhere(o => o.ProductId, orderQuery.ProductId);
 
-            return outputOrders;
+            orders = orders.OrderBy(o=>o.CreateDate);
+            var totalCountTask = orders.CountAsync();
+
+            var pagingOrders = await orders
+                                        .Skip((orderQuery.pageNumber - 1) * orderQuery.pageSize)
+                                        .Take(orderQuery.pageSize)
+                                        .ToListAsync(cancellationToken);
+
+            var outputOrders = pagingOrders.Adapt<IEnumerable<OutputOrderDto>>();
+
+            var totalCount = await totalCountTask;
+
+            var ordersWithMetaData = PagedList<OutputOrderDto>.ToPagedList(outputOrders, orderQuery.pageNumber, totalCount, orderQuery.pageSize);
+
+            return ordersWithMetaData;
         }
 
         public async Task<Guid> CreateOrderByUserIdAsync(

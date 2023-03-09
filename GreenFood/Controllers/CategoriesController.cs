@@ -1,10 +1,9 @@
-﻿using FluentValidation;
-using GreenFood.Application.Contracts;
+﻿using GreenFood.Application.Contracts;
 using GreenFood.Application.DTO.InputDto;
 using GreenFood.Application.DTO.OutputDto;
-using GreenFood.Application.Validation;
+using GreenFood.Application.RequestFeatures;
+using GreenFood.Web.features;
 using Microsoft.AspNetCore.Mvc;
-using System;
 
 namespace GreenFood.Web.Controllers
 {
@@ -19,11 +18,13 @@ namespace GreenFood.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllCategoriesAsync(CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAllCategoriesAsync(
+            [FromQuery] CategoryQueryDto categoryQuery,
+            CancellationToken cancellationToken)
         {
-            var categories = await _category.GetAllCategoriesAsync(cancellationToken);
+            var categoeies = await _category.GetAllCategoriesAsync(categoryQuery, cancellationToken);
 
-            return Ok(categories);
+            return new PagingActionResult<PagedList<OutputCategoryDto>>(categoeies);
         }
 
         [HttpGet("{categoryId}")]
