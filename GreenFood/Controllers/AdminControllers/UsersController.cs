@@ -1,9 +1,11 @@
-﻿using GreenFood.Domain.Models;
+﻿using GreenFood.Application.Contracts;
+using GreenFood.Application.DTO.InputDto;
+using GreenFood.Application.DTO.OutputDto;
+using GreenFood.Application.RequestFeatures;
 using GreenFood.Domain.Utils;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using GreenFood.Web.features;
 
 namespace GreenFood.Web.Controllers.AdminControllers
 {
@@ -11,25 +13,27 @@ namespace GreenFood.Web.Controllers.AdminControllers
     [Authorize(Roles = AccountRoles.GetAdministratorRole)]
     public class UsersController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUserService _userManager;
 
-        public UsersController(UserManager<ApplicationUser> userManager)
+        public UsersController(IUserService userService)
         {
-            _userManager = userManager;
+            _userManager = userService;
         }
 
         [HttpGet]
-        public IActionResult GetAllUsersAsync()
+        public async Task<IActionResult> GetAllUsersAsync(
+            [FromQuery] UserQueryDto userQuery,
+            CancellationToken cancellationToken)
         {
-            var users = _userManager.Users.ToListAsync();
+            var users = await _userManager.GetAllUsersAsync(userQuery,cancellationToken);
 
-            return Ok(users);
+            return new PagingActionResult<PagedList<OutputUserDto>>(users);
         }
 
         [HttpGet("{email}")]
         public async Task<IActionResult> GetUserByEmailAsync([FromRoute] string email)
         {
-            var user = await _userManager.FindByEmailAsync(email);
+            var user = await _userManager.GetUserByEmail(email);
 
             return Ok(user);
         }
