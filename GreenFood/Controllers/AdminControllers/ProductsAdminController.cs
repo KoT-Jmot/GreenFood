@@ -9,11 +9,11 @@ namespace GreenFood.Web.Controllers.AdminControllers
 {
     [Route("Admin/Products")]
     [Authorize(Roles = AccountRoles.GetAdministratorRole)]
-    public class ProductAdminController : Controller
+    public class ProductsAdminController : Controller
     {
         private readonly IProductService _product;
 
-        public ProductAdminController(IProductService product)
+        public ProductsAdminController(IProductService product)
         {
             _product = product;
         }
