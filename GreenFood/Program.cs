@@ -4,6 +4,7 @@ using GreenFood.Web.ExceptionHandler;
 using Serilog;
 using FluentValidation;
 using System.Reflection;
+using Hangfire;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,7 @@ LoggerConfigurator.ConfigureLog(configuration);
 builder.Host.UseSerilog();
 
 services.ConfigureSqlServer(configuration)
+        .ConfigureHangFire(configuration)
         .AddControllers();
 
 services.AddValidatorsFromAssembly(Assembly.Load("GreenFood.Application"));
@@ -44,6 +46,8 @@ app.UseRouting();
 
 app.UseAuthentication()
    .UseAuthorization();
+
+app.UseHangfireDashboard("/dashboard");
 
 app.UseEndpoints(endpoints =>
 {
