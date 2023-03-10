@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using GreenFood.Infrastructure.Repositories;
 using GreenFood.Infrastructure.Configurations;
 using Hangfire;
+using Hangfire.SqlServer;
 
 namespace GreenFood.Web.Extensions
 {
@@ -40,6 +41,10 @@ namespace GreenFood.Web.Extensions
             this IServiceCollection services,
             IConfiguration configuration)
         {
+            services.AddDbContext<HangFireContext>(optionsBuilder =>
+                optionsBuilder
+                    .UseSqlServer(configuration.GetConnectionString("HangFireConnection")));
+
             services.AddHangfire(optionsBuilder =>
                 optionsBuilder
                     .UseSqlServerStorage(configuration.GetConnectionString("HangFireConnection")));

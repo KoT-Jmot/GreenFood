@@ -47,7 +47,7 @@ app.UseRouting();
 app.UseAuthentication()
    .UseAuthorization();
 
-app.UseHangfireDashboard("/dashboard");
+app.UseHangfireDashboard();
 
 app.UseEndpoints(endpoints =>
 {
