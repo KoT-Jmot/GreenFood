@@ -14,6 +14,7 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using GreenFood.Infrastructure.Repositories;
 using GreenFood.Infrastructure.Configurations;
+using Hangfire;
 
 namespace GreenFood.Web.Extensions
 {
@@ -35,7 +36,18 @@ namespace GreenFood.Web.Extensions
 
             return services;
         }
+        public static IServiceCollection ConfigureHangFire(
+            this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            services.AddHangfire(optionsBuilder =>
+                optionsBuilder
+                    .UseSqlServerStorage(configuration.GetConnectionString("HangFireConnection")));
 
+            services.AddHangfireServer();
+
+            return services;
+        }
         public static IServiceCollection ConfigureMapster(
                    this IServiceCollection services)
         {
