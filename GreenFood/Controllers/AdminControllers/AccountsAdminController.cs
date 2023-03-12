@@ -1,26 +1,52 @@
 ﻿using GreenFood.Application.Contracts;
+using GreenFood.Application.DTO.InputDto;
+using GreenFood.Application.DTO.OutputDto;
+using GreenFood.Application.RequestFeatures;
 using GreenFood.Domain.Utils;
+using GreenFood.Web.features;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GreenFood.Web.Controllers.AdminControllers
 {
-    [Route("Admin/Accounts")]
     [Authorize(Roles = AccountRoles.GetAdministratorRole)]
+    [Route("Admin/Accounts")]
     public class AccountsADminController : Controller
     {
-        private readonly IAccountForAdminService _accountManager;
+        private readonly IAccountRoleService _accountManager;
+        private readonly IAccountService _userManager;
 
-        public AccountsADminController(IAccountForAdminService accountManager)
+        public AccountsADminController(
+            IAccountRoleService accountManager,
+            IAccountService userManager)
         {
             _accountManager = accountManager;
+            _userManager = userManager;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAllUsersAsync(
+            [FromQuery] UserQueryDto userQuery,
+            CancellationToken cancellationToken)
+        {
+            var users = await _userManager.GetAllUsersAsync(userQuery, cancellationToken);
+
+            return new PagingActionResult<PagedList<OutputUserDto>>(users);
+        }
+
+        [HttpGet("{email}")]
+        public async Task<IActionResult> GetUserByEmailAsync([FromRoute] string email)
+        {
+            var user = await _userManager.GetUserByEmail(email);
+
+            return Ok(user);
+        }
 
         [HttpPost("Block/{userId}")]
         public async Task<IActionResult> BlockUser([FromRoute] string userId)
         {
-            await _accountManager.BlockUserById(userId);
+            var isSuperAdmin = User.IsSuperAdmin();
+            await _accountManager.BlockAccount(userId, isSuperAdmin);
 
             return Ok(userId);
         }
@@ -29,10 +55,9 @@ namespace GreenFood.Web.Controllers.AdminControllers
         [HttpPost("SetAdmin/{userId}")]
         public async Task<IActionResult> SetAdmin([FromRoute] string userId)
         {
-            await _accountManager.SetAdminByUserID(userId);
+            await _accountManager.SetAdmin(userId);
 
             return Ok(userId);
         }
-
     }
 }

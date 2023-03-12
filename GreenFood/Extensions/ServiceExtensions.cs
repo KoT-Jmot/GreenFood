@@ -54,8 +54,7 @@ namespace GreenFood.Web.Extensions
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IOrderService, OrderService>();
-            services.AddScoped<IAccountForAdminService, AccountForAdminService>();
-            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAccountRoleService, AccountRoleService>();
 
             return services;
         }

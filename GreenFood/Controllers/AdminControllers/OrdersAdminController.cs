@@ -7,15 +7,15 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace GreenFood.Web.Controllers.AdminControllers
 {
-    [Route("Admin/Orders")]
     [Authorize(Roles = AccountRoles.GetAdministratorRole)]
+    [Route("Admin/Orders")]
     public class OrdersAdminController : Controller
     {
-        private readonly IOrderService _order;
+        private readonly IOrderService _orderManager;
 
-        public OrdersAdminController(IOrderService order)
+        public OrdersAdminController(IOrderService orderManager)
         {
-            _order = order;
+            _orderManager = orderManager;
         }
 
         [HttpDelete("{orderId}")]
@@ -25,9 +25,9 @@ namespace GreenFood.Web.Controllers.AdminControllers
             CancellationToken cancellationToken)
         {
             if (userDto.UserId.IsNullOrEmpty())
-                throw new ArgumentNullException(nameof(userDto.UserId));
+                throw new ArgumentNullException(nameof(userDto));
 
-            await _order.DeleteOrderByIdAndUserIdAsync(userDto.UserId!, orderId, cancellationToken);
+            await _orderManager.DeleteOrderByIdAndUserIdAsync(userDto.UserId!, orderId, cancellationToken);
 
             return NoContent();
         }

@@ -10,8 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GreenFood.Web.Controllers
 {
-    [Route("Orders")]
     [Authorize]
+    [Route("Orders")]
     public class OrdersController : Controller
     {
         private readonly IOrderService _order;

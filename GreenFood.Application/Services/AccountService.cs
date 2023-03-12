@@ -11,6 +11,9 @@ using System.Text;
 using System.Security.Claims;
 using Mapster;
 using GreenFood.Application.DTO.InputDto;
+using GreenFood.Application.RequestFeatures;
+using GreenFood.Application.DTO.OutputDto;
+using Microsoft.EntityFrameworkCore;
 
 namespace GreenFood.Application.Services
 {
@@ -74,6 +77,41 @@ namespace GreenFood.Application.Services
                 throw new LoginUserException();
 
             return await CreateToken(user);
+        }
+
+        public async Task<PagedList<OutputUserDto>> GetAllUsersAsync(
+            UserQueryDto userQuery,
+            CancellationToken cancellationToken)
+        {
+            var user = _userManager.Users;
+
+            if (!userQuery.UserName.IsNullOrEmpty())
+                user = user.Where(u => u.UserName.Contains(userQuery.UserName!));
+
+            user = user.OrderBy(p => p.RegistrationDate);
+            var totalCount = await user.CountAsync();
+
+            var pagingUsers = await user
+                                    .Skip((userQuery.pageNumber - 1) * userQuery.pageSize)
+                                    .Take(userQuery.pageSize)
+                                    .ToListAsync(cancellationToken);
+
+            var outputUsers = pagingUsers.Adapt<IEnumerable<OutputUserDto>>();
+            var usersWithMetaData = PagedList<OutputUserDto>.ToPagedList(outputUsers, userQuery.pageNumber, totalCount, userQuery.pageSize);
+
+            return usersWithMetaData;
+        }
+
+        public async Task<OutputUserDto> GetUserByEmail(string userEmail)
+        {
+            var user = await _userManager.FindByEmailAsync(userEmail);
+
+            if (user is null)
+                throw new EntityNotFoundException("User was not found!");
+
+            var outputUser = user.Adapt<OutputUserDto>();
+
+            return outputUser;
         }
 
         private async Task<string> CreateToken(ApplicationUser user)

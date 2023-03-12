@@ -13,5 +13,12 @@ namespace GreenFood.Domain.Utils
         {
             return User.FindAll(ClaimTypes.Role);
         }
+
+        public static bool IsSuperAdmin(this ClaimsPrincipal User)
+        {
+            return User
+                    .FindAll(ClaimTypes.Role)
+                    .Any(r => r.Value == AccountRoles.GetSuperAdministratorRole);
+        }
     }
 }

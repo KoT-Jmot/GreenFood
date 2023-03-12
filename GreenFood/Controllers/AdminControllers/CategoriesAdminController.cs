@@ -6,15 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GreenFood.Web.Controllers.AdminControllers
 {
-    [Route("Admin/Categories")]
     [Authorize(Roles = AccountRoles.GetAdministratorRole)]
+    [Route("Admin/Categories")]
     public class CategoriesAdminController : Controller
     {
-        private readonly ICategoryService _category;
+        private readonly ICategoryService _categoryManager;
 
-        public CategoriesAdminController(ICategoryService category)
+        public CategoriesAdminController(ICategoryService categoryManager)
         {
-            _category = category;
+            _categoryManager = categoryManager;
         }
 
         [HttpPost]
@@ -22,7 +22,7 @@ namespace GreenFood.Web.Controllers.AdminControllers
             [FromBody] CategoryDto categoryDto,
             CancellationToken cancellationToken)
         {
-            var categoryId = await _category.CreateCategoryAsync(categoryDto, cancellationToken);
+            var categoryId = await _categoryManager.CreateCategoryAsync(categoryDto, cancellationToken);
 
             return Created(nameof(CreateCategoryAsync), categoryId);
         }
@@ -32,7 +32,7 @@ namespace GreenFood.Web.Controllers.AdminControllers
             [FromRoute] Guid categoryId,
             CancellationToken cancellationToken)
         {
-            await _category.DeleteCategoryByIdAsync(categoryId, cancellationToken);
+            await _categoryManager.DeleteCategoryByIdAsync(categoryId, cancellationToken);
 
             return NoContent();
         }
