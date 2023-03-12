@@ -45,7 +45,7 @@ namespace GreenFood.Web.Controllers.AdminControllers
         [HttpPost("Block/{userId}")]
         public async Task<IActionResult> BlockUser([FromRoute] string userId)
         {
-            var isSuperAdmin = User.IsSuperAdmin();
+            var isSuperAdmin = User.IsInRole(AccountRoles.GetSuperAdministratorRole);
             await _accountManager.BlockAccount(userId, isSuperAdmin);
 
             return Ok(userId);
