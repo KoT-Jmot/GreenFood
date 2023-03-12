@@ -50,6 +50,7 @@ namespace GreenFood.Web.ExceptionHandler
             return exception switch
             {
                 ArgumentNullException => StatusCodes.Status400BadRequest,
+                OrderCustomerException => StatusCodes.Status400BadRequest,
                 OperationCanceledException => StatusCodes.Status400BadRequest,
                 EntityNotFoundException => StatusCodes.Status404NotFound,
                 ProductCountException => StatusCodes.Status422UnprocessableEntity,
