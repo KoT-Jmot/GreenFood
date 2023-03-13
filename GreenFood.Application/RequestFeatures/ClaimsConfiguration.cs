@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace GreenFood.Domain.Utils
+namespace GreenFood.Application.RequestFeatures
 {
     public static class ClaimsConfiguration
     {

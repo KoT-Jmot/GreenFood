@@ -17,14 +17,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GreenFood.Application.Services
 {
-    public class AccountService : IAccountService
+    public class UserService : IUserService
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RegistrationUserValidator _registrationUserValidator;
         private readonly LoginUserValidator _loginUserValidator;
         private readonly JWTConfig _jwtConfig;
 
-        public AccountService(
+        public UserService(
             UserManager<ApplicationUser> userManager,
             RegistrationUserValidator userValidator,
             LoginUserValidator loginUserValidator,
@@ -76,7 +76,7 @@ namespace GreenFood.Application.Services
             if(user is null || !isCorrectPassword)
                 throw new LoginUserException();
 
-            return await CreateToken(user);
+            return await CreateTokenAsync(user);
         }
 
         public async Task<PagedList<OutputUserDto>> GetAllUsersAsync(
@@ -89,15 +89,15 @@ namespace GreenFood.Application.Services
                 user = user.Where(u => u.UserName.Contains(userQuery.UserName!));
 
             user = user.OrderBy(p => p.RegistrationDate);
-            var totalCount = await user.CountAsync();
+            var totalCount = await user.CountAsync(cancellationToken);
 
             var pagingUsers = await user
-                                    .Skip((userQuery.pageNumber - 1) * userQuery.pageSize)
-                                    .Take(userQuery.pageSize)
+                                    .Skip((userQuery.PageNumber - 1) * userQuery.PageSize)
+                                    .Take(userQuery.PageSize)
                                     .ToListAsync(cancellationToken);
 
             var outputUsers = pagingUsers.Adapt<IEnumerable<OutputUserDto>>();
-            var usersWithMetaData = PagedList<OutputUserDto>.ToPagedList(outputUsers, userQuery.pageNumber, totalCount, userQuery.pageSize);
+            var usersWithMetaData = PagedList<OutputUserDto>.ToPagedList(outputUsers, userQuery.PageNumber, totalCount, userQuery.PageSize);
 
             return usersWithMetaData;
         }
@@ -114,10 +114,10 @@ namespace GreenFood.Application.Services
             return outputUser;
         }
 
-        private async Task<string> CreateToken(ApplicationUser user)
+        private async Task<string> CreateTokenAsync(ApplicationUser user)
         {
             var signingCredentials = GetSigningCredentials();
-            var claims = await GetClaims(user);
+            var claims = await GetClaimsAsync(user);
             var tokenOptions = GenerateTokenOptions(signingCredentials, claims);
 
             return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
@@ -131,7 +131,7 @@ namespace GreenFood.Application.Services
             return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
         }
 
-        private async Task<IEnumerable<Claim>> GetClaims(ApplicationUser user)
+        private async Task<IEnumerable<Claim>> GetClaimsAsync(ApplicationUser user)
         {
             var claims = new List<Claim>
             {

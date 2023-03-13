@@ -1,6 +1,6 @@
 ﻿namespace GreenFood.Application.RequestFeatures
 {
-    public static class ResponceHeaders
+    public static class ResponseHeaders
     {
         public const string CurrentPage = "x-page";
         public const string TotalCount = "x-total";

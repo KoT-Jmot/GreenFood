@@ -1,4 +1,4 @@
-﻿namespace GreenFood.Domain.Utils
+﻿namespace GreenFood.Application.RequestFeatures
 {
     public class MetaData
     {

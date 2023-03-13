@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using GreenFood.Domain.Utils;
+using Microsoft.AspNetCore.Identity;
 
-namespace GreenFood.Domain.Utils
+namespace GreenFood.Infrastructure
 {
     public static class DbInitialize
     {

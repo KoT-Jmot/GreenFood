@@ -50,7 +50,7 @@ namespace GreenFood.Web.Extensions
         public static IServiceCollection ConfigureServices(
                    this IServiceCollection services)
         {
-            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IOrderService, OrderService>();

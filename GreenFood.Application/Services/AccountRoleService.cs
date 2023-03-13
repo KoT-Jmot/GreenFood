@@ -3,7 +3,6 @@ using GreenFood.Domain.Exceptions;
 using GreenFood.Domain.Models;
 using GreenFood.Domain.Utils;
 using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
 
 namespace GreenFood.Application.Services
 {

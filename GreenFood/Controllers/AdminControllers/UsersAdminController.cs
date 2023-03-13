@@ -10,15 +10,15 @@ using Microsoft.AspNetCore.Mvc;
 namespace GreenFood.Web.Controllers.AdminControllers
 {
     [Authorize(Roles = AccountRoles.GetAdministratorRole)]
-    [Route("Admin/Accounts")]
-    public class AccountsADminController : Controller
+    [Route("Admin/Users")]
+    public class UsersAdminController : Controller
     {
         private readonly IAccountRoleService _accountManager;
-        private readonly IAccountService _userManager;
+        private readonly IUserService _userManager;
 
-        public AccountsADminController(
+        public UsersAdminController(
             IAccountRoleService accountManager,
-            IAccountService userManager)
+            IUserService userManager)
         {
             _accountManager = accountManager;
             _userManager = userManager;
@@ -42,7 +42,7 @@ namespace GreenFood.Web.Controllers.AdminControllers
             return Ok(user);
         }
 
-        [HttpPost("Block/{userId}")]
+        [HttpPost("{userId}/Block")]
         public async Task<IActionResult> BlockUser([FromRoute] string userId)
         {
             var isSuperAdmin = User.IsInRole(AccountRoles.GetSuperAdministratorRole);
@@ -52,7 +52,7 @@ namespace GreenFood.Web.Controllers.AdminControllers
         }
 
         [Authorize(Roles = AccountRoles.GetSuperAdministratorRole)]
-        [HttpPost("SetAdmin/{userId}")]
+        [HttpPost("{userId}/SetAdmin")]
         public async Task<IActionResult> SetAdmin([FromRoute] string userId)
         {
             await _accountManager.SetAdmin(userId);

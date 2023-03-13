@@ -4,7 +4,7 @@ using GreenFood.Application.RequestFeatures;
 
 namespace GreenFood.Application.Contracts
 {
-    public interface IAccountService
+    public interface IUserService
     {
         Task<string> SignUpAsync(
             UserForRegistrationDto userForRegistrationDto,

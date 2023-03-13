@@ -10,29 +10,28 @@ using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using GreenFood.Application.RequestFeatures;
-using GreenFood.Application.Extensions;
 
 namespace GreenFood.Application.Services
 {
     public class CategoryService : ICategoryService
     {
-        private readonly IRepositoryManager _manager;
-        private readonly AddCategoryValidator _CategoryValidator;
+        private readonly IRepositoryManager _repositoryManager;
+        private readonly AddCategoryValidator _categoryValidator;
 
         public CategoryService(
-            IRepositoryManager manager,
-            AddCategoryValidator CategoryValidator)
+            IRepositoryManager repositoryManager,
+            AddCategoryValidator categoryValidator)
         {
 
-            _manager = manager;
-            _CategoryValidator = CategoryValidator;
+            _repositoryManager = repositoryManager;
+            _categoryValidator = categoryValidator;
         }
 
         public async Task<OutputCategoryDto> GetCategoryByIdAsync(
             Guid categoryId,
             CancellationToken cancellationToken)
         {
-            var category = await _manager.Categories.GetByIdAsync(categoryId, false, cancellationToken);
+            var category = await _repositoryManager.Categories.GetByIdAsync(categoryId, trackChanges: false, cancellationToken);
 
             if (category is null)
                 throw new EntityNotFoundException("Category was not found!");
@@ -46,21 +45,21 @@ namespace GreenFood.Application.Services
             CategoryQueryDto categoryQuery,
             CancellationToken cancellationToken)
         {
-            var categories = _manager.Categories.GetAll();
+            var categories = _repositoryManager.Categories.GetAll();
 
             if (!categoryQuery.Name.IsNullOrEmpty())
                 categories = categories.Where(c => c.Name!.Contains(categoryQuery.Name!));
 
             categories = categories.OrderBy(c => c.Name);
-            var totalCount = await categories.CountAsync();
+            var totalCount = await categories.CountAsync(cancellationToken);
 
             var pagingCategories = await categories
-                                        .Skip((categoryQuery.pageNumber - 1) * categoryQuery.pageSize)
-                                        .Take(categoryQuery.pageSize)
+                                        .Skip((categoryQuery.PageNumber - 1) * categoryQuery.PageSize)
+                                        .Take(categoryQuery.PageSize)
                                         .ToListAsync(cancellationToken);
 
             var outputCategories = pagingCategories.Adapt<IEnumerable<OutputCategoryDto>>();
-            var categoriesWithMetaData = PagedList<OutputCategoryDto>.ToPagedList(outputCategories, categoryQuery.pageNumber, totalCount, categoryQuery.pageSize);
+            var categoriesWithMetaData = PagedList<OutputCategoryDto>.ToPagedList(outputCategories, categoryQuery.PageNumber, totalCount, categoryQuery.PageSize);
 
             return categoriesWithMetaData;
         }
@@ -70,15 +69,17 @@ namespace GreenFood.Application.Services
             CancellationToken cancellationToken)
         {
 
-            await _CategoryValidator.ValidateAndThrowAsync(categoryDto, cancellationToken);
+            await _categoryValidator.ValidateAndThrowAsync(categoryDto, cancellationToken);
 
-            if (await _manager.Categories.GetCategoryByNameAsync(categoryDto.Name!,false, cancellationToken) is not null)
+            var existedCategory = await _repositoryManager.Categories.GetCategoryByNameAsync(categoryDto.Name!, trackChanges: false, cancellationToken);
+
+            if (existedCategory is not null)
                 throw new CreatingCategoryException("This category already exists!");
 
             var category = categoryDto.Adapt<Category>();
 
-            await _manager.Categories.AddAsync(category, cancellationToken);
-            await _manager.SaveChangesAsync(cancellationToken);
+            await _repositoryManager.Categories.AddAsync(category, cancellationToken);
+            await _repositoryManager.SaveChangesAsync(cancellationToken);
 
             return category.Id;
         }
@@ -87,13 +88,13 @@ namespace GreenFood.Application.Services
             Guid categoryId,
             CancellationToken cancellationToken)
         {
-            var category = await _manager.Categories.GetByIdAsync(categoryId,false, cancellationToken);
+            var category = await _repositoryManager.Categories.GetByIdAsync(categoryId, trackChanges: false, cancellationToken);
 
             if (category is null)
                 throw new EntityNotFoundException("Category was not found!");
 
-            await _manager.Categories.RemoveAsync(category, cancellationToken);
-            await _manager.SaveChangesAsync(cancellationToken);
+            await _repositoryManager.Categories.RemoveAsync(category, cancellationToken);
+            await _repositoryManager.SaveChangesAsync(cancellationToken);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using GreenFood.Domain.Utils;
+﻿using GreenFood.Application.RequestFeatures;
 
 namespace GreenFood.Application.Contracts
 {

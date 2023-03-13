@@ -21,13 +21,13 @@ namespace GreenFood.Web.Controllers.AdminControllers
         [HttpDelete("{productId}")]
         public async Task<IActionResult> DeleteProductByIdAsync(
             [FromRoute] Guid productId,
-            [FromBody] UserIdForAdminDto usertDto,
+            [FromBody] UserIdForAdminDto userDto,
             CancellationToken cancellationToken)
         {
-            if(usertDto.UserId.IsNullOrEmpty())
-                throw new ArgumentNullException(nameof(usertDto));
+            if(userDto.UserId.IsNullOrEmpty())
+                throw new ArgumentNullException(nameof(userDto));
 
-            await _productManager.DeleteProductByIdAndUserIdAsync(usertDto.UserId!, productId, cancellationToken);
+            await _productManager.DeleteProductByIdAndUserIdAsync(userDto.UserId!, productId, cancellationToken);
 
             return NoContent();
         }

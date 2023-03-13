@@ -16,22 +16,22 @@ namespace GreenFood.Application.Services
 {
     public class ProductService : IProductService
     {
-        private readonly IRepositoryManager _manager;
-        private readonly ProductValidation _ProductValidator;
+        private readonly IRepositoryManager _repositoryManager;
+        private readonly ProductValidation _productValidator;
 
         public ProductService(
-            IRepositoryManager manager,
-            ProductValidation ProductValidator)
+            IRepositoryManager repositoryManager,
+            ProductValidation productValidator)
         {
-            _manager = manager;
-            _ProductValidator = ProductValidator;
+            _repositoryManager = repositoryManager;
+            _productValidator = productValidator;
         }
 
         public async Task<OutputProductDto> GetProductByIdAsync(
             Guid productId,
             CancellationToken cancellationToken)
         {
-            var product = await _manager.Products.GetByIdAsync(productId, false, cancellationToken);
+            var product = await _repositoryManager.Products.GetByIdAsync(productId, false, cancellationToken);
 
             if (product is null)
                 throw new EntityNotFoundException("Product was not found!");
@@ -45,7 +45,7 @@ namespace GreenFood.Application.Services
             ProductQueryDto productQuery,
             CancellationToken cancellationToken)
         {
-            var products = _manager.Products.GetAll();
+            var products = _repositoryManager.Products.GetAll();
 
             if (!productQuery.Header.IsNullOrEmpty())
                 products = products.Where(p => p.Header!.Contains(productQuery.Header));
@@ -56,15 +56,15 @@ namespace GreenFood.Application.Services
                 .NotNullWhere(p => p.CategoryId, productQuery.CategoryId);
 
             products = products.OrderBy(p => p.Header);
-            var totalCount = await products.CountAsync();
+            var totalCount = await products.CountAsync(cancellationToken);
 
             var pagingProducts = await products
-                                        .Skip((productQuery.pageNumber - 1) * productQuery.pageSize)
-                                        .Take(productQuery.pageSize)
+                                        .Skip((productQuery.PageNumber - 1) * productQuery.PageSize)
+                                        .Take(productQuery.PageSize)
                                         .ToListAsync(cancellationToken);
 
             var outputProducts = pagingProducts.Adapt<IEnumerable<OutputProductDto>>();
-            var productsWithMetaData = PagedList<OutputProductDto>.ToPagedList(outputProducts, productQuery.pageNumber, totalCount, productQuery.pageSize);
+            var productsWithMetaData = PagedList<OutputProductDto>.ToPagedList(outputProducts, productQuery.PageNumber, totalCount, productQuery.PageSize);
 
             return productsWithMetaData;
         }
@@ -74,9 +74,9 @@ namespace GreenFood.Application.Services
             string sellerId,
             CancellationToken cancellationToken)
         {
-            await _ProductValidator.ValidateAndThrowAsync(productDto, cancellationToken);
+            await _productValidator.ValidateAndThrowAsync(productDto, cancellationToken);
 
-            var category = await _manager.Categories.GetByIdAsync(productDto.CategoryId, false, cancellationToken);
+            var category = await _repositoryManager.Categories.GetByIdAsync(productDto.CategoryId, false, cancellationToken);
 
             if (category is null)
                 throw new EntityNotFoundException("Category was not found!");
@@ -85,8 +85,8 @@ namespace GreenFood.Application.Services
             product.CreatedDate = DateTime.UtcNow;
             product.SellerId = sellerId;
 
-            await _manager.Products.AddAsync(product, cancellationToken);
-            await _manager.SaveChangesAsync(cancellationToken);
+            await _repositoryManager.Products.AddAsync(product, cancellationToken);
+            await _repositoryManager.SaveChangesAsync(cancellationToken);
 
             return product.Id;
         }
@@ -96,13 +96,13 @@ namespace GreenFood.Application.Services
             Guid productId,
             CancellationToken cancellationToken)
         {
-            var product = await _manager.Products.GetProductByIdAndUserIdAsync(productId, userId, false, cancellationToken);
+            var product = await _repositoryManager.Products.GetProductByIdAndUserIdAsync(productId, userId, false, cancellationToken);
 
             if (product is null)
                 throw new EntityNotFoundException("Product was not found!");
 
-            await _manager.Products.RemoveAsync(product, cancellationToken);
-            await _manager.SaveChangesAsync(cancellationToken);
+            await _repositoryManager.Products.RemoveAsync(product, cancellationToken);
+            await _repositoryManager.SaveChangesAsync(cancellationToken);
         }
     }
 }
