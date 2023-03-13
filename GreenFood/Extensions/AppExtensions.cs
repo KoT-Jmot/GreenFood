@@ -13,6 +13,9 @@ namespace GreenFood.Web.Extensions
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
                 await dbContext.Database.MigrateAsync();
+
+                var hangFireContext = scope.ServiceProvider.GetRequiredService<HangFireContext>();
+                await hangFireContext.Database.EnsureCreatedAsync();
             }
 
             return app;

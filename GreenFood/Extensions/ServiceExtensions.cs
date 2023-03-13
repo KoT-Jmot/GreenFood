@@ -32,11 +32,12 @@ namespace GreenFood.Web.Extensions
                     {
                         b.MigrationsAssembly(Assembly.Load("GreenFood.Infrastructure").FullName);
                     }));
-
+                
             services.AddScoped<IRepositoryManager, RepositoryManager>();
 
             return services;
         }
+
         public static IServiceCollection ConfigureHangFire(
             this IServiceCollection services,
             IConfiguration configuration)
@@ -53,6 +54,7 @@ namespace GreenFood.Web.Extensions
 
             return services;
         }
+
         public static IServiceCollection ConfigureMapster(
                    this IServiceCollection services)
         {
@@ -64,6 +66,7 @@ namespace GreenFood.Web.Extensions
 
             return services;
         }
+
         public static IServiceCollection ConfigureServices(
                    this IServiceCollection services)
         {
