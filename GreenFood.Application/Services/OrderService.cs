@@ -77,6 +77,9 @@ namespace GreenFood.Application.Services
             if (product.Count < orderDto.Count)
                 throw new ProductCountException();
 
+            if (product.SellerId!.Equals(customerId))
+                throw new OrderCustomerException();
+
             var order = orderDto.Adapt<Order>();
             order.CreateDate = DateTime.Now;
             order.CustomerId = customerId;
