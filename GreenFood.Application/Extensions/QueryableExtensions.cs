@@ -2,7 +2,7 @@
 
 namespace GreenFood.Application.Extensions
 {
-    public static class QueriableExtantions
+    public static class QueryableExtensions
     {
         public static IQueryable<T> NotNullWhere<T,TKey>(
             this IQueryable<T> query,

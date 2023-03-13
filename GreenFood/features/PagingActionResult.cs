@@ -16,12 +16,12 @@ namespace GreenFood.Web.features
         {
             var headers = new Dictionary<string, StringValues>
             {
-                {ResponceHeaders.CurrentPage, _result.MetaData!.CurrentPage.ToString()},
-                {ResponceHeaders.TotalCount, _result.MetaData.TotalCount.ToString()},
-                {ResponceHeaders.TotalPages, _result.MetaData.TotalPages.ToString()},
-                {ResponceHeaders.PageSize, _result.MetaData.PageSize.ToString()},
-                {ResponceHeaders.HasNext, _result.MetaData.HasNext.ToString()},
-                {ResponceHeaders.HasPrevious, _result.MetaData.HasPrevious.ToString()}
+                {ResponseHeaders.CurrentPage, _result.MetaData!.CurrentPage.ToString()},
+                {ResponseHeaders.TotalCount, _result.MetaData.TotalCount.ToString()},
+                {ResponseHeaders.TotalPages, _result.MetaData.TotalPages.ToString()},
+                {ResponseHeaders.PageSize, _result.MetaData.PageSize.ToString()},
+                {ResponseHeaders.HasNext, _result.MetaData.HasNext.ToString()},
+                {ResponseHeaders.HasPrevious, _result.MetaData.HasPrevious.ToString()}
 
             };
 

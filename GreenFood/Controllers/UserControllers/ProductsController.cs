@@ -1,13 +1,12 @@
 ﻿using GreenFood.Application.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using GreenFood.Domain.Utils;
 using GreenFood.Application.DTO.InputDto;
 using GreenFood.Application.DTO.OutputDto;
 using GreenFood.Web.features;
 using GreenFood.Application.RequestFeatures;
 
-namespace GreenFood.Web.Controllers
+namespace GreenFood.Web.Controllers.UserControllers
 {
     [Route("Products")]
     public class ProductsController : Controller

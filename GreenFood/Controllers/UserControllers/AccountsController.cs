@@ -2,14 +2,14 @@
 using GreenFood.Application.DTO.InputDto;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GreenFood.Web.Controllers
+namespace GreenFood.Web.Controllers.UserControllers
 {
     [Route("Accounts")]
     public class AccountsController : Controller
     {
-        private readonly IAccountService _account;
+        private readonly IUserService _account;
 
-        public AccountsController(IAccountService account)
+        public AccountsController(IUserService account)
         {
             _account = account;
         }

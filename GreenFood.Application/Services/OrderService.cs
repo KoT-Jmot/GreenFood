@@ -15,22 +15,22 @@ namespace GreenFood.Application.Services
 {
     public class OrderService : IOrderService
     {
-        private readonly IRepositoryManager _manager;
-        private readonly AddOrderValidator _OrderValidator;
+        private readonly IRepositoryManager _repositoryManager;
+        private readonly AddOrderValidator _orderValidator;
 
         public OrderService(
-            IRepositoryManager manager,
-            AddOrderValidator OrderValidator)
+            IRepositoryManager repositoryManager,
+            AddOrderValidator orderValidator)
         {
-            _manager = manager;
-            _OrderValidator = OrderValidator;
+            _repositoryManager = repositoryManager;
+            _orderValidator = orderValidator;
         }
 
         public async Task<OutputOrderDto> GetOrderByIdAsync(
             Guid orderId,
             CancellationToken cancellationToken)
         {
-            var order = await _manager.Orders.GetByIdAsync(orderId, false, cancellationToken);
+            var order = await _repositoryManager.Orders.GetByIdAsync(orderId,trackChanges: false, cancellationToken);
 
             if (order is null)
                 throw new EntityNotFoundException("Order was not found!");
@@ -44,23 +44,20 @@ namespace GreenFood.Application.Services
             OrderQueryDto orderQuery,
             CancellationToken cancellationToken)
         {
-            var orders = _manager.Orders.GetAll();
+            var orders = _repositoryManager.Orders.GetAll();
 
             orders.NotNullWhere(o => o.ProductId, orderQuery.ProductId);
 
             orders = orders.OrderBy(o=>o.CreateDate);
-            var totalCountTask = orders.CountAsync();
+            var totalCount = await orders.CountAsync(cancellationToken);
 
             var pagingOrders = await orders
-                                        .Skip((orderQuery.pageNumber - 1) * orderQuery.pageSize)
-                                        .Take(orderQuery.pageSize)
+                                        .Skip((orderQuery.PageNumber - 1) * orderQuery.PageSize)
+                                        .Take(orderQuery.PageSize)
                                         .ToListAsync(cancellationToken);
 
             var outputOrders = pagingOrders.Adapt<IEnumerable<OutputOrderDto>>();
-
-            var totalCount = await totalCountTask;
-
-            var ordersWithMetaData = PagedList<OutputOrderDto>.ToPagedList(outputOrders, orderQuery.pageNumber, totalCount, orderQuery.pageSize);
+            var ordersWithMetaData = PagedList<OutputOrderDto>.ToPagedList(outputOrders, orderQuery.PageNumber, totalCount, orderQuery.PageSize);
 
             return ordersWithMetaData;
         }
@@ -70,9 +67,9 @@ namespace GreenFood.Application.Services
             string customerId,
             CancellationToken cancellationToken)
         {
-            await _OrderValidator.ValidateAndThrowAsync(orderDto, cancellationToken);
+            await _orderValidator.ValidateAndThrowAsync(orderDto, cancellationToken);
 
-            var product = await _manager.Products.GetByIdAsync(orderDto.ProductId, true, cancellationToken);
+            var product = await _repositoryManager.Products.GetByIdAsync(orderDto.ProductId, trackChanges: false, cancellationToken);
 
             if (product is null)
                 throw new EntityNotFoundException("Product was not found!");
@@ -87,8 +84,8 @@ namespace GreenFood.Application.Services
             order.CreateDate = DateTime.Now;
             order.CustomerId = customerId;
 
-            await _manager.Orders.AddAsync(order, cancellationToken);
-            await _manager.SaveChangesAsync(cancellationToken);
+            await _repositoryManager.Orders.AddAsync(order, cancellationToken);
+            await _repositoryManager.SaveChangesAsync(cancellationToken);
 
             product.Count -= order.Count;
 
@@ -100,13 +97,13 @@ namespace GreenFood.Application.Services
             Guid orderId,
             CancellationToken cancellationToken)
         {
-            var order = await _manager.Orders.GetOrderByIdAndUserIdAsync(orderId, userId, false, cancellationToken);
+            var order = await _repositoryManager.Orders.GetOrderByIdAndUserIdAsync(orderId, userId, trackChanges: false, cancellationToken);
 
             if (order is null)
                 throw new EntityNotFoundException("Order was not found!");
 
-            await _manager.Orders.RemoveAsync(order, cancellationToken);
-            await _manager.SaveChangesAsync(cancellationToken);
+            await _repositoryManager.Orders.RemoveAsync(order, cancellationToken);
+            await _repositoryManager.SaveChangesAsync(cancellationToken);
         }
     }
 }
