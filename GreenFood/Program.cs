@@ -5,6 +5,7 @@ using Serilog;
 using FluentValidation;
 using System.Reflection;
 using Hangfire;
+using GreenFood.Application.RequestFeatures;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,7 +50,10 @@ app.UseRouting();
 app.UseAuthentication()
    .UseAuthorization();
 
-app.UseHangfireDashboard();
+app.UseHangfireDashboard(options: new DashboardOptions
+{
+    Authorization = new[] { new HangfireAuthorizationFilter() }
+});
 
 app.UseEndpoints(endpoints =>
 {
