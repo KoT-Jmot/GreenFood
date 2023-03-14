@@ -7,7 +7,7 @@ services:
       - SECRET=GreenFood12345XxX
       - ASPNETCORE_URLS=http://+:80
     ports:
-      - "5000:80"
+      - "9637:80"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
