@@ -16,7 +16,7 @@ namespace GreenFood.Application.Services
         {
             var deletingOrders = _repositoryManager.Orders
                                                    .GetAll()
-                                                   .Where(o => (DateTime.UtcNow - o.CreateDate).TotalDays > 30);
+                                                   .Where(o => o.CreateDate.AddDays(30).Date<=DateTime.UtcNow.Date);
 
             await _repositoryManager.Orders.RemoveRangeAsync(deletingOrders);
 
