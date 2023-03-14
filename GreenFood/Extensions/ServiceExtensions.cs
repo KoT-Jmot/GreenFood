@@ -2,7 +2,6 @@
 using GreenFood.Application.Services;
 using GreenFood.Domain.Models;
 using GreenFood.Domain.Utils;
-using GreenFood.Infrastructure;
 using Mapster;
 using MapsterMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -15,7 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using GreenFood.Infrastructure.Repositories;
 using GreenFood.Infrastructure.Configurations;
 using Hangfire;
-using Hangfire.SqlServer;
+using GreenFood.Infrastructure.Contexts;
 
 namespace GreenFood.Web.Extensions
 {

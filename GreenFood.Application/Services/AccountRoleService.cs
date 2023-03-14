@@ -17,7 +17,7 @@ namespace GreenFood.Application.Services
 
         public async Task<string> BlockAccount(
             string userId,
-            bool isSuperAdmin=false)
+            bool isSuperAdmin = false)
         {
             var user = await GetUserByIdAsync(userId);
 

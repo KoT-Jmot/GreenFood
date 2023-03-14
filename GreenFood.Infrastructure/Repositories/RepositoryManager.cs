@@ -1,5 +1,6 @@
 ﻿using GreenFood.Domain.Contracts;
 using GreenFood.Infrastructure.Configurations;
+using GreenFood.Infrastructure.Contexts;
 
 namespace GreenFood.Infrastructure.Repositories
 {

@@ -1,6 +1,4 @@
-﻿using System.Security.Claims;
-
-namespace GreenFood.Application.Contracts
+﻿namespace GreenFood.Application.Contracts
 {
     public interface IAccountRoleService
     {

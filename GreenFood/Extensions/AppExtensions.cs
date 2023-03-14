@@ -1,5 +1,4 @@
-using GreenFood.Domain.Utils;
-using GreenFood.Infrastructure;
+using GreenFood.Infrastructure.Contexts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,7 +22,7 @@ namespace GreenFood.Web.Extensions
             await using (var scope = app.Services.CreateAsyncScope())
             {
                 var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-                await DbInitialize.RolesInitialize(roleManager);
+                await roleManager.RolesInitialize();
             }
 
             return app;

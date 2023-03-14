@@ -1,11 +1,9 @@
-﻿using GreenFood.Domain.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace GreenFood.Infrastructure
+namespace GreenFood.Infrastructure.Contexts
 {
     public class HangFireContext : DbContext
     {
-
         public HangFireContext(DbContextOptions<HangFireContext> options) : base(options)
         {
         }

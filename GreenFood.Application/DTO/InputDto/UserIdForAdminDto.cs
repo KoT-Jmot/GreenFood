@@ -1,5 +1,4 @@
-﻿
-namespace GreenFood.Application.DTO.InputDto
+﻿namespace GreenFood.Application.DTO.InputDto
 {
     public class UserIdForAdminDto
     {
