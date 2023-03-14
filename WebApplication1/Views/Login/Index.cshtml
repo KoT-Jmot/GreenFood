@@ -1,0 +1,18 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model Login
+<form asp-action="send" method="post" enctype="multipart/form-data">
+    <div class="">
+            <div class="v21_9"></div>
+            <span class="v21_10">Вход</span>
+            <div class="v21_11"></div>
+        <button asp-controller="Login" asp-action="send" class="v21_12">Войти</button>
+            <div class="v21_14"></div>
+            <div class="v21_15"></div>
+        <input asp-for="Password" class="v21_18" placeholder="Введите пароль">
+        <input asp-for="Email" class="v21_19" placeholder="Введите почту">
+    </div>
+</form>

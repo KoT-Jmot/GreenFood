@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenFood.Infrastructure", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenFood.Application", "GreenFood.Application\GreenFood.Application.csproj", "{72D6B30C-39E1-4B43-B2FA-D43CF2416AA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication2", "..\WebApplication2\WebApplication2.csproj", "{1A176413-5748-4E5A-AAFF-8838DF7666D3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{87157488-E62D-4D4B-A454-9F5E434DFFE3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +41,10 @@ Global
 		{72D6B30C-39E1-4B43-B2FA-D43CF2416AA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72D6B30C-39E1-4B43-B2FA-D43CF2416AA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72D6B30C-39E1-4B43-B2FA-D43CF2416AA8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1A176413-5748-4E5A-AAFF-8838DF7666D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1A176413-5748-4E5A-AAFF-8838DF7666D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1A176413-5748-4E5A-AAFF-8838DF7666D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1A176413-5748-4E5A-AAFF-8838DF7666D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87157488-E62D-4D4B-A454-9F5E434DFFE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87157488-E62D-4D4B-A454-9F5E434DFFE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87157488-E62D-4D4B-A454-9F5E434DFFE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87157488-E62D-4D4B-A454-9F5E434DFFE3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

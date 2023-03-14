@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet" />
+    <link href="~/css/StyleSheet.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/StyleSheet1.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <header>
+        <div class="">
+            <span class="v2_3">GreenFood</span>
+            <a asp-action="Index" asp-controller="Home" class="v2_4">Главная</a>
+            <a href="" class="v2_7">Предложения</a>
+            <a href="" class="v2_8">О нас</a>
+            <a asp-action="Index" asp-controller="Login" class="v4_24">Вход</a>
+            <a asp-action="Index" asp-controller="Reg" class="v4_25">Регистрация</a>
+        </div>
+     </header>
+    <div class="">
+        @RenderBody()
+    </div>
+</body>
+</html>
