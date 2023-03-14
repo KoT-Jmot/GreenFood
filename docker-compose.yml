@@ -10,6 +10,12 @@ services:
       - elasticsearch
       - db
 
+  webapplication1:
+    image: ${DOCKER_REGISTRY-}webapplication1
+    build:
+      context: .
+      dockerfile: WebApplication1/Dockerfile
+
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.16.1
 

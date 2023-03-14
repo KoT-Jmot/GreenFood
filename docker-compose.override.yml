@@ -14,6 +14,16 @@ services:
     networks:
       - elastic
 
+  webapplication1:
+     environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+     ports:
+      - "9600:80"
+     volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
   elasticsearch:
     container_name: elasticsearch
     ports:
