@@ -8,8 +8,8 @@ namespace GreenFood.Infrastructure
 
         public HangFireContext(DbContextOptions<HangFireContext> options) : base(options)
         {
-            Database.EnsureCreated();
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
