@@ -40,6 +40,8 @@ app.UseMiddleware<ExceptionMiddleware>();
 
 await app.ConfigureMigrationAsync();
 
+await app.InitializeHangFireContextAsync();
+
 app.UseHttpsRedirection();
 
 app.UseRouting();

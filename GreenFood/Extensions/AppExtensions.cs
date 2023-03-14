@@ -13,9 +13,6 @@ namespace GreenFood.Web.Extensions
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
                 await dbContext.Database.MigrateAsync();
-
-                var hangFireContext = scope.ServiceProvider.GetRequiredService<HangFireContext>();
-                await hangFireContext.Database.EnsureCreatedAsync();
             }
 
             return app;
@@ -27,6 +24,17 @@ namespace GreenFood.Web.Extensions
             {
                 var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
                 await DbInitialize.RolesInitialize(roleManager);
+            }
+
+            return app;
+        }
+
+        public static async Task<WebApplication> InitializeHangFireContextAsync(this WebApplication app)
+        {
+            await using (var scope = app.Services.CreateAsyncScope())
+            {
+                var hangFireContext = scope.ServiceProvider.GetRequiredService<HangFireContext>();
+                await hangFireContext.Database.EnsureCreatedAsync();
             }
 
             return app;
