@@ -68,7 +68,7 @@ namespace GreenFood.Web.Controllers.UserControllers
             [FromBody] CategoryDto categoryDto,
             CancellationToken cancellationToken)
         {
-            var updatingCategoryId = await _categoryManager.UpdateCategoryAsync(categoryId, categoryDto, cancellationToken);
+            var updatingCategoryId = await _categoryManager.UpdateCategoryByIdAsync(categoryId, categoryDto, cancellationToken);
 
             return Created(nameof(UpdateCategoryAsync), updatingCategoryId);
         }

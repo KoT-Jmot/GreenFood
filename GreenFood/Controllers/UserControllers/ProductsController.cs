@@ -46,7 +46,7 @@ namespace GreenFood.Web.Controllers.UserControllers
         {
             var userId = User.GetUserId();
 
-            var productId = await _product.CreateProductByUserIdAsync(productDto, userId, cancellationToken);
+            var productId = await _product.CreateProductBySallerIdAsync(productDto, userId, cancellationToken);
 
             return Created(nameof(CreateProductAsync), productId);
         }
@@ -57,11 +57,25 @@ namespace GreenFood.Web.Controllers.UserControllers
             [FromRoute] Guid productId,
             CancellationToken cancellationToken)
         {
-            var userId = User.GetUserId();
+            var sallerId = User.GetUserId();
 
-            await _product.DeleteProductByIdAndUserIdAsync(userId, productId, cancellationToken);
+            await _product.DeleteProductByIdAndSallerIdAsync(sallerId, productId, cancellationToken);
 
             return NoContent();
+        }
+
+        [Authorize]
+        [HttpPut("{productId}")]
+        public async Task<IActionResult> UpdateProductAsync(
+            [FromRoute] Guid productId,
+            [FromBody] ProductDto productDto,
+            CancellationToken cancellationToken)
+        {
+            var sallerId = User.GetUserId();
+
+            var updatedProductId = await _product.UpdateProductByIdAndSallerIdAsync(productId, productDto, sallerId, cancellationToken);
+
+            return Created(nameof(UpdateProductAsync), updatedProductId);
         }
     }
 }

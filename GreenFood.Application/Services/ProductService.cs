@@ -69,7 +69,7 @@ namespace GreenFood.Application.Services
             return productsWithMetaData;
         }
 
-        public async Task<Guid> CreateProductByUserIdAsync(
+        public async Task<Guid> CreateProductBySallerIdAsync(
             ProductDto productDto,
             string sellerId,
             CancellationToken cancellationToken)
@@ -91,18 +91,44 @@ namespace GreenFood.Application.Services
             return product.Id;
         }
 
-        public async Task DeleteProductByIdAndUserIdAsync(
-            string userId,
+        public async Task DeleteProductByIdAndSallerIdAsync(
+            string sallerId,
             Guid productId,
             CancellationToken cancellationToken)
         {
-            var product = await _repositoryManager.Products.GetProductByIdAndUserIdAsync(productId, userId, trackChanges: false, cancellationToken);
+            var product = await _repositoryManager.Products.GetProductByIdAndUserIdAsync(productId, sallerId, trackChanges: false, cancellationToken);
 
             if (product is null)
                 throw new EntityNotFoundException("Product was not found!");
 
             await _repositoryManager.Products.RemoveAsync(product, cancellationToken);
             await _repositoryManager.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<Guid> UpdateProductByIdAndSallerIdAsync(
+            Guid productId,
+            ProductDto productDto,
+            string sallerId,
+            CancellationToken cancellationToken)
+        {
+            await _productValidator.ValidateAndThrowAsync(productDto, cancellationToken);
+
+            var category = await _repositoryManager.Categories.GetByIdAsync(productDto.CategoryId, trackChanges: false, cancellationToken);
+
+            if (category is null)
+                throw new EntityNotFoundException("Category was not found!");
+
+            var updatingProduct = await _repositoryManager.Products.GetByIdAsync(productId, trackChanges: true, cancellationToken);
+
+            if (updatingProduct is null)
+                throw new EntityNotFoundException("product was not found!");
+
+            if (!updatingProduct.SellerId!.Equals(sallerId))
+                throw new RequestAccessException();
+
+            updatingProduct = productDto.Adapt<Product>();
+
+            return productId;
         }
     }
 }

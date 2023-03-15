@@ -18,7 +18,7 @@ namespace GreenFood.Application.Contracts
         Task DeleteCategoryByIdAsync(
             Guid categoryId,
             CancellationToken cancellationToken);
-        Task<Guid> UpdateCategoryAsync(
+        Task<Guid> UpdateCategoryByIdAsync(
             Guid categoryId,
             CategoryDto categoryDto,
             CancellationToken cancellationToken);

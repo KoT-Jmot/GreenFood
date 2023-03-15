@@ -12,13 +12,18 @@ namespace GreenFood.Application.Contracts
         Task<OutputProductDto> GetProductByIdAsync(
             Guid productId,
             CancellationToken cancellationToken);
-        Task<Guid> CreateProductByUserIdAsync(
+        Task<Guid> CreateProductBySallerIdAsync(
             ProductDto productDto,
             string sellerId,
             CancellationToken cancellationToken);
-        Task DeleteProductByIdAndUserIdAsync(
+        Task DeleteProductByIdAndSallerIdAsync(
             string userId,
             Guid productId,
+            CancellationToken cancellationToken);
+        Task<Guid> UpdateProductByIdAndSallerIdAsync(
+            Guid productId,
+            ProductDto productDto,
+            string sallerId,
             CancellationToken cancellationToken);
     }
 }

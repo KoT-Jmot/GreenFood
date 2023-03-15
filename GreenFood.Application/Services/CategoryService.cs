@@ -96,7 +96,7 @@ namespace GreenFood.Application.Services
             await _repositoryManager.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<Guid> UpdateCategoryAsync(
+        public async Task<Guid> UpdateCategoryByIdAsync(
             Guid categoryId,
             CategoryDto categoryDto,
             CancellationToken cancellationToken)
