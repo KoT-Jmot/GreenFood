@@ -60,5 +60,17 @@ namespace GreenFood.Web.Controllers.UserControllers
 
             return NoContent();
         }
+
+        [Authorize(Roles = AccountRoles.GetAdministratorRole)]
+        [HttpPut("{categoryId}")]
+        public async Task<IActionResult> UpdateCategoryAsync(
+            [FromRoute] Guid categoryId,
+            [FromBody] CategoryDto categoryDto,
+            CancellationToken cancellationToken)
+        {
+            var updatingCategoryId = await _categoryManager.UpdateCategoryByIdAsync(categoryId, categoryDto, cancellationToken);
+
+            return Ok(updatingCategoryId);
+        }
     }
 }

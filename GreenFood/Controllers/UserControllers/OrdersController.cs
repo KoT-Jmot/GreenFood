@@ -44,9 +44,9 @@ namespace GreenFood.Web.Controllers.UserControllers
             [FromBody] OrderDto inputOrderDto,
             CancellationToken cancellationToken)
         {
-            var userId = User.GetUserId();
+            var customerId = User.GetUserId();
 
-            var orderId = await _order.CreateOrderByUserIdAsync(inputOrderDto, userId, cancellationToken);
+            var orderId = await _order.CreateOrderByCustomerIdAsync(inputOrderDto, customerId, cancellationToken);
 
             return Created(nameof(CreateOrderAsync), orderId);
         }
@@ -56,9 +56,9 @@ namespace GreenFood.Web.Controllers.UserControllers
             [FromRoute] Guid orderId,
             CancellationToken cancellationToken)
         {
-            var userId = User.GetUserId();
+            var customerId = User.GetUserId();
 
-            await _order.DeleteOrderByIdAndUserIdAsync(userId, orderId, cancellationToken);
+            await _order.DeleteOrderByIdAndCustomerIdAsync(customerId, orderId, cancellationToken);
 
             return NoContent();
         }

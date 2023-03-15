@@ -95,5 +95,27 @@ namespace GreenFood.Application.Services
             await _repositoryManager.Categories.RemoveAsync(category, cancellationToken);
             await _repositoryManager.SaveChangesAsync(cancellationToken);
         }
+
+        public async Task<Guid> UpdateCategoryByIdAsync(
+            Guid categoryId,
+            CategoryDto categoryDto,
+            CancellationToken cancellationToken)
+        {
+            await _categoryValidator.ValidateAndThrowAsync(categoryDto, cancellationToken);
+
+            var existedCategory = await _repositoryManager.Categories.GetCategoryByNameAsync(categoryDto.Name!, trackChanges: false, cancellationToken);
+
+            if (existedCategory is not null)
+                throw new CreatingCategoryException("This category already exists!");
+
+            var updatingCategory = await _repositoryManager.Categories.GetByIdAsync(categoryId, trackChanges: true, cancellationToken);
+
+            if (updatingCategory is null)
+                throw new EntityNotFoundException("Catgory was not found!");
+
+            updatingCategory = categoryDto.Adapt<Category>();
+
+            return categoryId;
+        }
     }
 }

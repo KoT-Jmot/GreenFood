@@ -52,6 +52,7 @@ namespace GreenFood.Web.ExceptionHandler
                 ArgumentNullException => StatusCodes.Status400BadRequest,
                 OrderCustomerException => StatusCodes.Status400BadRequest,
                 OperationCanceledException => StatusCodes.Status400BadRequest,
+                RequestAccessException => StatusCodes.Status403Forbidden,
                 EntityNotFoundException => StatusCodes.Status404NotFound,
                 UserRoleException => StatusCodes.Status422UnprocessableEntity,
                 ProductCountException => StatusCodes.Status422UnprocessableEntity,
