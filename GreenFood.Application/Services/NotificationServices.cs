@@ -12,7 +12,7 @@ namespace GreenFood.Application.Services
             _repositoryManager = repositoryManager;
         }
 
-        public async Task DeleteLatestOrdersAsync(CancellationToken cancellationToken = default)
+        public async Task DeleteLatestOrdersAsync()
         {
             var deletingOrders = _repositoryManager.Orders
                                                    .GetAll()

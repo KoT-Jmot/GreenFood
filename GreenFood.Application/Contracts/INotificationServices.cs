@@ -2,6 +2,6 @@
 {
     public interface INotificationServices
     {
-        Task DeleteLatestOrdersAsync(CancellationToken cancellationToken = default);
+        Task DeleteLatestOrdersAsync();
     }
 }
