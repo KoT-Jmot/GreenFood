@@ -41,7 +41,6 @@ await app.InitializeDbContextAsync();
 app.UseMiddleware<ExceptionMiddleware>();
 
 await app.ConfigureMigrationAsync();
-
 await app.InitializeHangFireContextAsync();
 
 app.UseHttpsRedirection();
@@ -55,6 +54,7 @@ app.UseHangfireDashboard(options: new DashboardOptions
 {
     Authorization = new[] { new HangfireAuthorizationFilter() }
 });
+await app.InitializeHangFireJobStorageAsync();
 
 app.UseEndpoints(endpoints =>
 {
