@@ -7,7 +7,7 @@ services:
       - SECRET=GreenFood12345XxX
       - ASPNETCORE_URLS=http://+:80
     ports:
-      - "9637:80"
+      - "9000:80"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
@@ -15,14 +15,17 @@ services:
       - elastic
 
   webapplication1:
-     environment:
+    environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80
-     ports:
-      - "9600:80"
-     volumes:
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+    ports:
+      - "9001:80"
+      - "9600:443"
+    volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    networks:
+      - elastic
 
   elasticsearch:
     container_name: elasticsearch

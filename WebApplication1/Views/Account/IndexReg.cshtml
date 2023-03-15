@@ -4,7 +4,7 @@
 @{
 }
 @model Registration
-<form asp-action="send" method="post" enctype="multipart/form-data">
+<form asp-action="sendReg" method="post" enctype="multipart/form-data">
 <div class="">
     <div class="v19_16">
     </div>
@@ -24,6 +24,6 @@
     <div>
             <input asp-for="PhoneNumber" class="v19_24" placeholder="Введите номер телефона"></input>
     </div>
-    <button asp-controller="Reg" asp-action="send" class="v19_15" type="submit">Зарегистрироваться</button>
+        <button asp-controller="Account" asp-action="sendReg" class="v19_15" type="submit">Зарегистрироваться</button>
     <div />
 </form>
