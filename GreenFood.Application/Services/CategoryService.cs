@@ -102,7 +102,6 @@ namespace GreenFood.Application.Services
             CancellationToken cancellationToken)
         {
             await _categoryValidator.ValidateAndThrowAsync(categoryDto, cancellationToken);
-
             var existedCategory = await _repositoryManager.Categories.GetCategoryByNameAsync(categoryDto.Name!, trackChanges: false, cancellationToken);
 
             if (existedCategory is not null)
