@@ -4,6 +4,6 @@ namespace WebApplication1.Interfaces
 {
     public interface IMessage
     {
-        Message PostRequestAsync(string url, string json);
+        Task<string> PostRequestAsync(string url, string json);
     }
 }
