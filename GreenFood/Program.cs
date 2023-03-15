@@ -4,7 +4,7 @@ using GreenFood.Web.ExceptionHandler;
 using Serilog;
 using FluentValidation;
 using System.Reflection;
-//Hello
+
 var builder = WebApplication.CreateBuilder(args);
 
 var services = builder.Services;
