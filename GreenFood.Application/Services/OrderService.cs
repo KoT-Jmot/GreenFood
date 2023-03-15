@@ -62,7 +62,7 @@ namespace GreenFood.Application.Services
             return ordersWithMetaData;
         }
 
-        public async Task<Guid> CreateOrderByUserIdAsync(
+        public async Task<Guid> CreateOrderByCustomerIdAsync(
             OrderDto orderDto,
             string customerId,
             CancellationToken cancellationToken)
@@ -92,12 +92,12 @@ namespace GreenFood.Application.Services
             return order.Id;
         }
 
-        public async Task DeleteOrderByIdAndUserIdAsync(
-            string userId,
+        public async Task DeleteOrderByIdAndCustomerIdAsync(
+            string customerId,
             Guid orderId,
             CancellationToken cancellationToken)
         {
-            var order = await _repositoryManager.Orders.GetOrderByIdAndUserIdAsync(orderId, userId, trackChanges: false, cancellationToken);
+            var order = await _repositoryManager.Orders.GetOrderByIdAndUserIdAsync(orderId, customerId, trackChanges: false, cancellationToken);
 
             if (order is null)
                 throw new EntityNotFoundException("Order was not found!");
