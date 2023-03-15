@@ -6,6 +6,8 @@ using FluentValidation;
 using System.Reflection;
 using Hangfire;
 using GreenFood.Application.RequestFeatures;
+using GreenFood.Domain.Utils;
+using GreenFood.Web.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,7 +29,11 @@ services.ConfigureSqlServer(configuration)
 services.AddValidatorsFromAssembly(Assembly.Load("GreenFood.Application"));
 
 services.AddAuthentication();
-services.AddAuthorization();
+services.AddAuthorization(options =>
+{
+    options.AddPolicy("IsNotBlocked", policy =>
+        policy.Requirements.Add(new RoleRequirement(AccountRoles.GetBlockedRole)));
+});
 
 services.ConfigureIdentity()
         .ConfigureJWT(configuration)

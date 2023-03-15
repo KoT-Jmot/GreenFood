@@ -18,7 +18,6 @@ namespace GreenFood.Web.Controllers.UserControllers
             _product = product;
         }
 
-        [HttpGet]
         public async Task<IActionResult> GetAllProductsAsync(
             [FromQuery] ProductQueryDto productQuery,
             CancellationToken cancellationToken)
@@ -38,7 +37,7 @@ namespace GreenFood.Web.Controllers.UserControllers
             return Ok(product);
         }
 
-        [Authorize]
+        [Authorize(Policy = "IsNotBlocked")]
         [HttpPost]
         public async Task<IActionResult> CreateProductAsync(
             [FromBody] ProductDto productDto,
@@ -51,7 +50,7 @@ namespace GreenFood.Web.Controllers.UserControllers
             return Created(nameof(CreateProductAsync), productId);
         }
 
-        [Authorize]
+        [Authorize(Policy = "IsNotBlocked")]
         [HttpDelete("{productId}")]
         public async Task<IActionResult> DeleteProductByIdAsync(
             [FromRoute] Guid productId,
@@ -64,7 +63,7 @@ namespace GreenFood.Web.Controllers.UserControllers
             return NoContent();
         }
 
-        [Authorize]
+        [Authorize(Policy = "IsNotBlocked")]
         [HttpPut("{productId}")]
         public async Task<IActionResult> UpdateProductAsync(
             [FromRoute] Guid productId,

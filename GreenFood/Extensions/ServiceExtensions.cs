@@ -15,6 +15,8 @@ using GreenFood.Infrastructure.Repositories;
 using GreenFood.Infrastructure.Configurations;
 using Hangfire;
 using GreenFood.Infrastructure.Contexts;
+using Microsoft.AspNetCore.Authorization;
+using GreenFood.Web.Authorization;
 
 namespace GreenFood.Web.Extensions
 {
@@ -75,6 +77,7 @@ namespace GreenFood.Web.Extensions
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IAccountRoleService, AccountRoleService>();
             services.AddScoped<INotificationServices, NotificationServices>();
+            services.AddTransient<IAuthorizationHandler, RoleHandler>();
 
             return services;
         }
