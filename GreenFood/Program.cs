@@ -6,7 +6,7 @@ using FluentValidation;
 using System.Reflection;
 using Hangfire;
 using GreenFood.Application.RequestFeatures;
-//Hello
+
 var builder = WebApplication.CreateBuilder(args);
 
 var services = builder.Services;
