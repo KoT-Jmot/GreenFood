@@ -1,11 +1,11 @@
 ﻿using GreenFood.Domain.Utils;
 using Microsoft.AspNetCore.Identity;
 
-namespace GreenFood.Infrastructure
+namespace GreenFood.Infrastructure.Contexts
 {
     public static class DbInitialize
     {
-        public static async Task RolesInitialize(RoleManager<IdentityRole> roleManager)
+        public static async Task RolesInitialize(this RoleManager<IdentityRole> roleManager)
         {
             var userName = AccountRoles.GetDefaultRole;
             var userIsInitialize = await roleManager.RoleExistsAsync(userName);

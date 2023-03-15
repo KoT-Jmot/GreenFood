@@ -69,7 +69,7 @@ namespace GreenFood.Application.Services
         {
             await _orderValidator.ValidateAndThrowAsync(orderDto, cancellationToken);
 
-            var product = await _repositoryManager.Products.GetByIdAsync(orderDto.ProductId, trackChanges: false, cancellationToken);
+            var product = await _repositoryManager.Products.GetByIdAsync(orderDto.ProductId, trackChanges: true, cancellationToken);
 
             if (product is null)
                 throw new EntityNotFoundException("Product was not found!");

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
-namespace GreenFood.Infrastructure
+namespace GreenFood.Infrastructure.Contexts
 {
     public class ApplicationContext : IdentityDbContext<ApplicationUser>
     {

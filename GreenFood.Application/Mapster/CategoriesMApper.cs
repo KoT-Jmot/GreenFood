@@ -5,7 +5,7 @@ using Mapster;
 
 namespace GreenFood.Application.Mapster
 {
-    internal class CategoriesMApper : IRegister
+    internal class CategoriesMapper : IRegister
     {
         public void Register(TypeAdapterConfig config)
         {

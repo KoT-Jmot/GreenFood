@@ -2,7 +2,6 @@
 using GreenFood.Application.Services;
 using GreenFood.Domain.Models;
 using GreenFood.Domain.Utils;
-using GreenFood.Infrastructure;
 using Mapster;
 using MapsterMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -14,6 +13,8 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using GreenFood.Infrastructure.Repositories;
 using GreenFood.Infrastructure.Configurations;
+using Hangfire;
+using GreenFood.Infrastructure.Contexts;
 
 namespace GreenFood.Web.Extensions
 {
@@ -30,8 +31,25 @@ namespace GreenFood.Web.Extensions
                     {
                         b.MigrationsAssembly(Assembly.Load("GreenFood.Infrastructure").FullName);
                     }));
-
+                
             services.AddScoped<IRepositoryManager, RepositoryManager>();
+
+            return services;
+        }
+
+        public static IServiceCollection ConfigureHangFire(
+            this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            services.AddDbContext<HangFireContext>(optionsBuilder =>
+                optionsBuilder
+                    .UseSqlServer(configuration.GetConnectionString("HangFireConnection")));
+
+            services.AddHangfire(optionsBuilder =>
+                optionsBuilder
+                    .UseSqlServerStorage(configuration.GetConnectionString("HangFireConnection")));
+
+            services.AddHangfireServer();
 
             return services;
         }
@@ -47,6 +65,7 @@ namespace GreenFood.Web.Extensions
 
             return services;
         }
+
         public static IServiceCollection ConfigureServices(
                    this IServiceCollection services)
         {
@@ -55,6 +74,7 @@ namespace GreenFood.Web.Extensions
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IAccountRoleService, AccountRoleService>();
+            services.AddScoped<INotificationServices, NotificationServices>();
 
             return services;
         }
