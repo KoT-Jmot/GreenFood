@@ -27,7 +27,7 @@ namespace GreenFood.Web.Controllers.AdminControllers
             if (userDto.UserId.IsNullOrEmpty())
                 throw new ArgumentNullException(nameof(userDto));
 
-            await _orderManager.DeleteOrderByIdAndUserIdAsync(userDto.UserId!, orderId, cancellationToken);
+            await _orderManager.DeleteOrderByIdAndCustomerIdAsync(userDto.UserId!, orderId, cancellationToken);
 
             return NoContent();
         }

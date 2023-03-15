@@ -70,7 +70,7 @@ namespace GreenFood.Web.Controllers.UserControllers
         {
             var updatingCategoryId = await _categoryManager.UpdateCategoryByIdAsync(categoryId, categoryDto, cancellationToken);
 
-            return Created(nameof(UpdateCategoryAsync), updatingCategoryId);
+            return Ok(updatingCategoryId);
         }
     }
 }

@@ -75,7 +75,7 @@ namespace GreenFood.Web.Controllers.UserControllers
 
             var updatedProductId = await _product.UpdateProductByIdAndSallerIdAsync(productId, productDto, sallerId, cancellationToken);
 
-            return Created(nameof(UpdateProductAsync), updatedProductId);
+            return Ok(updatedProductId);
         }
     }
 }
