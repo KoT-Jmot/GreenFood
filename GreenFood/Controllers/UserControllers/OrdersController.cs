@@ -1,5 +1,5 @@
 ﻿using GreenFood.Application.Contracts;
-using GreenFood.Application.DTO.InputDto;
+using GreenFood.Application.DTO.InputDto.OrderDto;
 using GreenFood.Application.DTO.OutputDto;
 using GreenFood.Application.RequestFeatures;
 using GreenFood.Web.features;
@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GreenFood.Web.Controllers.UserControllers
 {
-    [Authorize(Policy = "IsNotBlocked")]
+    [Authorize]
     [Route("Orders")]
     public class OrdersController : Controller
     {

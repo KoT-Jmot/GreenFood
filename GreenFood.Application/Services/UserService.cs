@@ -10,10 +10,10 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Security.Claims;
 using Mapster;
-using GreenFood.Application.DTO.InputDto;
 using GreenFood.Application.RequestFeatures;
 using GreenFood.Application.DTO.OutputDto;
 using Microsoft.EntityFrameworkCore;
+using GreenFood.Application.DTO.InputDto.UserDto;
 
 namespace GreenFood.Application.Services
 {

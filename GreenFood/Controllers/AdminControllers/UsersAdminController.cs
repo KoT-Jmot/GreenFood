@@ -1,5 +1,5 @@
 ﻿using GreenFood.Application.Contracts;
-using GreenFood.Application.DTO.InputDto;
+using GreenFood.Application.DTO.InputDto.UserDto;
 using GreenFood.Application.DTO.OutputDto;
 using GreenFood.Application.RequestFeatures;
 using GreenFood.Domain.Utils;
@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GreenFood.Web.Controllers.AdminControllers
 {
-    [Authorize(Policy = "IsNotBlocked", Roles = AccountRoles.GetAdministratorRole)]
+    [Authorize(Roles = AccountRoles.GetAdministratorRole)]
     [Route("Admin/Users")]
     public class UsersAdminController : Controller
     {

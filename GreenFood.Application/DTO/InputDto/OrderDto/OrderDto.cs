@@ -1,4 +1,4 @@
-﻿namespace GreenFood.Application.DTO.InputDto
+﻿namespace GreenFood.Application.DTO.InputDto.OrderDto
 {
     public class OrderDto
     {

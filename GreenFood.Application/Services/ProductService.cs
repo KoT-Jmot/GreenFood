@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using GreenFood.Application.Contracts;
-using GreenFood.Application.DTO.InputDto;
+using GreenFood.Application.DTO.InputDto.ProductDto;
 using GreenFood.Application.DTO.OutputDto;
 using GreenFood.Application.Extensions;
 using GreenFood.Application.RequestFeatures;
