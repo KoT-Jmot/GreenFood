@@ -29,11 +29,7 @@ services.ConfigureSqlServer(configuration)
 services.AddValidatorsFromAssembly(Assembly.Load("GreenFood.Application"));
 
 services.AddAuthentication();
-services.AddAuthorization(options =>
-{
-    options.AddPolicy("IsNotBlocked", policy =>
-        policy.Requirements.Add(new RoleRequirement(AccountRoles.GetBlockedRole)));
-});
+services.ConfigureAuthorization();
 
 services.ConfigureIdentity()
         .ConfigureJWT(configuration)

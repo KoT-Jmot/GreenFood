@@ -114,6 +114,17 @@ namespace GreenFood.Web.Extensions
             return services;
         }
 
+        public static IServiceCollection ConfigureAuthorization(this IServiceCollection services)
+        {
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("IsNotBlocked", policy =>
+                    policy.Requirements.Add(new RoleRequirement(AccountRoles.GetBlockedRole)));
+            });
+
+            return services;
+        }
+
         public static IServiceCollection ConfigureIdentity(this IServiceCollection services)
         {
             var builder = services.AddIdentityCore<ApplicationUser>(o =>
