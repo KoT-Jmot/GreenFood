@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using GreenFood.Application.DTO.InputDto;
+using GreenFood.Application.DTO.InputDto.OrderDto;
 
 namespace GreenFood.Application.Validation
 {

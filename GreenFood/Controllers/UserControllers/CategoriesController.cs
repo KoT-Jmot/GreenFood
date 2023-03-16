@@ -1,5 +1,5 @@
 ﻿using GreenFood.Application.Contracts;
-using GreenFood.Application.DTO.InputDto;
+using GreenFood.Application.DTO.InputDto.CategoryDto;
 using GreenFood.Application.DTO.OutputDto;
 using GreenFood.Application.RequestFeatures;
 using GreenFood.Domain.Utils;
@@ -33,7 +33,7 @@ namespace GreenFood.Web.Controllers.UserControllers
         public async Task<IActionResult> GetCategoryByIdAsync(
             [FromRoute] Guid categoryId,
             CancellationToken cancellationToken)
-        {
+        { 
             var category = await _categoryManager.GetCategoryByIdAsync(categoryId, cancellationToken);
 
             return Ok(category);

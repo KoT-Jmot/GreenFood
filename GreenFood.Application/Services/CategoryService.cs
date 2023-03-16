@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using GreenFood.Application.Contracts;
-using GreenFood.Application.DTO.InputDto;
 using GreenFood.Application.DTO.OutputDto;
 using GreenFood.Application.Validation;
 using GreenFood.Domain.Exceptions;
@@ -10,6 +9,7 @@ using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using GreenFood.Application.RequestFeatures;
+using GreenFood.Application.DTO.InputDto.CategoryDto;
 
 namespace GreenFood.Application.Services
 {

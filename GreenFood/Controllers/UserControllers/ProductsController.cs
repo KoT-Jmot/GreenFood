@@ -1,10 +1,10 @@
 ﻿using GreenFood.Application.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using GreenFood.Application.DTO.InputDto;
 using GreenFood.Application.DTO.OutputDto;
 using GreenFood.Web.features;
 using GreenFood.Application.RequestFeatures;
+using GreenFood.Application.DTO.InputDto.ProductDto;
 
 namespace GreenFood.Web.Controllers.UserControllers
 {
@@ -18,6 +18,7 @@ namespace GreenFood.Web.Controllers.UserControllers
             _product = product;
         }
 
+        [HttpGet]
         public async Task<IActionResult> GetAllProductsAsync(
             [FromQuery] ProductQueryDto productQuery,
             CancellationToken cancellationToken)

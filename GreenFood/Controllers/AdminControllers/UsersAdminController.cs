@@ -1,5 +1,5 @@
 ﻿using GreenFood.Application.Contracts;
-using GreenFood.Application.DTO.InputDto;
+using GreenFood.Application.DTO.InputDto.UserDto;
 using GreenFood.Application.DTO.OutputDto;
 using GreenFood.Application.RequestFeatures;
 using GreenFood.Domain.Utils;

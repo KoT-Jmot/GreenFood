@@ -6,8 +6,6 @@ using FluentValidation;
 using System.Reflection;
 using Hangfire;
 using GreenFood.Application.RequestFeatures;
-using GreenFood.Domain.Utils;
-using GreenFood.Web.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
