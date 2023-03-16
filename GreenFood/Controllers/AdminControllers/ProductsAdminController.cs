@@ -7,7 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace GreenFood.Web.Controllers.AdminControllers
 {
-    [Authorize(Roles = AccountRoles.GetAdministratorRole)]
+    [Authorize(Policy = "IsNotBlocked", Roles = AccountRoles.GetAdministratorRole)]
     [Route("Admin/Products")]
     public class ProductsAdminController : Controller
     {

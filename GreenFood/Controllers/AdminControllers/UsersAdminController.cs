@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GreenFood.Web.Controllers.AdminControllers
 {
-    [Authorize(Roles = AccountRoles.GetAdministratorRole)]
+    [Authorize(Policy = "IsNotBlocked", Roles = AccountRoles.GetAdministratorRole)]
     [Route("Admin/Users")]
     public class UsersAdminController : Controller
     {
