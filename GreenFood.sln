@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenFood.Infrastructure", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenFood.Application", "GreenFood.Application\GreenFood.Application.csproj", "{72D6B30C-39E1-4B43-B2FA-D43CF2416AA8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{7C7392CF-E34D-42F5-8BCC-8402F861B6C2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +44,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{950FAA70-5CBB-4E4B-B697-9293F8DBC7C3} = {7C7392CF-E34D-42F5-8BCC-8402F861B6C2}
+		{A042D019-E190-4E95-A173-72E1F0300581} = {7C7392CF-E34D-42F5-8BCC-8402F861B6C2}
+		{BBD9B926-2735-48DF-BF33-B7E8A7A27C6E} = {7C7392CF-E34D-42F5-8BCC-8402F861B6C2}
+		{72D6B30C-39E1-4B43-B2FA-D43CF2416AA8} = {7C7392CF-E34D-42F5-8BCC-8402F861B6C2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A82FB582-2F75-48D1-A427-63E285175306}
