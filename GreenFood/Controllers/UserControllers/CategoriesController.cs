@@ -39,7 +39,7 @@ namespace GreenFood.Web.Controllers.UserControllers
             return Ok(category);
         }
 
-        [Authorize(Roles = AccountRoles.GetAdministratorRole)]
+        [Authorize(Policy = "IsNotBlocked", Roles = AccountRoles.GetAdministratorRole)]
         [HttpPost]
         public async Task<IActionResult> CreateCategoryAsync(
             [FromBody] CategoryDto categoryDto,
@@ -50,7 +50,7 @@ namespace GreenFood.Web.Controllers.UserControllers
             return Created(nameof(CreateCategoryAsync), categoryId);
         }
 
-        [Authorize(Roles = AccountRoles.GetAdministratorRole)]
+        [Authorize(Policy = "IsNotBlocked", Roles = AccountRoles.GetAdministratorRole)]
         [HttpDelete("{categoryId}")]
         public async Task<IActionResult> DeleteCategoryAsync(
             [FromRoute] Guid categoryId,
@@ -61,7 +61,7 @@ namespace GreenFood.Web.Controllers.UserControllers
             return NoContent();
         }
 
-        [Authorize(Roles = AccountRoles.GetAdministratorRole)]
+        [Authorize(Policy = "IsNotBlocked", Roles = AccountRoles.GetAdministratorRole)]
         [HttpPut("{categoryId}")]
         public async Task<IActionResult> UpdateCategoryAsync(
             [FromRoute] Guid categoryId,

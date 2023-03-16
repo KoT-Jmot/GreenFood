@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GreenFood.Web.Controllers.UserControllers
 {
-    [Authorize]
+    [Authorize(Policy = "IsNotBlocked")]
     [Route("Orders")]
     public class OrdersController : Controller
     {
