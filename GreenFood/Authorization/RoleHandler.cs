@@ -6,7 +6,7 @@ namespace GreenFood.Web.Authorization
     {
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, RoleRequirement requirement)
         {
-            if (!context.User.IsInRole(requirement.Role) && context.User.Identity.IsAuthenticated)
+            if (!context.User.IsInRole(requirement.Role) && context.User.Identity!.IsAuthenticated)
             {
                 context.Succeed(requirement);
             }
