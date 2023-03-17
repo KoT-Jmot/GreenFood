@@ -1,4 +1,5 @@
 using GreenFood.Application.Contracts;
+using GreenFood.Domain.Models;
 using GreenFood.Infrastructure.Contexts;
 using Hangfire;
 using Microsoft.AspNetCore.Identity;
@@ -25,6 +26,9 @@ namespace GreenFood.Web.Extensions
             {
                 var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
                 await roleManager.RolesInitialize();
+
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+                await userManager.SuperAdminInitialize();
             }
 
             return app;
