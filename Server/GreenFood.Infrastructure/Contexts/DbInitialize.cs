@@ -46,7 +46,6 @@ namespace GreenFood.Infrastructure.Contexts
                     UserName = Environment.GetEnvironmentVariable("ADMINNAME"),
                     PhoneNumber = Environment.GetEnvironmentVariable("ADMINPHONE"),
                     RegistrationDate = DateTime.UtcNow
-
                 };
 
                 var result = await userManager.CreateAsync(superAdmin, Environment.GetEnvironmentVariable("ADMINPASSWORD"));
