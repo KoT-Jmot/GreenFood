@@ -5,7 +5,7 @@ services:
     image: ${DOCKER_REGISTRY-}greenfood
     build:
       context: .
-      dockerfile: GreenFood/Dockerfile
+      dockerfile: ../Server/GreenFood.Web/Dockerfile
     depends_on:
       - elasticsearch
       - db

@@ -3,17 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenFood.Web", "GreenFood\GreenFood.Web.csproj", "{950FAA70-5CBB-4E4B-B697-9293F8DBC7C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenFood.Web", "Server\GreenFood.Web\GreenFood.Web.csproj", "{950FAA70-5CBB-4E4B-B697-9293F8DBC7C3}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{CC0AE0B2-8951-4D9C-B9EF-61B5DA24D333}"
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "DockerCompose\docker-compose.dcproj", "{CC0AE0B2-8951-4D9C-B9EF-61B5DA24D333}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenFood.Domain", "GreenFood.Domain\GreenFood.Domain.csproj", "{A042D019-E190-4E95-A173-72E1F0300581}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenFood.Domain", "Server\GreenFood.Domain\GreenFood.Domain.csproj", "{A042D019-E190-4E95-A173-72E1F0300581}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenFood.Infrastructure", "GreenFood.Infrastructure\GreenFood.Infrastructure.csproj", "{BBD9B926-2735-48DF-BF33-B7E8A7A27C6E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenFood.Infrastructure", "Server\GreenFood.Infrastructure\GreenFood.Infrastructure.csproj", "{BBD9B926-2735-48DF-BF33-B7E8A7A27C6E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenFood.Application", "GreenFood.Application\GreenFood.Application.csproj", "{72D6B30C-39E1-4B43-B2FA-D43CF2416AA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenFood.Application", "Server\GreenFood.Application\GreenFood.Application.csproj", "{72D6B30C-39E1-4B43-B2FA-D43CF2416AA8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{7C7392CF-E34D-42F5-8BCC-8402F861B6C2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DockerCompose", "DockerCompose", "{7367988D-9270-4704-A90A-B4867BB393B2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{7DA0373C-3460-44AB-B082-C5F440C08F04}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +51,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{950FAA70-5CBB-4E4B-B697-9293F8DBC7C3} = {7C7392CF-E34D-42F5-8BCC-8402F861B6C2}
+		{CC0AE0B2-8951-4D9C-B9EF-61B5DA24D333} = {7367988D-9270-4704-A90A-B4867BB393B2}
 		{A042D019-E190-4E95-A173-72E1F0300581} = {7C7392CF-E34D-42F5-8BCC-8402F861B6C2}
 		{BBD9B926-2735-48DF-BF33-B7E8A7A27C6E} = {7C7392CF-E34D-42F5-8BCC-8402F861B6C2}
 		{72D6B30C-39E1-4B43-B2FA-D43CF2416AA8} = {7C7392CF-E34D-42F5-8BCC-8402F861B6C2}
