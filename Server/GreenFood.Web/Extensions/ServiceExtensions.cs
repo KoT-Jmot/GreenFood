@@ -151,5 +151,20 @@ namespace GreenFood.Web.Extensions
 
             return services;
         }
+
+        public static IServiceCollection ConfigureCors(
+            this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "GreenFoodOrigins",policy =>
+                {
+                    policy.WithOrigins(configuration.GetSection("ClientInformations").GetValue<string>("link"));
+                });
+            });
+            
+            return services;
+        }
     }
 }
