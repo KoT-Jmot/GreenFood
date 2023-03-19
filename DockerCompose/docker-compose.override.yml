@@ -2,9 +2,14 @@ version: '3.4'
 
 services:
   greenfood:
+    container_name: GreenFood.Server
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
       - SECRET=GreenFood12345XxX
+      - ADMINNAME=admin
+      - ADMINEMAIL=admin@gmail.com
+      - ADMINPHONE=+375111111111
+      - ADMINPASSWORD=Aaa1111!
       - ASPNETCORE_URLS=http://+:80
     ports:
       - "9000:80"

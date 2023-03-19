@@ -1,6 +1,4 @@
-﻿using System.Security.Claims;
-
-namespace GreenFood.Domain.Utils
+﻿namespace GreenFood.Domain.Utils
 {
     public static class AccountRoles
     {

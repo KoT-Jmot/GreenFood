@@ -1,4 +1,5 @@
-﻿using GreenFood.Domain.Utils;
+﻿using GreenFood.Domain.Models;
+using GreenFood.Domain.Utils;
 using Microsoft.AspNetCore.Identity;
 
 namespace GreenFood.Infrastructure.Contexts
@@ -30,6 +31,36 @@ namespace GreenFood.Infrastructure.Contexts
 
             if (!blockedIsInitialize)
                 await roleManager.CreateAsync(new IdentityRole(blockedRole));
+        }
+
+        public static async Task SuperAdminInitialize(this UserManager<ApplicationUser> userManager)
+        {
+            var superAdminEmail = Environment.GetEnvironmentVariable("ADMINEMAIL");
+            var superAdmin = await userManager.FindByEmailAsync(superAdminEmail);
+
+            if (superAdmin is null)
+            {
+                superAdmin = new ApplicationUser
+                {
+                    Email = superAdminEmail,
+                    UserName = Environment.GetEnvironmentVariable("ADMINNAME"),
+                    PhoneNumber = Environment.GetEnvironmentVariable("ADMINPHONE"),
+                    RegistrationDate = DateTime.UtcNow
+                };
+
+                var result = await userManager.CreateAsync(superAdmin, Environment.GetEnvironmentVariable("ADMINPASSWORD"));
+
+                if (result.Succeeded)
+                {
+                    string[] roles = {
+                        AccountRoles.GetDefaultRole,
+                        AccountRoles.GetAdministratorRole,
+                        AccountRoles.GetSuperAdministratorRole
+                    };
+
+                    await userManager.AddToRolesAsync(superAdmin, roles);
+                }
+            }
         }
     }
 }
