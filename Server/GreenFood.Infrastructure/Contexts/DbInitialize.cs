@@ -51,7 +51,15 @@ namespace GreenFood.Infrastructure.Contexts
                 var result = await userManager.CreateAsync(superAdmin, Environment.GetEnvironmentVariable("ADMINPASSWORD"));
 
                 if (result.Succeeded)
-                    await userManager.AddToRolesAsync(superAdmin, AccountRoles.GetSuperAdminRoles());
+                {
+                    string[] roles = {
+                        AccountRoles.GetDefaultRole,
+                        AccountRoles.GetAdministratorRole,
+                        AccountRoles.GetSuperAdministratorRole
+                    };
+
+                    await userManager.AddToRolesAsync(superAdmin, roles);
+                }
             }
         }
     }
