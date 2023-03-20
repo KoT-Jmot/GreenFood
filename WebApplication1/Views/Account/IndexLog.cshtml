@@ -6,13 +6,19 @@
 @model Login
 <form asp-action="sendLog" method="post" enctype="multipart/form-data">
     <div class="">
-        <div class="v21_9"></div>
+        <div class="v21_9">
+        </div>
         <span class="v21_10">Вход</span>
         <div class="v21_11"></div>
+        <span asp-validation-for="Email" class="text-danger"></span>
         <button asp-controller="Account" asp-action="sendLog" class="v21_12">Войти</button>
         <div class="v21_14"></div>
         <div class="v21_15"></div>
-        <input asp-for="Password" class="v21_18" placeholder="Введите пароль">
-        <input asp-for="Email" class="v21_19" placeholder="Введите почту">
+        <div>
+            <input asp-for="Password" class="v21_18" placeholder="Введите пароль">
+            <input asp-for="Email" class="v21_19" placeholder="Введите почту">
+            <span asp-validation-for="Password" class="field-validation-error"></span>
+            <span asp-validation-for="Email" class="field-validation-error"></span>
+        </div>
     </div>
 </form>

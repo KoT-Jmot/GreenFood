@@ -4,6 +4,7 @@ using System.Text;
 using WebApplication1.Models;
 using WebApplication1.Static_Links;
 using WebApplication1.Service;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace WebApplication1.Controllers
 {
@@ -18,7 +19,7 @@ namespace WebApplication1.Controllers
         }
 
         [Route("sendLog")]
-        public async Task<IActionResult> sendLog(Login log, Message message)
+        public async Task<IActionResult> sendLog(Login log, Messanger messanger)
         {
             if (!ModelState.IsValid)
             {
@@ -31,7 +32,13 @@ namespace WebApplication1.Controllers
             }
 
             string jsonRequest = JsonSerializer.Serialize(log);
-            string jsonResponse = await message.PostRequestAsync("http://greenfood:80/Accounts/SignIn", jsonRequest);
+            var jsonResponse = await messanger.PostRequestAsync("http://greenfood:80/Accounts/SignIn", jsonRequest);
+
+            if (jsonResponse.StatusCode == 422)
+            {
+                ModelState.AddModelError("Password", "Неверный логин или пароль!");
+                return View("IndexLog");
+            }
 
             return RedirectToAction("CompleteLog");
         }
@@ -52,7 +59,7 @@ namespace WebApplication1.Controllers
 
 
         [Route("sendReg")]
-        public async Task<IActionResult> sendReg(Registration reg, Message message)
+        public async Task<IActionResult> sendReg(Registration reg, Messanger messanger)
         {
             if (!ModelState.IsValid)
             {
@@ -62,9 +69,16 @@ namespace WebApplication1.Controllers
             {
                 return View("IndexReg");
             }
-
             string jsonRequest = JsonSerializer.Serialize(reg);
-            string jsonResponse = await message.PostRequestAsync("http://greenfood:80/Accounts/SignUp", jsonRequest);
+            var jsonResponse = await messanger.PostRequestAsync("http://greenfood:80/Accounts/SignUp", jsonRequest);
+            
+
+            if (jsonResponse.StatusCode != 201)
+            {
+                var Error = JsonSerializer.Deserialize<ErrorModel>(jsonResponse.Content);
+                ModelState.AddModelError("Password", Error.Message);
+                return View("IndexReg");
+            }
 
             return RedirectToAction("CompleteReg");
         }

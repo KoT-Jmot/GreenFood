@@ -14,15 +14,19 @@
     </div>
     <div>
         <input asp-for="UserName" class="v19_21" placeholder="Введите имя"></input>
+            <span asp-validation-for="UserName" class="field-validation-error1"></span>
     </div>
     <div>
             <input asp-for="Password" class="v19_22" placeholder="Введите пароль"></input>
+            <span asp-validation-for="Password" class="field-validation-error1"></span>
     </div>
     <div>
             <input asp-for="Email" class="v19_23" placeholder="Введите почту"></input>
+            <span asp-validation-for="Email" class="field-validation-error1"></span>
     </div>
     <div>
             <input asp-for="PhoneNumber" class="v19_24" placeholder="Введите номер телефона"></input>
+            <span asp-validation-for="PhoneNumber" class="field-validation-error1"></span>
     </div>
         <button asp-controller="Account" asp-action="sendReg" class="v19_15" type="submit">Зарегистрироваться</button>
     <div />

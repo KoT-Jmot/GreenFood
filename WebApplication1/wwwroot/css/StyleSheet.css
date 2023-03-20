@@ -486,3 +486,17 @@ body {
     opacity: 1;
     text-align: left;
 }
+.field-validation-error {
+    left: 840px;
+    top: 740px;
+    color: red;
+    position: absolute;
+    font-size: 1.2rem;
+}
+.field-validation-error1 {
+    left: 840px;
+    top: 870px;
+    color: red;
+    position: absolute;
+    font-size: 1.2rem;
+}

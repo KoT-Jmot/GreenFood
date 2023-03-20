@@ -1,14 +1,13 @@
 ﻿using WebApplication1.Interfaces;
 using WebApplication1.Static_Links;
-
 namespace WebApplication1.Service
 {
-    public static class IMessageService
+    public static class MessageService
     {
         public static IServiceCollection ConfigureServices(
-          this IServiceCollection services)
+         this IServiceCollection services)
         {
-            services.AddScoped<IMessage, Message>();
+            services.AddScoped<IMessanger, Messanger>();
 
             return services;
         }
