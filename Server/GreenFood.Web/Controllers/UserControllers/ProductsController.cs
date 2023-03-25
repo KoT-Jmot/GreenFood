@@ -5,9 +5,11 @@ using GreenFood.Application.DTO.OutputDto;
 using GreenFood.Web.features;
 using GreenFood.Application.RequestFeatures;
 using GreenFood.Application.DTO.InputDto.ProductDto;
+using Microsoft.AspNetCore.Cors;
 
 namespace GreenFood.Web.Controllers.UserControllers
 {
+    //[EnableCors("GreenFoodOrigins")]
     [Route("Products")]
     public class ProductsController : Controller
     {

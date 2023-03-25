@@ -22,6 +22,7 @@ builder.Host.UseSerilog();
 
 services.ConfigureSqlServer(configuration)
         .ConfigureHangFire(configuration)
+        .ConfigureCors(configuration)
         .AddControllers();
 
 services.AddValidatorsFromAssembly(Assembly.Load("GreenFood.Application"));
@@ -45,6 +46,8 @@ await app.InitializeHangFireContextAsync();
 app.UseHttpsRedirection();
 
 app.UseRouting();
+
+app.UseCors("GreenFoodOrigins");
 
 app.UseAuthentication()
    .UseAuthorization();

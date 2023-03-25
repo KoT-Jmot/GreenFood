@@ -59,8 +59,6 @@ namespace GreenFood.Application.Services
             }
 
             await _userManager.AddToRoleAsync(user, AccountRoles.GetDefaultRole);
-            //await _userManager.AddToRoleAsync(user, AccountRoles.GetAdministratorRole);
-            //await _userManager.AddToRoleAsync(user, AccountRoles.GetSuperAdministratorRole);
 
             return user.Id;
         }
