@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DockerCompose", "DockerComp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{7DA0373C-3460-44AB-B082-C5F440C08F04}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenFood.Tests", "Server\GreenFood.Tests\GreenFood.Tests.csproj", "{F78082EE-5CE0-45D7-A1EC-6400E7B00246}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{72D6B30C-39E1-4B43-B2FA-D43CF2416AA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72D6B30C-39E1-4B43-B2FA-D43CF2416AA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72D6B30C-39E1-4B43-B2FA-D43CF2416AA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F78082EE-5CE0-45D7-A1EC-6400E7B00246}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F78082EE-5CE0-45D7-A1EC-6400E7B00246}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F78082EE-5CE0-45D7-A1EC-6400E7B00246}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F78082EE-5CE0-45D7-A1EC-6400E7B00246}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +61,7 @@ Global
 		{A042D019-E190-4E95-A173-72E1F0300581} = {7C7392CF-E34D-42F5-8BCC-8402F861B6C2}
 		{BBD9B926-2735-48DF-BF33-B7E8A7A27C6E} = {7C7392CF-E34D-42F5-8BCC-8402F861B6C2}
 		{72D6B30C-39E1-4B43-B2FA-D43CF2416AA8} = {7C7392CF-E34D-42F5-8BCC-8402F861B6C2}
+		{F78082EE-5CE0-45D7-A1EC-6400E7B00246} = {7C7392CF-E34D-42F5-8BCC-8402F861B6C2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A82FB582-2F75-48D1-A427-63E285175306}
